@@ -25,6 +25,19 @@ function random_string($length) {
     return $key;
 }
 
+function getSSLPage($url) {
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_HEADER, false);
+    curl_setopt($ch, CURLOPT_URL, $url);
+//    curl_setopt($ch, CURLOPT_SSLVERSION,3); 
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    $result = curl_exec($ch);
+    curl_close($ch);
+    return $result;
+}
+
 //NOTA: no es posible la sobrecarga de metodos en PHP porque solo tiene en cuenta el nombre, no los parametros
 
 // Generates the auth file for Amazon EC2 deployments
@@ -91,7 +104,8 @@ function generate_auth_file_openstack($username, $pass, $endpoint, $tenant) {
 }
 
 // Generates the auth file for FedCloud deployments
-function generate_auth_file_fedcloud($proxy, $endpoint, $myproxyserver, $myproxyuser, $myproxypass) {
+//function generate_auth_file_fedcloud($proxy, $endpoint, $myproxyserver, $myproxyuser, $myproxypass) {
+function generate_auth_file_fedcloud($endpoint) {
     $auth = '';
     $auth = tempnam("/tmp", "auth_");
     chmod($auth, 0644);
@@ -100,15 +114,31 @@ function generate_auth_file_fedcloud($proxy, $endpoint, $myproxyserver, $myproxy
     //id = occi; type = OCCI; proxy = file(/tmp/proxy.pem); host = https://stack-server-01.ct.infn.it:8787
     //id = occi; type = OCCI; proxy = asdasd; host = https://stack-server-01.ct.infn.it:8787
     
-    //tratamos la cadena del proxy
-    $proxy = str_replace("\r\n", "\\n", $proxy);
+    //obtenemos el proxy
+    //https://etokenserver.ct.infn.it:8443/eTokenServer/eToken/332576f78a4fe70a52048043e90cd11f?voms=fedcloud.egi.eu:/fedcloud.egi.eu&proxy-renewal=false&disable-voms-proxy=false&rfc-proxy=true&cn-label=user:micafer
+    //"https://etokenserver.ct.infn.it:8443/eTokenServer/eToken/332576f78a4fe70a52048043e90cd11f?voms=fedcloud.egi.eu:/fedcloud.egi.eu&proxy-renewal=false&disable-voms-proxy=false&rfc-proxy=true&cn-label=ec3:" . $user_sub
+    if ( !session_id() ) {
+            session_start();
+    }
+
+    if (!isset($_SESSION["egi_user_sub"])) {
+        //echo "Error no unity user ID obtained.";
+        header('Location:session_expired.html');
+        die();
+    } else {
+        $user_sub = $_SESSION["egi_user_sub"];
+    }
+
+    //$proxy = file_get_contents("https://etokenserver.ct.infn.it:8443/eTokenServer/eToken/332576f78a4fe70a52048043e90cd11f?voms=vo.access.egi.eu:/vo.access.egi.eu&proxy-renewal=true&disable-voms-proxy=false&rfc-proxy=true&cn-label=eToken:" . $user_sub);
+    $proxy = getSSLPage("https://etokenserver.ct.infn.it:8443/eTokenServer/eToken/332576f78a4fe70a52048043e90cd11f?voms=vo.access.egi.eu:/vo.access.egi.eu&proxy-renewal=true&disable-voms-proxy=false&rfc-proxy=true&cn-label=eToken:" . $user_sub);
+    $proxy = str_replace("\n", "\\n", $proxy);
     
     $gestor = fopen($auth, "w");
-    if($myproxyserver != '' && $myproxyuser != '' && $myproxypass != ''){
-        fwrite($gestor, "id = occi; type = OCCI; proxy = " . $proxy . "; myproxyserver = " .$myproxyserver. "; myproxyuser = " . $myproxyuser . "; myproxypass = " . $myproxypass . "; host = " . $endpoint . PHP_EOL);
-    } else{
-        fwrite($gestor, "id = occi; type = OCCI; proxy = " . $proxy . "; host = " . $endpoint . PHP_EOL);
-    }
+    //if($myproxyserver != '' && $myproxyuser != '' && $myproxypass != ''){
+    //    fwrite($gestor, "id = occi; type = OCCI; proxy = " . $proxy . "; myproxyserver = " .$myproxyserver. "; myproxyuser = " . $myproxyuser . "; myproxypass = " . $myproxypass . "; host = " . $endpoint . PHP_EOL);
+    //} else{
+    fwrite($gestor, "id = occi; type = OCCI; proxy = " . $proxy . "; host = " . $endpoint . PHP_EOL);
+    //}
     //Write needed credentials of IM and VMRC
     fwrite($gestor, "type = InfrastructureManager; username = " . random_string(8) . "; password = " . random_string(10). PHP_EOL);
     //fwrite($gestor, "type = VMRC; host = http://servproject.i3m.upv.es:8080/vmrc/vmrc; username = micafer; password = ttt25");
@@ -121,9 +151,10 @@ function generate_auth_file_fedcloud($proxy, $endpoint, $myproxyserver, $myproxy
 
 
 // Generates the system RADL file for the deployments that the user has indicated an AMI or VMI
-function generate_system_image_radl($cloud, $ami, $region, $ami_user, $ami_password, $instancetype_front, $instancetype_wn, $front_cpu, $front_mem, $wn_cpu, $wn_mem, $nodes, $os, $vo) {
+//function generate_system_image_radl($cloud, $ami, $region, $ami_user, $ami_password, $instancetype_front, $instancetype_wn, $front_cpu, $front_mem, $wn_cpu, $wn_mem, $nodes, $os) {
+function generate_system_image_radl($cloud, $ami, $region, $ami_user, $ami_password, $instancetype_front, $instancetype_wn, $front_cpu, $front_mem, $wn_cpu, $wn_mem, $nodes){
     $rand_str = random_string(4); 
-    $path_to_new_file = '/var/www/html/ec3/command/templates/system_'.$rand_str.'.radl';
+    $path_to_new_file = '/var/www/html/ec3-ltos/command/templates/system_'.$rand_str.'.radl';
     $file_name = 'system_'.$rand_str;
     
     // Obtenemos user y pass random
@@ -132,6 +163,17 @@ function generate_system_image_radl($cloud, $ami, $region, $ami_user, $ami_passw
     $pass = $userpass[1];
     
     $fcuser = 'cloudadm';
+    //obtain UNITY user
+    if ( !session_id() ) {
+        session_start();
+    }
+
+    if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
+        include('auth.php');
+    } else {
+        $user_sub = $_SESSION["egi_user_sub"];
+        $user_name = $_SESSION["egi_user_name"];
+    }
 
     $new_file = fopen($path_to_new_file, "w");
     fwrite($new_file, "system front (".PHP_EOL);
@@ -139,14 +181,15 @@ function generate_system_image_radl($cloud, $ami, $region, $ami_user, $ami_passw
     if($cloud == 'ec2'){
         //disk.0.image.url = 'aws://us-east-1/ami-e50e888c' and
         fwrite($new_file, "    disk.0.image.url = 'aws://".$region. "/" .$ami. "' and".PHP_EOL);
-        fwrite($new_file, "    instance_type='".$instancetype_front."' and".PHP_EOL);     
+        fwrite($new_file, "    instance_type='".$instancetype_front."' and".PHP_EOL);
     } elseif($cloud == 'fedcloud'){
         $user=$fcuser;
-        fwrite($new_file, "    disk.0.image.url = 'appdb://".$region. "/" .$ami. "?" . $vo . "' and".PHP_EOL);
         //fwrite($new_file, "    disk.0.image.url = '".$region. "/" .$ami. "' and".PHP_EOL);
+        fwrite($new_file, "    disk.0.image.url = 'appdb://".$region. "/" .$ami. "?vo.access.egi.eu' and".PHP_EOL);
         //fwrite($new_file, "    instance_type='".$instancetype_front."'".PHP_EOL);
         fwrite($new_file, "    instance_type='".$instancetype_front."' and".PHP_EOL);
-        fwrite($new_file, "    disk.0.os.credentials.username = '".$fcuser."'".PHP_EOL);
+        fwrite($new_file, "    disk.0.os.credentials.username = '".$fcuser."' and".PHP_EOL);
+        fwrite($new_file, "    ec3aas.username = '".$user_sub."'".PHP_EOL);
     } elseif($cloud == 'one'){
         //disk.0.image.url = 'one://ramses.i3m.upv.es/81' and
         $region = explode(':', $region);
@@ -186,9 +229,9 @@ function generate_system_image_radl($cloud, $ami, $region, $ami_user, $ami_passw
     if($cloud == 'ec2'){
         //disk.0.image.url = 'aws://us-east-1/ami-e50e888c' and
         fwrite($new_file, "    disk.0.image.url = 'aws://".$region. "/" .$ami. "' and".PHP_EOL);
-        fwrite($new_file, "    instance_type='".$instancetype_wn."' and".PHP_EOL);    
+        fwrite($new_file, "    instance_type='".$instancetype_wn."' and".PHP_EOL);
     } elseif($cloud == 'fedcloud'){
-        fwrite($new_file, "    disk.0.image.url = 'appdb://".$region. "/" .$ami. "?" . $vo . "' and".PHP_EOL);
+        fwrite($new_file, "    disk.0.image.url = 'appdb://".$region. "/" .$ami. "?vo.access.egi.eu' and".PHP_EOL);
         //fwrite($new_file, "    disk.0.image.url = '".$region. "/" .$ami. "' and".PHP_EOL);
         //fwrite($new_file, "    instance_type='".$instancetype_wn."'".PHP_EOL);
         fwrite($new_file, "    instance_type='".$instancetype_wn."' and".PHP_EOL);
@@ -234,7 +277,7 @@ function generate_system_image_radl($cloud, $ami, $region, $ami_user, $ami_passw
 // Generates the system RADL file for the deployments that the user DOES NOT has indicated an AMI or VMI
 function generate_system_template_radl($cloud, $os, $instancetype_front, $instancetype_wn, $front_cpu, $front_mem, $wn_cpu, $wn_mem, $nodes){
     $rand_str = random_string(4); 
-    $path_to_new_file = '/var/www/html/ec3/command/templates/'.$os.'-'.$cloud.'_'.$rand_str.'.radl';
+    $path_to_new_file = '/var/www/html/ec3-ltos/command/templates/'.$os.'-'.$cloud.'_'.$rand_str.'.radl';
     $file_name = $os.'-'.$cloud.'_'.$rand_str;
     $path_to_template = '/etc/ec3/templates/'.$os.'-'.$cloud.".radl";
 
@@ -277,6 +320,7 @@ function generate_system_template_radl($cloud, $os, $instancetype_front, $instan
         $file_contents = str_replace("#INSTANCES#",$nodes,$file_contents);
         $file_contents = str_replace("#INSTANCE_TYPE_FRONT#", $instancetype_front, $file_contents);
         $file_contents = str_replace("#INSTANCE_TYPE_WN#", $instancetype_wn, $file_contents);
+        //fwrite($new_file, "    ec3aas.username = '".$user_sub."'".PHP_EOL);
         file_put_contents($path_to_new_file,$file_contents);
     } else{ //$cloud=ec2
         $file_contents = file_get_contents($path_to_new_file);
@@ -380,7 +424,7 @@ function validateAMIValue($ami) {
 if($_POST){
     //echo "recibo algo POST";
     //echo "{}";
-    $possible_sw = array("nfs", "maui", "openvpn", "octave", "docker", "gnuplot", "tomcat", "galaxy", "chronos", "marathon", "hadoop", "namd", "extra_hd");
+    $possible_sw = array("nfs", "maui", "openvpn", "octave", "docker", "gnuplot", "tomcat", "galaxy", "marathon", "chronos", "hadoop", "namd", "extra_hd");
  
     $datosRecibidos = file_get_contents('php://input'); 
 
@@ -392,182 +436,30 @@ if($_POST){
     $cloud = explode('=', $stringSpliteado[0]);
     $provider = $cloud[1];
     
-    if ($provider == 'ec2'){
-        $accesskey = explode('=', $stringSpliteado[1]);
-        $accesskey = urldecode($accesskey[1]);
-
-        $secretkey = explode('=', $stringSpliteado[2]);
-        $secretkey = urldecode($secretkey[1]);
-
-        $os = explode('=', $stringSpliteado[3]);
-        $os = urldecode($os[1]);
-
-        $ami = explode('=', $stringSpliteado[4]);
-        $ami = urldecode($ami[1]);
+    if ($provider == 'fedcloud'){
+        $endpointName = explode('=', $stringSpliteado[1]);
+        $endpointName = urldecode($endpointName[1]);        
         
-        $ami_user = explode('=', $stringSpliteado[5]);
-        $ami_user = urldecode($ami_user[1]);
-        
-        $region = explode('=', $stringSpliteado[6]);
-        $region = urldecode($region[1]);
-        
-        if($os == '' && $ami == ''){
-            echo 'OS or AMI not provided. Impossible to launch a cluster without these data. Please, enter the required information and try again.';
-            exit(1);
-        }
-
-        if($ami != '' && ($ami_user == '' || $region == '')){
-            echo 'AMI provided, but AMI user or region not provided. Impossible to launch a cluster without these data. Please, enter the required information and try again.';
-            exit(1);
-        }
-        
-        //si el usuario ha proporcionado una AMI, comprobamos si el formato es valido
-        if ($ami != ''){
-            $valid = validateAMIValue($ami);
-            if(!$valid){
-                echo 'AMI ID not valid. Please, enter a correct AMI ID and try again.';
-                exit(1);
-            }
-        }
-        
-        $instancetype_front = explode('=', $stringSpliteado[7]);
-        $instancetype_front = urldecode($instancetype_front[1]);
-        
-        if($instancetype_front == '' ){
-            echo 'Front instance type not provided. Impossible to launch a cluster without this data. Please, enter the required information and try again.';
-            exit(1);
-        }
-        
-        $instancetype_wn = explode('=', $stringSpliteado[8]);
-        $instancetype_wn = urldecode($instancetype_wn[1]);
-        
-        if($instancetype_wn == '' ){
-            echo 'Working Nodes instance type not provided. Impossible to launch a cluster without this data. Please, enter the required information and try again.';
-            exit(1);
-        }
-        
-        $lrms = explode('=', $stringSpliteado[9]);
-        $lrms = $lrms[1];
-        
-        if($lrms == '' ){
-            echo 'LRMS not provided. Impossible to launch a cluster without this data. Please, enter the required information and try again.';
-            exit(1);
-        } /*elseif(strpos($lrms, 'Mesos') !== false) {
-            $lrms = 'mesos';
-        }*/
-        
-        $sw = "clues2 ";
-        for ($i=10; $i < count($stringSpliteado)-2; $i++){
-            $aux = explode('=', $stringSpliteado[$i]);
-            if (in_array($aux[0], $possible_sw)){
-                $sw .= urldecode($aux[0]) . " ";
-            }
-        }
-
-        $nodes = explode('=', end($stringSpliteado));
-        $nodes = $nodes[1];
-        /*if (!$nodes){
-            $nodes=1;
-        }*/
-        
-        $auth_file = generate_auth_file_ec2($accesskey, $secretkey);
-        
-        if($ami != '' && $region != '' && $ami_user != ''){
-            $data = generate_system_image_radl($provider, $ami, $region, $ami_user, '', $instancetype_front, $instancetype_wn, '', '', '', '', $nodes, translate_os($os), '');
-        } else{
-            $data = generate_system_template_radl($provider, translate_os($os), $instancetype_front, $instancetype_wn, '', '', '', '', $nodes);
-        }
-        $os = $data[0];
-        $user = $data[1];
-        // TODO: En este caso en vez del pass necesitamos el secret key que haya creado el usuario
-        $pass = $data[2];
-        
-    } elseif ($provider == 'one'){
-        $username = explode('=', $stringSpliteado[1]);
-        $username = urldecode($username[1]);
-
-        $password = explode('=', $stringSpliteado[2]);
-        $password = urldecode($password[1]);
-
-        $endpoint = explode('=', $stringSpliteado[3]);
+        $endpoint = explode('=', $stringSpliteado[2]);
         $endpoint = urldecode($endpoint[1]);
+        
+        //$proxy = explode('=', $stringSpliteado[2]);
+        //$proxy = urldecode($proxy[1]);
+        
+        //MyProxy section
+        //$myproxyuser = explode('=', $stringSpliteado[3]);
+        //$myproxyuser = urldecode($myproxyuser[1]);
+        
+        //$myproxypass = explode('=', $stringSpliteado[4]);
+        //$myproxypass = urldecode($myproxypass[1]);
+        
+        //$myproxyserver = explode('=', $stringSpliteado[5]);
+        //$myproxyserver = urldecode($myproxyserver[1]);
 
-        $os = explode('=', $stringSpliteado[4]);
-        $os = urldecode($os[1]);
-        
-        $vmi = explode('=', $stringSpliteado[7]);
-        $vmi = urldecode($vmi[1]);
-        
-        if($os == '' && $vmi == ''){
-            echo 'OS or VMI not provided. Impossible to launch a cluster without these data. Please, enter the required information and try again.';
-            exit(1);
-        }
-        
-        $vmi_user = explode('=', $stringSpliteado[5]);
-        $vmi_user = urldecode($vmi_user[1]);
-        
-        $vmi_pass = explode('=', $stringSpliteado[6]);
-        $vmi_pass = urldecode($vmi_pass[1]);
-        
-        $front_cpu = explode('=', $stringSpliteado[8]);
-        $front_cpu = urldecode($front_cpu[1]);
-        $front_mem = explode('=', $stringSpliteado[9]);
-        $front_mem = urldecode($front_mem[1]);
-        
-        $wn_cpu = explode('=', $stringSpliteado[10]);
-        $wn_cpu = urldecode($wn_cpu[1]);
-        $wn_mem = explode('=', $stringSpliteado[11]);
-        $wn_mem = urldecode($wn_mem[1]);
-
-        $lrms = explode('=', $stringSpliteado[12]);
-        $lrms = $lrms[1];
-        
-        if($lrms == '' ){
-            echo 'LRMS not provided. Impossible to launch a cluster without this data. Please, enter the required information and try again.';
-            exit(1);
-        }/*elseif(strpos($lrms, 'Mesos') !== false) {
-            $lrms = 'mesos';
-        }*/
-        
-        $sw = "clues2 ";
-        for ($i=13; $i < count($stringSpliteado)-2; $i++){
-            $aux = explode('=', $stringSpliteado[$i]);
-            if (in_array($aux[0], $possible_sw)) {
-                $sw .= urldecode($aux[0]) . " ";
-            }
-        }
-
-        $nodes = explode('=', end($stringSpliteado));
-        $nodes = $nodes[1];
-        
-        $auth_file = generate_auth_file_one($username, $password, $endpoint);
-        
-        if($vmi != ''){
-            $data = generate_system_image_radl($provider, $vmi, $endpoint, $vmi_user, $vmi_pass, '', '', $front_cpu, $front_mem, $wn_cpu, $wn_mem, $nodes, translate_os($os), '');
-        } else{
-            $data = generate_system_template_radl($provider, translate_os($os), '', '', $front_cpu, $front_mem, $wn_cpu, $wn_mem, $nodes);
-        }
-        $os = $data[0];
-        $user = $data[1];
-        $pass = $data[2];
-        
-    } elseif ($provider == 'openstack'){
-        $username = explode('=', $stringSpliteado[1]);
-        $username = urldecode($username[1]);
-
-        $password = explode('=', $stringSpliteado[2]);
-        $password = urldecode($password[1]);
-        
-        $tenant = explode('=', $stringSpliteado[3]);
-        $tenant = urldecode($tenant[1]);
-
-        $endpoint = explode('=', $stringSpliteado[4]);
-        $endpoint = urldecode($endpoint[1]);
-
-        /*$os = explode('=', $stringSpliteado[5]);
+        /*$os = explode('=', $stringSpliteado[3]);
         $os = urldecode($os[1]);*/
         
-        $vmi = explode('=', $stringSpliteado[5]);
+        $vmi = explode('=', $stringSpliteado[3]);
         $vmi = urldecode($vmi[1]);
         
         //if($os == '' && $vmi == ''){
@@ -576,132 +468,50 @@ if($_POST){
             exit(1);
         }
         
-        $vmi_user = explode('=', $stringSpliteado[6]);
-        $vmi_user = urldecode($vmi_user[1]);
-        
-        $front_cpu = explode('=', $stringSpliteado[7]);
-        $front_cpu = urldecode($front_cpu[1]);
-        $front_mem = explode('=', $stringSpliteado[8]);
-        $front_mem = urldecode($front_mem[1]);
-        
-        $wn_cpu = explode('=', $stringSpliteado[9]);
-        $wn_cpu = urldecode($wn_cpu[1]);
-        $wn_mem = explode('=', $stringSpliteado[10]);
-        $wn_mem = urldecode($wn_mem[1]);
-
-        $lrms = explode('=', $stringSpliteado[11]);
-        $lrms = $lrms[1];
-        
-        if($lrms == '' ){
-            echo 'LRMS not provided. Impossible to launch a cluster without this data. Please, enter the required information and try again.';
-            exit(1);
-        } /*elseif(strpos($lrms, 'Mesos') !== false) {
-            $lrms = 'mesos';
-        }*/
-        
-        $sw = "clues2 ";
-        for ($i=12; $i < count($stringSpliteado)-2; $i++){
-            $aux = explode('=', $stringSpliteado[$i]);
-            if (in_array($aux[0], $possible_sw)) {
-                $sw .= urldecode($aux[0]) . " ";
-            }
-        }
-
-        $nodes = explode('=', end($stringSpliteado));
-        $nodes = $nodes[1];
-        
-        $auth_file = generate_auth_file_openstack($username, $password, $endpoint, $tenant);
-        
-        if($vmi != ''){
-            $data = generate_system_image_radl($provider, $vmi, $endpoint, $vmi_user, '', '', '', $front_cpu, $front_mem, $wn_cpu, $wn_mem, $nodes, translate_os($os), '');
-        } else{
-            $data = generate_system_template_radl($provider, translate_os($os), '', '', $front_cpu, $front_mem, $wn_cpu, $wn_mem, $nodes);
-        }
-        $os = $data[0];
-        $user = $data[1];
-        $pass = $data[2];
-        
-    } elseif ($provider == 'fedcloud'){
-        $endpointName = explode('=', $stringSpliteado[1]);
-       	$endpointName = urldecode($endpointName[1]);
-        
-        $vo = explode('=', $stringSpliteado[2]);
-        $vo = urldecode($vo[1]);
-        
-        $endpoint = explode('=', $stringSpliteado[3]);
-        $endpoint = urldecode($endpoint[1]);
-        
-        $proxy = explode('=', $stringSpliteado[4]);
-        $proxy = urldecode($proxy[1]);
-        
-        //MyProxy section
-        $myproxyuser = explode('=', $stringSpliteado[5]);
-        $myproxyuser = urldecode($myproxyuser[1]);
-        
-        $myproxypass = explode('=', $stringSpliteado[6]);
-        $myproxypass = urldecode($myproxypass[1]);
-        
-        $myproxyserver = explode('=', $stringSpliteado[7]);
-        $myproxyserver = urldecode($myproxyserver[1]);
-        
-        $vmi = explode('=', $stringSpliteado[8]);
-        $vmi = urldecode($vmi[1]);
-
-        if($vmi == ''){
-            echo 'OS or Image ID not provided. Impossible to launch a cluster without these data. Please, enter the required information and try again.';
-            exit(1);
-        }
-        
-        $front_type = explode('=', $stringSpliteado[9]);
+        $front_type = explode('=', $stringSpliteado[4]);
         $front_type = urldecode($front_type[1]);
-        $wn_type = explode('=', $stringSpliteado[10]);
+        $wn_type = explode('=', $stringSpliteado[5]);
         $wn_type = urldecode($wn_type[1]);
 
-        $lrms = explode('=', $stringSpliteado[11]);
+        $lrms = explode('=', $stringSpliteado[6]);
         $lrms = $lrms[1];
         
         if($lrms == '' ){
             echo 'LRMS not provided. Impossible to launch a cluster without this data. Please, enter the required information and try again.';
             exit(1);
-        } /*elseif ($lrms == 'Torque'){
+        } elseif ($lrms == 'Torque'){
             # the site is not openstack
             if (strpos($endpoint,":8787") === false) {
-                $lrms = 'torque-pub';
+                $lrms = 'torque';
             }
         } elseif(strpos($lrms, 'Mesos') !== false) {
             $lrms = 'mesos';
-        }*/
-        
-        $sw = "clues2 ";
-        if($myproxyserver != '' && $myproxyuser != '' && $myproxypass != ''){
-            $sw .= "myproxy ";
-        }
-
-        for ($i=12; $i < count($stringSpliteado)-2; $i++){
-            $aux = explode('=', $stringSpliteado[$i]);
-            if (in_array($aux[0], $possible_sw)) {
-                $sw .= urldecode($aux[0]) . " ";
-            }
         }
         
-        /*for ($i=10; $i < count($stringSpliteado)-2; $i++){
+        $sw = "clues2 myproxy_ltos ";
+        #if($myproxyserver != '' && $myproxyuser != '' && $myproxypass != ''){
+        #    $sw .= "myproxy ";
+        #}
+        for ($i=7; $i < count($stringSpliteado)-2; $i++){
             $aux = explode('=', $stringSpliteado[$i]);
             if (in_array($aux[0], $possible_sw)) {
-                if ($aux[0] == "nfs" && strpos($endpoint,":8787") === false) {
-                    $sw .= urldecode("nfs-pub") . " ";
-                } else {
+        if ($aux[0] == "nfs" && strpos($endpoint,":8787") === false) {
+                    $sw .= urldecode("nfs") . " ";
+        } else {
                     $sw .= urldecode($aux[0]) . " ";
-                }
+        }
             }
-        }*/
+        }
 
         $nodes = explode('=', end($stringSpliteado));
         $nodes = $nodes[1];
         
-        $auth_file = generate_auth_file_fedcloud($proxy, $endpoint, $myproxyserver, $myproxyuser, $myproxypass);
+        //$auth_file = generate_auth_file_fedcloud($proxy, $endpoint, $myproxyserver, $myproxyuser, $myproxypass);
+        $auth_file = generate_auth_file_fedcloud($endpoint);
         
         if($vmi != ''){
-            $data = generate_system_image_radl($provider, $vmi, $endpointName, '', '', $front_type, $wn_type, '', '', '', '', $nodes, translate_os($os), $vo);
+            //$data = generate_system_image_radl($provider, $vmi, $endpoint, '', '', $front_type, $wn_type, '', '', '', '', $nodes, translate_os($os));
+           $data = generate_system_image_radl($provider, $vmi, $endpointName, '', '', $front_type, $wn_type, '', '', '', '', $nodes);
         } else{
             $data = generate_system_template_radl($provider, translate_os($os), $front_type, $wn_type, '', '', '', '', $nodes);
         }
@@ -737,6 +547,8 @@ if($_POST){
     /*if($lrms=='mesos'){
         $lrms = 'docker mesos';
     }*/
+    
+        
     $process = new Process("./command/ec3 launch -y " . $name . " " . $lrms . " " . $sw . $os . " -a " . $auth_file, $ec3_log_file);
     $process->start();
     
@@ -755,10 +567,10 @@ if($_POST){
             $ip = substr($log_content, strrpos($log_content, "IP:") + 4);
             $cond = True;
         } elseif(!$process->status()){
-            if(strpos($log_content, "Error") && strpos($log_content, "Attempt 3:")){
-                echo substr($log_content, strpos($log_content, "Attempt 3:") + 10);
+            if(strpos($log_content, "Error") && strpos($log_content, "Attempt 1:")){
+                echo "Found problems deploying your cluster " . $name. ": ". substr($log_content, strpos($log_content, "Attempt 1:") + 10);
             } else{
-                echo "Unexpected problems deploying the cluster. Check the introduced data, specially credentials, and try again. Also, if you are using Amazon EC2, ensure that the instance type chosen is compatible with the image. If the error persists, please contact us.";
+                echo "Unexpected problems deploying the cluster ". $name .". Check the introduced data and try again. If the error persists, please contact us.";
             }
             $ec3_del_file = "/tmp/ec3_del_".$name;
             $process_2 = new Process("./command/ec3 destroy --yes --force " . $name, $ec3_del_file);

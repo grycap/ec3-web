@@ -20,17 +20,14 @@
 import sys
 import httplib
 import xmltodict
-from urlparse import urlparse
 
 __copyright__ = "Copyright (c) 2016 EGI Foundation"
 __license__ = "Apache Licence v2.0"
 
-def get_vo_list():
-    vos = []
-    data = appdb_call('/rest/1.0/vos')
-    for vo in data['appdb:appdb']['vo:vo']:
-        vos.append(vo['@name'])
-    return vos
+#apikey = "51db5c98-96fb-4566-866b-98b3d470170e"  # <== Change here!
+#vo = "training.egi.eu"  # <== Change here!
+#vo = "fedcloud.egi.eu"
+vo = "vo.access.egi.eu"
 
 def check_supported_VOs(id):
 	try:
@@ -55,16 +52,15 @@ def appdb_call(c):
         data.replace('\n','')
         return xmltodict.parse(data)
 
-def get_sites(vo):
+def get_sites():
     data = appdb_call('/rest/1.0/sites?flt=%%2B%%3Dvo.name:%s&%%2B%%3Dsite.supports:1' % vo)
     providersID = []
-    if 'appdb:site' in data['appdb:appdb']:
-        for site in data['appdb:appdb']['appdb:site']:
-            if  type(site['site:service']) == type([]):
-                for service in site['site:service']:
-                    providersID.append(service['@id'])
-            else:
-                providersID.append(site['site:service']['@id'])
+    for site in data['appdb:appdb']['appdb:site']:
+        if  type(site['site:service']) == type([]):
+            for service in site['site:service']:
+                providersID.append(service['@id'])
+        else:
+            providersID.append(site['site:service']['@id'])
 
     # Get provider metadata
     endpoints = []
@@ -133,7 +129,7 @@ def get_instances(endpoint):
     return instances
 
 def print_javascript():
-    for site in get_sites(vo):
+    for site in get_sites():
         if site.endswith("/"):
             print site[:-1]
         else:
@@ -228,23 +224,14 @@ def print_all():
         print
 
 if __name__ == "__main__":
-    vo = "fedcloud.egi.eu"
     option = "all"
-    if len(sys.argv) > 3:
-        vo = sys.argv[3]
-        endpoint = sys.argv[2]
-        option = sys.argv[1]
-    elif len(sys.argv) > 2:
-        vo = sys.argv[2]
-        option = sys.argv[1]
+    if len(sys.argv) > 2:
+        endpoint = sys.argv[1]
+        option = sys.argv[2]
     elif len(sys.argv) > 1:
         option = sys.argv[1]
-
-    if option == "vos":
-        for vo in get_vo_list():
-            print vo
-    elif option == "sites":
-        for site in get_sites(vo):
+    if option == "sites":
+        for site in get_sites():
             if site.endswith("/"):
                 print site[:-1]
             else:
@@ -256,7 +243,6 @@ if __name__ == "__main__":
             else:
                 print os
     elif option == "instances":
-        hostname = urlparse(endpoint)[1].split(':')[0]
         for inst_desc, inst_name in get_instances(endpoint):
             print "%s;%s" % (inst_desc, inst_name)
     elif option == "javascript":

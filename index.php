@@ -1,12 +1,25 @@
+<?php
+if ( !session_id() ) {
+    session_start();
+}
+
+if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
+    include('auth_egi.php');
+} else {
+    $user_sub = $_SESSION["egi_user_sub"];
+    $user_name = $_SESSION["egi_user_name"];
+}
+
+
+?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="EC3 try-it page">
+    <meta name="description" content="EC3 EGI LToS page">
     <meta name="author" content="Amanda Calatrava">
 
     <title>EC3 - Elastic Cloud Computing Cluster</title>
@@ -76,6 +89,12 @@
 
     <!-- Navigation -->
     <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-right page-scroll">
+				<button id="logout" class="navbar-welcome navbar-right page-scroll" type="button" style="color:#fed136;"> Log out </button>
+                <p class="navbar-welcome navbar-right page-scroll"> Welcome <?php echo $user_name;?> | </p>
+            </div>
+        </div>
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header page-scroll">
@@ -227,7 +246,7 @@
                         </a>
                     </span>
                     <h4 class="service-heading">EC3 @ YouTube</h4>
-                    <p class="text-muted">Find tutorials about EC3 (AWS, Galaxy,...). Stay tuned for upcoming tutorials.</p>
+                    <p class="text-muted">Stay tuned for upcoming tutorials.</p>
                 </div>
             </div>
         </div>
@@ -238,82 +257,59 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
-                    <h2 class="section-heading">Where do you want to deploy the cluster?</h2>
+                    <h2 class="section-heading">Manage your clusters deployed with EC3</h2>
                     <h3 class="section-subheading text-muted-contact">You will need to provide valid credentials for the Cloud provider. Not sure if this is safe? <a <a href="http://ec3.readthedocs.org/en/devel/ec3.html#authorization-file">Check the docs.</a>
                       <br>
                       Wanted to deploy a hybrid cluster? You can do it with the <a href="https://github.com/grycap/ec3">CLI</a>.
-                      <!--</br>
-                      Is your favourite provider not available below? <a href="http://servproject.i3m.upv.es/ec3/doc/faq.html#general-faqs">Check supported providers</a>.-->
                     </h3>
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-3">
+                <div class="col-sm-6">
                     <div class="team-member">
-                        <button id="open-wizard" class="btn btn-primary btn-ec2" onclick="ga('send','event','Providers','Amazon Web Services')"></button>
-                        <!--<img src="img/provider/aws1.png" class="img-thumbnail" alt="">-->
-                        <h4 class="provider">Amazon Web Services</h4>
-                        <p class="text-muted-contact">Public Cloud provider</p>
-                    </div>
-                </div>
-
-                <div class="col-sm-3">
-                    <div class="team-member">
-                        <button id="open-wizard-2" class="btn btn-primary btn-one" onclick="ga('send','event','Providers','OpenNebula')"></button>
-                        <!--<img src="img/provider/one1.jpg" class="img-thumbnail" alt="">-->
-                        <h4 class="provider">OpenNebula</h4>
-                        <p class="text-muted-contact">On-premises Cloud provider</p>
-                    </div>
-                </div>
-
-                <div class="col-sm-3">
-                    <div class="team-member">
-                        <button id="open-wizard-3" class="btn btn-primary btn-openstack" onclick="ga('send','event','Providers','OpenStack')"></button>
-                        <!--<img src="img/provider/openstack1.png" class="img-thumbnail" alt="">-->
-                        <h4 class="provider">OpenStack</h4>
-                        <p class="text-muted-contact">On-premises Cloud provider</p>
-                    </div>
-                </div>
-
-                <div class="col-sm-3">
-                    <div class="team-member">
-                        <button id="open-wizard-4" class="btn btn-primary btn-fedcloud" onclick="ga('send','event','Providers','EGI FedCloud')"></button>
-                        <!--<img src="img/provider/fedcloud1.png" class="img-thumbnail" alt="">-->
-                        <h4 class="provider">EGI FedCloud</h4>
-                        <p class="text-muted-contact">European Federated Cloud</p>
+                        <button id="open-wizard-deploy" class="btn btn-primary btn-fedcloud" onclick="ga('send','event','Providers','EGI FedCloud')"></button>
+                        <h4 class="provider">Deploy your cluster</h4>
+                        <p class="text-muted-contact">In the European Federated Cloud</p>
                         <a href="http://www.egi.eu/news-and-media/newsletters/Inspired_Issue_22/Custom_elastic_clusters_to_manage_Galaxy_environments.html" target="_blank">(See a case study here)</a>.
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-8 col-lg-offset-2 text-center">
-                    <h3 class="section-subheading text-muted-contact" style="margin-bottom:10px">
-                    Is your favourite provider not available above? <a href="http://ec3.readthedocs.org/en/devel/faq.html">Check supported providers</a>.
-                    </h3>
+                <!--<div class="col-sm-4">
+                    <div class="team-member">
+                        <button id="open-wizard-delete" class="btn btn-primary btn-delete"></button>
+                        <h4 class="provider">Delete your cluster</h4>
+                        <p class="text-muted-contact">And liberate the resources</p>
+                    </div>
+                </div>-->
+                <div class="col-sm-6">
+                    <div class="team-member">
+                        <!--<button id="open-wizard-list" class="btn btn-primary btn-list"></button>-->
+                        <button id="myBtn" class="btn btn-primary btn-list"></button>
+                        <h4 class="provider">Manage your deployed clusters</h4>
+                        <p class="text-muted-contact">And get info about them</p>
+                    </div>
                 </div>
             </div>
             <!--<div class="row">
-                <div class="col-lg-8 col-lg-offset-2 text-center">
-                    <p class="large text-muted">More providers coming soon. Stay tuned.</p>
-                </div>
-            </div>-->
-            <!-- Delete a cluster section -->
-            <div class="row">
                 <div class="col-sm-1 text-center">
                     <span class="fa-4x">
-                        <a id="open-wizard-delete" href="#">
-                            <!--<i class="fa fa-circle fa-stack-2x text-primary"></i>-->
-                            <i class="fa fa-trash-o fa-stack-5x fa-inverse"></i>
+                        <a id="open-wizard-list" href="#">
+                            <i class="fa fa-list fa-stack-8x fa-inverse"></i>
                         </a>
                     </span>
                 </div>
                 <div class="col-sm-3 text-left">
                     </br>
                     </br>
-                        <p class="text-muted-contact">Delete your cluster </p>
+                        <p class="text-muted-contact">Get info about your deployed clusters </p>
                 </div>
-
-            </div>
+            </div>-->
+            <!--<div class="row">
+                <div class="col-lg-8 col-lg-offset-2 text-center">
+                    <h3 class="section-subheading text-muted-contact" style="margin-bottom:10px">
+                    Is your favourite provider not available above? <a href="http://ec3.readthedocs.org/en/devel/faq.html">Check supported providers</a>.
+                    </h3>
+                </div>
+            </div>-->
         </div>
     </section>
 
@@ -321,9 +317,6 @@
     <aside class="clients">
         <div class="container">
             <div class="row">
-                <!--<div class="col-lg-12 text-center">
-                    <h4 class="service-heading">EC3 has been developed by:</h4>
-                </div>-->
                 <div class="col-md-4 col-sm-6">
                     <a href="http://www.grycap.upv.es/">
                         <img src="img/logos/grycap.png" class="img-responsive img-centered" alt="">
@@ -349,10 +342,12 @@
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <h2 class="section-heading">Contact Us</h2>
-                    <h3 class="section-subheading text-muted-contact">Got problems? Is your favourite OS/software package still not available? Do you have any suggestions? Please, let us know.</h3>
+                    <h3 class="section-subheading-contact text-muted-contact">In case of problems, please send a request for support at: <a href="mailto:applications-platform-info@mailman.egi.eu">applications-platform-info@mailman.egi.eu</a> </h3>
+					<h3 class="section-subheading-contact text-muted-contact">The request will generate a GGUS ticket to track your problem.</h3>
+					<h3 class="section-subheading-contact text-muted-contact">Anytime the user will be notified by e-mail about the status of his/her request.</h3>
                 </div>
             </div>
-            <div class="row">
+            <!--<div class="row">
                 <div class="col-lg-12">
                     <form name="sentMessage" id="contactForm" novalidate>
                         <div class="row">
@@ -384,7 +379,7 @@
                         </div>
                     </form>
                 </div>
-            </div>
+            </div> -->
         </div>
     </section>
 
@@ -400,44 +395,19 @@
 					<a href="terms.html">Terms of Service</a>
                 </div>	
                 <div class="col-md-12">
-                    <!--<span class="copyright">&copy; Grid and High Performance Computing Group (<a href="http://www.grycap.upv.es" target="_blank">GRyCAP</a>) / Universitat Politècnica de València (<a href="http://www.upv.es" target="_blank">UPV</a>) - 2015
-                      <br>
-
-                    </span>-->
-
-                    <span class="copyright">Copyright &copy; 2015, <a href="http://www.grycap.upv.es">GRyCAP-I3M-UPV</a>, <a href="http://www.upv.es">Universitat Politècnica de València</a> - 46022, Valencia, Spain
+                    <span class="copyright"><img src="img/EGI_Logo.png" border="0" width="30" align="bottom"/> EC3 is an EGI service provided by <a href="http://www.grycap.upv.es">GRyCAP-I3M-UPV</a>. Copyright &copy; 2015, <a href="http://www.upv.es">Universitat Politècnica de València.</a> 
                       <br>
 
                     </span>
                 </div>
-
                 <div class="col-md-12">
                         <p>
                             Tel: (+34) 963 87 70 07  Ext. 88254 <br />
                             Camino de Vera Road, Building 8B, Door N, 1st Floor, <br />
-                            Valencia City, Valencia 46022
+                            Valencia 46022, Spain
                         </p>
                 </div>
-                <!--<div class="col-md-4">
-                    <ul class="list-inline social-buttons">
-                        <li><a href="#"><i class="fa fa-twitter"></i></a>
-                        </li>
-                        <li><a href="#"><i class="fa fa-facebook"></i></a>
-                        </li>
-                        <li><a href="#"><i class="fa fa-linkedin"></i></a>
-                        </li>
-                    </ul>
-                </div>
-                -->
-                <!--<div class="col-md-4">
-                    <ul class="list-inline quicklinks">
-                        <li><a href="#">Privacy Policy</a>
-                        </li>
-                        <li><a href="#">Terms of Use</a>
-                        </li>
-                    </ul>
-                </div>
-                -->
+                <!--<img src="img/EGI_Logo.png" border="0" width="30" align="bottom"/> EC3 is an EGI service provided by GRyCAP UPV-->
             </div>
         </div>
     </footer>
@@ -490,7 +460,7 @@
                         <optgroup label="Linux">
                             <option>CentOS 6.5</option>
                             <!--<option>CentOS 7</option>-->
-                            <!--<option>Ubuntu 12.04</option>-->
+                            <option>Ubuntu 12.04</option>
                             <option>Ubuntu 14.04</option>
                         </optgroup>
                     </select>
@@ -728,7 +698,7 @@
                         <option>SLURM</option>
                         <option>Torque</option>
                         <option>SGE</option>
-                        <option>Mesos</option>
+                        <option>Mesos (with Marathon and Chronos)</option>
                     </select>
                 </div>
             </div>
@@ -774,13 +744,8 @@
                         <div class="row">
                             <!--<div class="col-sm-4"><input type="checkbox" value="clues" name="clues" id="clues" title="Cluster Energy Saving System, necessary if you want an elastic cluster" checked=true/> CLUES </div>-->
                             <div class="col-sm-4"><input type="checkbox" value="nfs" name="nfs" id="nfs" title="Configure a shared file system"/> NFS </div>
-                            <div class="col-sm-4"><input type="checkbox" value="docker" name="docker" id="docker" title="An open-source tool to deploy applications inside software containers"/> Docker </div>
-                            <div class="col-sm-4"><input type="checkbox" value="openvpn" name="openvpn" id="openvpn" title="Application that implements virtual private network (VPN) techniques"/> OpenVPN </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4"><input type="checkbox" value="marathon" name="marathon" id="marathon" title="A job scheduler for Mesos tasks (framework for Mesos)"/> Marathon </div>
-                            <div class="col-sm-4"><input type="checkbox" value="chronos" name="chronos" id="chronos" title="A batch job scheduler for Mesos tasks (framework for Mesos)"/> Chronos </div>
                             <div class="col-sm-4"><input type="checkbox" value="maui" name="maui" id="maui" title="A job scheduler for use with Torque"/> Maui </div>
+                            <div class="col-sm-4"><input type="checkbox" value="docker" name="docker" id="docker" title="An open-source tool to deploy applications inside software containers"/> Docker </div>
                         </div>
                         <!--<div class="row">
                             <div class="col-sm-4"><input type="checkbox" value="ckptman" name="ckptman" id="ckptman" title="A tool to automate the checkpointing in spot instances"/> Ckptman </div>
@@ -788,9 +753,8 @@
                             <div class="col-sm-4"><input type="checkbox" value="maui" name="maui" id="maui" title="A job scheduler for use with Torque"/> Maui </div>
                         </div>-->
                         <div class="row">
-                            <div class="col-sm-4"><input type="checkbox" value="hadoop" name="hadoop" id="hadoop" title="A framework that allows for the distributed processing of large data sets across clusters of computers using simple programming models"/> Hadoop </div>
-                            <div class="col-sm-4"><input type="checkbox" value="galaxy" name="galaxy" id="galaxy" title="Web-based platform for data intensive biomedical research. Recommended to install with Torque and NFS."/> Galaxy </div>
-                            <div class="col-sm-4"><input type="checkbox" value="extra_hd" name="extra_hd" id="extra_hd" title="Add a 100GB Extra HD to the cluster"/> 100GB HD </div>
+                            <div class="col-sm-4"><input type="checkbox" value="openvpn" name="openvpn" id="openvpn" title="Application that implements virtual private network (VPN) techniques"/> OpenVPN </div>
+                            <div class="col-sm-4"><input type="checkbox" value="galaxy" name="galaxy" id="galaxy" title="Web-based platform for data intensive biomedical research. Recommended to install it with Torque and NFS."/> Galaxy </div>
                             <!--<div class="col-sm-4"><input type="checkbox" value="galaxy-tools" name="galaxy-tools" id="galaxy-tools" title="Web-based platform for data intensive biomedical research"/> Galaxy tools </div>-->
                             <!--<div class="col-sm-4"><input type="checkbox" value="sshtunnels" name="sshtunnels" id="sshtun" title="Used to interconnect working nodes in an hybrid cloud scenario"/> SSH tunnels </div>-->
                         </div>
@@ -802,8 +766,7 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-4"><input type="checkbox" value="namd" name="namd" id="namd" title="A parallel, object-oriented molecular dynamics code designed for high-performance simulation of large biomolecular systems"/> Namd </div>
-                           <!-- <div class="col-sm-4"><input type="checkbox" value="docker" name="docker" id="docker" title="An open-source tool to deploy applications inside software containers"/> Docker </div>
-                            <div class="col-sm-4"><input type="checkbox" value="latex" name="latex" id="latex" title="Word processor and document markup language"/> Latex </div>-->
+                            <!--<div class="col-sm-4"><input type="checkbox" value="latex" name="latex" id="latex" title="Word processor and document markup language"/> Latex </div>-->
                         </div>
                     </div>
                 </div>
@@ -887,595 +850,44 @@
 
         <!-- End of wizard EC2 section -->
 
-        <!-- Wizard ONE section -->
-        <div class="wizard" id="one-wizard" name="one-wizard" data-title="Configure your cluster">
-
-            <!-- Step 1 Cloud provider credentials -->
-            <div class="wizard-card" data-cardname="provider-one">
-                <h3>Provider Account</h3>
-
-                <div class="wizard-input-section">
-                    <p>
-                        OpenNebula credentials - Username:
-                    </p>
-                    <div class="form-group">
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control" id="username" name="username" placeholder="username" data-validate="validateValue">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="wizard-input-section">
-                    <p>
-                        OpenNebula credentials- Password:
-                    </p>
-                    <div class="form-group">
-                        <div class="col-sm-6">
-                            <input type="password" class="form-control" id="pass" name="pass" placeholder="password" data-validate="validateValue">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="wizard-input-section">
-                    <p>
-                        OpenNebula endpoint:
-                    </p>
-                    <div class="form-group">
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control" id="endpoint" name="endpoint" placeholder="endpoint" title="e.g. yourserver.yourdomain:2633" data-validate="validateValue">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Step 2 - Operating System -->
-            <div class="wizard-card wizard-card-overlay" data-cardname="os-one">
-                <h3>Operating System</h3>
-
-                <div class="wizard-input-section">
-                    <p>
-                        What OS distribution do you like your cluster to have? <i>(only for GRyCAP users)</i>
-                    </p>
-                    <select name="os-one" id="os-one" data-placeholder="--Select one--" style="width:350px;" class="chzn-select form-control">
-                        <option value=""></option>
-                        <optgroup label="Linux">
-                            <option>CentOS 7</option>
-                            <!--<option>Ubuntu 12.04</option>-->
-                            <option>Ubuntu 14.04</option>
-                            <option>Scientific Linux 6.6</option>
-                        </optgroup>
-                    </select>
-                </div>
-                
-                <div class="wizard-input-section">
-                    <p>
-                        If you prefer, you can provide an VMI identifier registered in your OpenNebula catalog. Please, introduce also user and password details to connect with the VM:
-                    </p>
-                    <div class="col-sm-5">
-                        <input type="text" class="form-control" id="vmi-user" name="vmi-user" placeholder="VMI username" data-validate="">
-                    </div>
-                    <div class="col-sm-5">
-                        <input type="password" class="form-control" id="vmi-pass" name="vmi-pass" placeholder="VMI password" data-validate="">
-                    </div>
-                </div>
-                
-                <div class="wizard-input-section">
-                    <div class="col-sm-5">
-                        <input type="text" class="form-control" id="vmi" name="vmi" placeholder="VMI identifier" data-validate="">
-                    </div>
-                    </br>
-                </div>
-            </div>
-
-            <!-- Step 3 instance characteristics -->
-            <div class="wizard-card" data-cardname="instance-details">
-                <h3>Instance details</h3>
-
-                <div class="wizard-input-section">
-                    <p>
-                        Frontend CPU and RAM memory (in MB) values:
-                    </p>
-                    <div class="form-group">
-                        <div class="col-sm-5">
-                            <input type="text" class="form-control" id="front-cpu" name="front-cpu" placeholder="frontend CPU" data-validate="validateNumber">
-                        </div>
-                        <div class="col-sm-5">
-                            <input type="text" class="form-control" id="front-mem" name="front-mem" placeholder="frontend memory" data-validate="validateNumber">
-                        </div>
-                    </div>
-                </div>
-                </br>
-                <div class="wizard-input-section">
-                    <p>
-                        Working nodes CPU and RAM memory (in MB) values:
-                    </p>
-                    <div class="form-group">
-                        <div class="col-sm-5">
-                            <input type="text" class="form-control" id="wn-cpu" name="wn-cpu" placeholder="WN CPU" data-validate="validateNumber">
-                        </div>
-                        <div class="col-sm-5">
-                            <input type="text" class="form-control" id="wn-mem" name="wn-mem" placeholder="WN memory" data-validate="validateNumber">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Step 4 Local Resource Management System -->
-            <div class="wizard-card wizard-card-overlay" data-cardname="lrms-one">
-                <h3>LRMS Selection</h3>
-
-                <div class="wizard-input-section">
-                    <p>
-                        Please choose the LRMS (Local Resource Management System) of your cluster:
-                    </p>
-                    <select name="lrms-one" id="lrms-one" data-placeholder="--Select one--" style="width:350px;" class="chzn-select form-control" data-validate="drop_down_validation">
-                        <option value=""></option>
-                        <option>SLURM</option>
-                        <option>Torque</option>
-                        <option>SGE</option>
-                        <option>Mesos</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- Step 5 Software packages -->
-            <div class="wizard-card wizard-card-overlay" data-cardname="swpkg-one">
-                <h3>Software Packages</h3>
-
-                <div class="wizard-input-section">
-                    <p>
-                        Please choose the software packages you'd like EC3 to
-                        install in your cluster. They will be automatically installed and configured.
-                    </p>
-
-                    <div class="one col-sm-12">
-                        <p style="margin-bottom:0px; margin-top:5px;">Cluster utilities:</p>
-                        <div class="row">
-                            <!--<div class="col-sm-4"><input type="checkbox" value="clues" name="clues" id="clues" title="Cluster Energy Saving System, necessary if you want an elastic cluster" checked=true/> CLUES </div>-->
-                            <div class="col-sm-4"><input type="checkbox" value="nfs" name="nfs" id="nfs" title="Configure a shared file system"/> NFS </div>
-                            <div class="col-sm-4"><input type="checkbox" value="docker" name="docker" id="docker" title="An open-source tool to deploy applications inside software containers"/> Docker </div>
-                            <div class="col-sm-4"><input type="checkbox" value="openvpn" name="openvpn" id="openvpn" title="Application that implements virtual private network (VPN) techniques"/> OpenVPN </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4"><input type="checkbox" value="marathon" name="marathon" id="marathon" title="A job scheduler for Mesos tasks (framework for Mesos)"/> Marathon </div>
-                            <div class="col-sm-4"><input type="checkbox" value="chronos" name="chronos" id="chronos" title="A batch job scheduler for Mesos tasks (framework for Mesos)"/> Chronos </div>
-                            <div class="col-sm-4"><input type="checkbox" value="maui" name="maui" id="maui" title="A job scheduler for use with Torque"/> Maui </div>
-                        </div>
-                        <!--<div class="row">
-                            <div class="col-sm-4"><input type="checkbox" value="ckptman" name="ckptman" id="ckptman" title="A tool to automate the checkpointing in spot instances"/> Ckptman </div>
-                            <div class="col-sm-4"><input type="checkbox" value="munge" name="munge" id="munge" title="An authentication service for creating and validating credentials"/> Munge </div>
-                            <div class="col-sm-4"><input type="checkbox" value="maui" name="maui" id="maui" title="A job scheduler for use with Torque"/> Maui </div>
-                        </div>-->
-                        <div class="row">
-                            <div class="col-sm-4"><input type="checkbox" value="hadoop" name="hadoop" id="hadoop" title="A framework that allows for the distributed processing of large data sets across clusters of computers using simple programming models"/> Hadoop </div>
-                            <div class="col-sm-4"><input type="checkbox" value="galaxy" name="galaxy" id="galaxy" title="Web-based platform for data intensive biomedical research. Recommended to install with Torque and NFS."/> Galaxy </div>
-                            <div class="col-sm-4"><input type="checkbox" value="extra_hd" name="extra_hd" id="extra_hd" title="Add a 100GB Extra HD to the cluster"/> 100GB HD </div>
-                            <!--<div class="col-sm-4"><input type="checkbox" value="galaxy-tools" name="galaxy-tools" id="galaxy-tools" title="Web-based platform for data intensive biomedical research"/> Galaxy tools </div>-->
-                            <!--<div class="col-sm-4"><input type="checkbox" value="sshtunnels" name="sshtunnels" id="sshtun" title="Used to interconnect working nodes in an hybrid cloud scenario"/> SSH tunnels </div>-->
-                        </div>
-                        <p style="margin-bottom:0px; margin-top:10px;">Software utilities:</p>
-                        <div class="row">
-                            <div class="col-sm-4"><input type="checkbox" value="octave" name="octave" id="octave" title="A high-level programming language, primarily intended for numerical computations"/> Octave </div>
-                            <div class="col-sm-4"><input type="checkbox" value="gnuplot" name="gnuplot" id="gnuplot" title="A program to generate two- and three-dimensional plots"/> Gnuplot </div>
-                            <div class="col-sm-4"><input type="checkbox" value="tomcat" name="tomcat" id="tomcat" title="An open-source web server and servlet container"/> Tomcat </div>
-                        </div>
-                        <div class="row">
-                             <div class="col-sm-4"><input type="checkbox" value="namd" name="namd" id="namd" title="A parallel, object-oriented molecular dynamics code designed for high-performance simulation of large biomolecular systems"/> Namd </div>
-                            <!--<div class="col-sm-4"><input type="checkbox" value="docker" name="docker" id="docker" title="An open-source tool to deploy applications inside software containers"/> Docker </div>
-                            <div class="col-sm-4"><input type="checkbox" value="latex" name="latex" id="latex" title="Word processor and document markup language"/> Latex </div>-->
-                        </div>
-                    </div>
-                </div>
-                <p style="padding-top:180px; padding-right:160px;">Is your favourite software not available? <a href="mailto:ec3@upv.es?Subject=[EC3]%20Unsupported%20Software" target="_top">Let us know!</a></p>
-            </div>
-
-            <!-- Step 6 Cluster's size -->
-            <div class="wizard-card wizard-card-overlay" data-cardname="size-one">
-                <h3>Cluster's size</h3>
-
-                <div class="wizard-input-section">
-                    <p>
-                        Introduce the maximum number of nodes of your cluster (without including the front-end node).
-                    </p>
-                    </br>
-                    <p>
-                        Note that EC3 will initially provision only the front-end node and it will dynamically deploy additional working nodes as necessary.
-                    </p>
-                    </br>
-                    <div class="form-group">
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control" id="nodes-one" name="nodes-one" placeholder="number of nodes" data-validate="validateNumber">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Step 7 Resume and launch -->
-            <div class="wizard-card" data-cardname="resume-one" data-onSelected="showDetails_ONE">
-                <h3>Resume and launch</h3>
-                <div>
-                    <p>These are the details of your cluster: </p>
-                </div>
-                <div class="wizard-resume">
-                </div>
-
-                <div class="wizard-error">
-                    <div class="alert alert-error">
-                        <strong>There was a problem</strong> with your submission.
-                        Please correct the errors and re-submit.
-                        </br>
-                        </br>
-                        <div class="wizard-ip"></div>
-                        </br>
-                        <a class="btn btn-default create-another-server">Try again</a>
-                        <a class="btn btn-primary im-done">Close the wizard</a>
-                    </div>
-                </div>
-
-                <div class="wizard-failure">
-                    <div class="alert alert-error">
-                        <strong>There was a problem</strong> submitting the form.
-                        Please try again in a minute.
-                        </br>
-                        <a class="btn btn-default create-another-server">Done</a>
-                    </div>
-                </div>
-
-                <div class="wizard-success">
-                    <div class="alert alert-success">
-                        <!--<span class="create-server-name"></span>-->
-                        Cluster Front-end deployed <strong>Successfully!</strong>
-                    </div>
-
-                    <p> Please, remember the cluster name if you wish to delete the cluster using EC3. You can connect to the front-end via SSH using the provided IP. The data of your cluster is: </p>
-                    <div class="wizard-ip">
-                        <p><strong>aqui.va.la.IP</strong></p>
-                    </div>
-                    </br>
-                    <p> Notice that the cluster might still be configuring. <a href="http://ec3.readthedocs.org/en/devel/faq.html#ec3aas-webpage" target="_blank">More info.</a> </p>
-                    </br>
-                    <a class="btn btn-default create-another-server">Create another cluster</a>
-                    <span style="padding:0 10px">or</span>
-                    <a class="btn btn-success im-done">Done</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- End of wizard ONE section -->
-
-        <!-- Wizard Openstack section -->
-        <div class="wizard" id="openstack-wizard" name="openstack-wizard" data-title="Configure your cluster">
-
-            <!-- Step 1 Cloud provider credentials -->
-            <div class="wizard-card" data-cardname="provider-openstack">
-                <h3>Provider Account</h3>
-
-                <div class="wizard-input-section">
-                    <p>
-                        Openstack credentials - Username and Password:
-                    </p>
-                    <div class="form-group">
-                        <div class="col-sm-5">
-                            <input type="text" class="form-control" id="username-openstack" name="username-openstack" placeholder="username" data-validate="validateValue">
-                        </div>
-                        <div class="col-sm-5">
-                            <input type="password" class="form-control" id="pass-openstack" name="pass-openstack" placeholder="password" data-validate="validateValue">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="wizard-input-section">
-                    <p>
-                        Openstack Tenant:
-                    </p>
-                    <div class="form-group">
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control" id="tenant-openstack" name="tenant-openstack" placeholder="tenant" data-validate="validateValue">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="wizard-input-section">
-                    <p>
-                        Openstack endpoint:
-                    </p>
-                    <div class="form-group">
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control" id="endpoint-openstack" name="endpoint-openstack" placeholder="endpoint" title="e.g. yourserver.yourdomain:5000" data-validate="validateValue">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Step 2 - Operating System -->
-            <div class="wizard-card" data-cardname="os-openstack">
-                <h3>Operating System</h3>
-
-                <!--<div class="wizard-input-section">
-                    <p>
-                        What OS distribution do you like your cluster to have?
-                    </p>
-                    <select name="os-openstack" id="os-openstack" data-placeholder="--Select one--" style="width:350px;" class="chzn-select form-control">
-                        <option value=""></option>
-                        <optgroup label="Linux">
-                            <option>Ubuntu 14.04</option>
-                        </optgroup>
-                    </select>
-                </div>-->
-
-                <div class="wizard-input-section">
-                    <p>
-                        What OS distribution do you like your cluster to have? Provide an image identifier registered in your Openstack catalog:
-                    </p>
-                    <div class="form-group">
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control" id="vmi-openstack" name="vmi-openstack" placeholder="VMI Image ID" data-validate="validateValue">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="wizard-input-section">
-                    </br>
-                    <p>
-                        Please, introduce also user details to connect with the VM:
-                    </p>
-                    <div class="form-group">
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control" id="vmi-user-openstack" name="vmi-user-openstack" placeholder="VMI username" data-validate="validateValue">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Step 3 instance characteristics -->
-            <div class="wizard-card" data-cardname="instance-details-openstack">
-                <h3>Instance details</h3>
-
-                <div class="wizard-input-section">
-                    <p>
-                        Frontend CPU and RAM memory (in MB) values:
-                    </p>
-                    <div class="form-group">
-                        <div class="col-sm-5">
-                            <input type="text" class="form-control" id="front-cpu-openstack" name="front-cpu-openstack" placeholder="frontend CPU" data-validate="validateNumber">
-                        </div>
-                        <div class="col-sm-5">
-                            <input type="text" class="form-control" id="front-mem-openstack" name="front-mem-openstack" placeholder="frontend memory" data-validate="validateNumber">
-                        </div>
-                    </div>
-                </div>
-                </br>
-                <div class="wizard-input-section">
-                    <p>
-                        Working nodes CPU and RAM memory (in MB) values:
-                    </p>
-                    <div class="form-group">
-                        <div class="col-sm-5">
-                            <input type="text" class="form-control" id="wn-cpu-openstack" name="wn-cpu-openstack" placeholder="WN CPU" data-validate="validateNumber">
-                        </div>
-                        <div class="col-sm-5">
-                            <input type="text" class="form-control" id="wn-mem-openstack" name="wn-mem-openstack" placeholder="WN memory" data-validate="validateNumber">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Step 4 Local Resource Management System -->
-            <div class="wizard-card wizard-card-overlay" data-cardname="lrms-openstack">
-                <h3>LRMS Selection</h3>
-
-                <div class="wizard-input-section">
-                    <p>
-                        Please choose the LRMS (Local Resource Management System) of your cluster:
-                    </p>
-                    <select name="lrms-openstack" id="lrms-openstack" data-placeholder="--Select one--" style="width:350px;" class="chzn-select form-control" data-validate="drop_down_validation">
-                        <option value=""></option>
-                        <option>SLURM</option>
-                        <option>Torque</option>
-                        <option>SGE</option>
-                        <option>Mesos</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- Step 5 Software packages -->
-            <div class="wizard-card wizard-card-overlay" data-cardname="swpkg-openstack">
-                <h3>Software Packages</h3>
-
-                <div class="wizard-input-section">
-                    <p>
-                        Please choose the software packages you'd like EC3 to
-                        install in your cluster. They will be automatically installed and configured.
-                    </p>
-
-                    <div class="openstack col-sm-12">
-                        <p style="margin-bottom:0px; margin-top:5px;">Cluster utilities:</p>
-                        <div class="row">
-                            <!--<div class="col-sm-4"><input type="checkbox" value="clues" name="clues" id="clues" title="Cluster Energy Saving System, necessary if you want an elastic cluster" checked=true/> CLUES </div>-->
-                            <div class="col-sm-4"><input type="checkbox" value="nfs" name="nfs" id="nfs" title="Configure a shared file system"/> NFS </div>
-                            <div class="col-sm-4"><input type="checkbox" value="docker" name="docker" id="docker" title="An open-source tool to deploy applications inside software containers"/> Docker </div>
-                            <div class="col-sm-4"><input type="checkbox" value="openvpn" name="openvpn" id="openvpn" title="Application that implements virtual private network (VPN) techniques"/> OpenVPN </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4"><input type="checkbox" value="marathon" name="marathon" id="marathon" title="A job scheduler for Mesos tasks (framework for Mesos)"/> Marathon </div>
-                            <div class="col-sm-4"><input type="checkbox" value="chronos" name="chronos" id="chronos" title="A batch job scheduler for Mesos tasks (framework for Mesos)"/> Chronos </div>
-                            <div class="col-sm-4"><input type="checkbox" value="maui" name="maui" id="maui" title="A job scheduler for use with Torque"/> Maui </div>
-                        </div>
-                        <!--<div class="row">
-                            <div class="col-sm-4"><input type="checkbox" value="ckptman" name="ckptman" id="ckptman" title="A tool to automate the checkpointing in spot instances"/> Ckptman </div>
-                            <div class="col-sm-4"><input type="checkbox" value="munge" name="munge" id="munge" title="An authentication service for creating and validating credentials"/> Munge </div>
-                            <div class="col-sm-4"><input type="checkbox" value="maui" name="maui" id="maui" title="A job scheduler for use with Torque"/> Maui </div>
-                        </div>-->
-                        <div class="row">
-                            <div class="col-sm-4"><input type="checkbox" value="hadoop" name="hadoop" id="hadoop" title="A framework that allows for the distributed processing of large data sets across clusters of computers using simple programming models"/> Hadoop </div>
-                            <div class="col-sm-4"><input type="checkbox" value="galaxy" name="galaxy" id="galaxy" title="Web-based platform for data intensive biomedical research. Recommended to install with Torque and NFS."/> Galaxy </div>
-                            <div class="col-sm-4"><input type="checkbox" value="extra_hd" name="extra_hd" id="extra_hd" title="Add a 100GB Extra HD to the cluster"/> 100GB HD </div>
-                            <!--<div class="col-sm-4"><input type="checkbox" value="galaxy-tools" name="galaxy-tools" id="galaxy-tools" title="Web-based platform for data intensive biomedical research"/> Galaxy tools </div>-->
-                            <!--<div class="col-sm-4"><input type="checkbox" value="sshtunnels" name="sshtunnels" id="sshtun" title="Used to interconnect working nodes in an hybrid cloud scenario"/> SSH tunnels </div>-->
-                        </div>
-                        <p style="margin-bottom:0px; margin-top:10px;">Software utilities:</p>
-                        <div class="row">
-                            <div class="col-sm-4"><input type="checkbox" value="octave" name="octave" id="octave" title="A high-level programming language, primarily intended for numerical computations"/> Octave </div>
-                            <div class="col-sm-4"><input type="checkbox" value="gnuplot" name="gnuplot" id="gnuplot" title="A program to generate two- and three-dimensional plots"/> Gnuplot </div>
-                            <div class="col-sm-4"><input type="checkbox" value="tomcat" name="tomcat" id="tomcat" title="An open-source web server and servlet container"/> Tomcat </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4"><input type="checkbox" value="namd" name="namd" id="namd" title="A parallel, object-oriented molecular dynamics code designed for high-performance simulation of large biomolecular systems"/> Namd </div>
-                            <!--<div class="col-sm-4"><input type="checkbox" value="docker" name="docker" id="docker" title="An open-source tool to deploy applications inside software containers"/> Docker </div>
-                            <div class="col-sm-4"><input type="checkbox" value="latex" name="latex" id="latex" title="Word processor and document markup language"/> Latex </div>-->
-                        </div>
-                    </div>
-                </div>
-                <p style="padding-top:180px; padding-right:160px;">Is your favourite software not available? <a href="mailto:ec3@upv.es?Subject=[EC3]%20Unsupported%20Software" target="_top">Let us know!</a></p>
-            </div>
-
-            <!-- Step 6 Cluster's size -->
-            <div class="wizard-card wizard-card-overlay" data-cardname="size-openstack">
-                <h3>Cluster's size</h3>
-
-                <div class="wizard-input-section">
-                    <p>
-                        Introduce the maximum number of nodes of your cluster (without including the front-end node).
-                    </p>
-                    </br>
-                    <p>
-                        Note that EC3 will initially provision only the front-end node and it will dynamically deploy additional working nodes as necessary.
-                    </p>
-                    </br>
-                    <div class="form-group">
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control" id="nodes-openstack" name="nodes-openstack" placeholder="number of nodes" data-validate="validateNumber">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Step 7 Resume and launch -->
-            <div class="wizard-card" data-cardname="resume-openstack" data-onSelected="showDetails_Openstack">
-                <h3>Resume and launch</h3>
-                <div>
-                    <p>These are the details of your cluster: </p>
-                </div>
-                <div class="wizard-resume">
-                </div>
-
-                <div class="wizard-error">
-                    <div class="alert alert-error">
-                        <strong>There was a problem</strong> with your submission.
-                        Please correct the errors and re-submit.
-                        </br>
-                        </br>
-                        <div class="wizard-ip"></div>
-                        </br>
-                        <a class="btn btn-default create-another-server">Try again</a>
-                        <a class="btn btn-primary im-done">Close the wizard</a>
-                    </div>
-                </div>
-
-                <div class="wizard-failure">
-                    <div class="alert alert-error">
-                        <strong>There was a problem</strong> submitting the form.
-                        Please try again in a minute.
-                        </br>
-                        <a class="btn btn-default create-another-server">Done</a>
-                    </div>
-                </div>
-
-                <div class="wizard-success">
-                    <div class="alert alert-success">
-                        <!--<span class="create-server-name"></span>-->
-                        Cluster Front-end deployed <strong>Successfully!</strong>
-                    </div>
-
-                    <p> Please, remember the cluster name if you wish to delete the cluster using EC3. You can connect to the front-end via SSH using the provided IP. The data of your cluster is: </p>
-                    <div class="wizard-ip">
-                        <p><strong>aqui.va.la.IP</strong></p>
-                    </div>
-                    </br>
-                    <p> Notice that the cluster might still be configuring. <a href="http://ec3.readthedocs.org/en/devel/faq.html#ec3aas-webpage" target="_blank">More info.</a> </p>
-                    </br>
-                    <a class="btn btn-default create-another-server">Create another cluster</a>
-                    <span style="padding:0 10px">or</span>
-                    <a class="btn btn-success im-done">Done</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- End of wizard Openstack section -->
-
+        
         <!-- Wizard Fedcloud section -->
         <div class="wizard" id="fedcloud-wizard" name="fedcloud-wizard" data-title="Configure your cluster">
 
-            <!-- Step 1 VO selection -->
-            <div class="wizard-card" data-cardname="vo-fedcloud">
-                <h3>VO Details</h3>
-                <div class="wizard-input-section">
-                    <p>
-                        Virtual Organization (VO):
-                    </p>
-                    <div class="form-group" style="height:400px;">
-                            <select name="vo-fedcloud" id="vo-fedcloud" data-placeholder="--Select one--" style="width:350px;" class="chzn-select form-control" data-validate="drop_down_validation">
-                                <option value=""></option>
-                                <option>geohazards.terradue.com</option>
-                                <option>fedcloud.egi.eu</option>
-                                <option>vo.africa-grid.org</option>
-                                <option>hydrology.terradue.com</option>
-                                <option>training.egi.eu</option>
-                                <option>atlas</option>
-                                <option>lhcb</option>
-                                <option>auger</option>
-                                <option>vo.access.egi.eu</option>
-                                <option>vo.chain-project.eu</option>
-                                <option>d4science.org</option>
-                                <option>vo.emsodev.eu</option>
-                                <option>enmr.eu</option>
-                                <option>demo.fedcloud.egi.eu</option>
-                                <option>vo.elixir-europe.org</option>
-                                <option>chipster.csc.fi</option>
-                                <option>highthroughputseq.egi.eu</option>
-                                <option>extras-fp7.eu</option>
-                                <option>eiscat.se</option>
-                                <option>cms</option>
-                                <option>vo.nbis.se</option>
-                                <option>verce.eu</option>
-                                <option>biomed</option>
-                                <option>vo.dariah.eu</option>
-                                <option>eubrazilcc.eu</option>
-                            </select>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Step 2 Cloud provider credentials -->
+
+            <!-- Step 1 Cloud provider credentials -->
             <div class="wizard-card" data-cardname="provider-fedcloud">
-                <h3>Endpoint details</h3>
+                <h3>Provider Account</h3>
                 <div class="wizard-input-section">
                     <p>
                         FedCloud endpoint:
                     </p>
-                    <div class="form-group" style="height:150px;">
-                        <div class="col-sm-8" style="width:350px; height:150px;">
+                    <div class="form-group" style="height:250px;">
+                        <div class="col-sm-8" style="width:350px; height:240px;">
+                            <!--<p> Loading options from EGI AppDB... </p>-->
+                            <!--<input type="text" class="form-control" id="endpoint-fedcloud" name="endpoint-fedcloud" placeholder="endpoint" data-validate="validateValue">-->
                             <select name="endpoint-fedcloud" id="endpoint-fedcloud" data-placeholder="Loading options from EGI AppDB..." style="width:350px;" class="chzn-select form-control" data-validate="drop_down_validation">
                                 <option value=""></option>
                             </select>
                         </div>
                     </div>
                 </div>
-
-                <div class="wizard-input-section">
+                
+                <!--<div class="wizard-input-section">
                     <p>
                         FedCloud Proxy - key:
                     </p>
                     <div class="form-group">
                         <div class="col-sm-11">
-                            <textarea rows="4" class="form-control" id="proxy" name="proxy" data-validate="validateValue"></textarea>
+                            <textarea rows="5" class="form-control" id="proxy" name="proxy" data-validate="validateValue"></textarea>
                         </div>
                     </div>
-                </div>
+                </div>-->
             </div>
 
-            <!-- Step 3 myProxy (TEMPORAL) -->
-            <div class="wizard-card" data-cardname="myproxy-fedcloud">
+            <!--TODO: eliminar-->
+            <!-- Step 2 myProxy -->
+            <!--<div class="wizard-card" data-cardname="myproxy-fedcloud">
                 <h3>MyProxy details</h3>
                 <div class="wizard-input-section">
                     <p>
@@ -1505,8 +917,9 @@
                 </br>
                 <a href="http://grid.ncsa.illinois.edu/myproxy/" target="_blank"> More info about My Proxy</a>
             </div>
-                
-            <!-- Step 4 - Operating System -->
+            -->
+            
+            <!-- Step 3 - Operating System -->
             <div class="wizard-card wizard-card-overlay" data-cardname="os-fedcloud">
                 <h3>Operating System</h3>
 
@@ -1518,12 +931,15 @@
                     <div class="form-group" style="height:250px;">
                         <div class="col-sm-6" style="width:350px; height:250px;" name="vmifedcloud" id="vmifedcloud">
                             <p> Loading options from EGI AppDB... </p>
+                            <!--<select name="vmi-fedcloud" id="vmi-fedcloud" data-placeholder="--Select one--" style="width:350px; height:250px;" class="chzn-select form-control" data-validate="drop_down_validation">
+                            </select>-->
+                            <!--<input type="text" class="form-control" id="vmi-fedcloud" name="vmi-fedcloud" placeholder="VMI identifier" data-validate="validateValue">-->
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Step 5 instance characteristics -->
+            <!-- Step 4 instance characteristics -->
             <div class="wizard-card" data-cardname="instance-details">
                 <h3>Instance details</h3>
                 <div class="wizard-input-section">
@@ -1531,6 +947,10 @@
                     <div class="form-group" style="height:30px;">
                         <div class="col-sm-6" style="width:350px; height:30px;" name="frontfedcloud" id="frontfedcloud">
                             <p> Loading options from EGI AppDB... </p>
+                            <!--<input type="text" class="form-control" id="front-type" name="front-type" placeholder="frontend instance type" data-validate="validateValue">-->
+                            <!--<select name="front-type" id="front-type" data-placeholder="--Select one--" style="width:350px; height:50px;" class="chzn-select form-control" data-validate="drop_down_validation">
+                                <option value=""></option>
+                            </select>-->
                         </div>
                     </div>
                 </div>
@@ -1541,12 +961,16 @@
                     <div class="form-group" style="height:100px;">
                         <div class="col-sm-6" style="width:350px; height:100px;" name="wnfedcloud" id="wnfedcloud">
                             <p> Loading options from EGI AppDB... </p>
+                            <!--<input type="text" class="form-control" id="wn-type" name="wn-type" placeholder="WN instance type" data-validate="validateValue">-->
+                            <!--<select name="wn-type" id="wn-type" data-placeholder="--Select one--" style="width:350px; height:50px;" class="chzn-select form-control" data-validate="drop_down_validation">
+                                <option value=""></option>
+                            </select>-->
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Step 6 Local Resource Management System -->
+            <!-- Step 5 Local Resource Management System -->
             <div class="wizard-card wizard-card-overlay" data-cardname="lrms-fedcloud">
                 <h3>LRMS Selection</h3>
 
@@ -1564,7 +988,7 @@
                 </div>
             </div>
 
-            <!-- Step 7 Software packages -->
+            <!-- Step 6 Software packages -->
             <div class="wizard-card wizard-card-overlay" data-cardname="swpkg-fedcloud">
                 <h3>Software Packages</h3>
 
@@ -1595,7 +1019,7 @@
                         <div class="row">
                             <div class="col-sm-4"><input type="checkbox" value="hadoop" name="hadoop" id="hadoop" title="A framework that allows for the distributed processing of large data sets across clusters of computers using simple programming models"/> Hadoop </div>
                             <div class="col-sm-4"><input type="checkbox" value="galaxy" name="galaxy" id="galaxy" title="Web-based platform for data intensive biomedical research. Recommended to install with Torque and NFS."/> Galaxy </div>
-                            <div class="col-sm-4"><input type="checkbox" value="extra_hd" name="extra_hd" id="extra_hd" title="Add a 100GB Extra HD to the cluster"/> 100GB HD </div>
+                            <div class="col-sm-4"><input type="checkbox" value="extra_hd" name="extra_hd" id="extra_hd" title="Add a 100GB Extra HD to the cluster"/> 100GB Extra HD </div>
                             <!--<div class="col-sm-4"><input type="checkbox" value="galaxy-tools" name="galaxy-tools" id="galaxy-tools" title="Web-based platform for data intensive biomedical research"/> Galaxy tools </div>-->
                             <!--<div class="col-sm-4"><input type="checkbox" value="sshtunnels" name="sshtunnels" id="sshtun" title="Used to interconnect working nodes in an hybrid cloud scenario"/> SSH tunnels </div>-->
                         </div>
@@ -1615,7 +1039,7 @@
                 <p style="padding-top:180px; padding-right:160px;">Is your favourite software not available? <a href="mailto:ec3@upv.es?Subject=[EC3]%20Unsupported%20Software" target="_top">Let us know!</a></p>
             </div>
 
-            <!-- Step 8 Cluster's size -->
+            <!-- Step 7 Cluster's size -->
             <div class="wizard-card wizard-card-overlay" data-cardname="size-fedcloud">
                 <h3>Cluster's size</h3>
 
@@ -1630,19 +1054,30 @@
                     </br>
                     <div class="form-group">
                         <div class="col-sm-6">
-                            <input type="text" class="form-control" id="nodes-fedcloud" name="nodes-fedcloud" placeholder="number of nodes" data-validate="validateNumber">
+                            <select type="text" class="form-control" id="nodes-fedcloud" name="nodes-fedcloud" placeholder="number of nodes" data-validate="validateNumber">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                            </select>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Step 9 Resume and launch -->
+            <!-- Step 8 Resume and launch -->
             <div class="wizard-card" data-cardname="resume-fedcloud" data-onSelected="showDetails_OCCI">
                 <h3>Resume and launch</h3>
                 <div>
                     <p>These are the details of your cluster: </p>
                 </div>
-                <div class="wizard-resume">
+                <div class="wizard-resume" > <!--onshow="checkSession()"> -->
                 </div>
 
                 <div class="wizard-error">
@@ -1673,12 +1108,12 @@
                         Cluster Front-end deployed <strong>Successfully!</strong>
                     </div>
 
-                    <p> Please, remember the cluster name if you wish to delete the cluster using EC3. You can connect to the front-end via SSH using the provided IP. The data of your cluster is: </p>
+                    <p> You can now connect to the front-end via SSH using the provided IP. The data of your cluster is: </p>
                     <div class="wizard-ip">
                         <p><strong>aqui.va.la.IP</strong></p>
                     </div>
                     </br>
-                    <p> Notice that the cluster might still be configuring. <a href="http://ec3.readthedocs.org/en/devel/faq.html#ec3aas-webpage" target="_blank">More info.</a> </p>
+                    <p> Notice that the cluster might still be configuring! <a href="http://ec3.readthedocs.org/en/devel/faq.html#ec3aas-webpage" target="_blank">More info.</a> </p>
                     </br>
                     <a class="btn btn-default create-another-server" onclick="reload()">Create another cluster</a>
                     <span style="padding:0 10px">or</span>
@@ -1702,16 +1137,16 @@
                         </div>
                     </div>
                 </div>
-                <div class="wizard-input-section">
+                <!--<div class="wizard-input-section">
                     <p>
-                        In case you have deployed your cluster in <b>FedCloud</b>, please, introduce a valid Proxy:
+                        In case you have changed the <b>proxy</b> used to launch the cluster, please, introduce a valid proxy:
                     </p>
                     <div class="form-group">
                         <div class="col-sm-11">
                             <textarea rows="3" class="form-control" id="proxy_del" name="proxy_del"></textarea>
                         </div>
                     </div>
-                </div>
+                </div>-->
 
                 <div class="wizard-error">
                     <div class="alert alert-error">
@@ -1749,6 +1184,61 @@
         </div>
 
         <!-- End of wizard Delete section -->
+
+        <!-- The List Modal -->
+        <div id="myModal" class="modallist">
+
+          <!-- Modal content -->
+          <div class="modallist-content">
+
+            <!-- Header del Modal -->
+            <div class="modallist-header">
+                  <span class="close">&times;</span>
+                  <h2>Details of your deployed clusters</h2>
+            </div>
+
+            <!-- Tabla -->
+            <div class="wizard-ip" style="overflow-x:auto;">
+                <p> Loading... </p>
+              <!--<table>
+                <tr>
+                  <th>Cluster name</th>
+                  <th>State</th>
+                  <th>IP</th>
+                  <th>Nodes</th>
+                  <th>Action</th>
+                </tr>
+                <tr>
+                  <td>cluster_nfjbsdfa</td>
+                  <td>configured</td>
+                  <td>158.42.105.22</td>
+                  <td>3</td>
+                  <td><button>Delete</button></td>
+                </tr>
+                <tr>
+                  <td>cluster_nna84bd</td>
+                  <td>unconfigured</td>
+                  <td>157.152.4.45</td>
+                  <td>1</td>
+                  <td><button>Delete</button></td>
+                </tr>
+                <tr>
+                  <td>cluster_pjds33</td>
+                  <td>running</td>
+                  <td>96.47.62.214</td>
+                  <td>0</td>
+                  <td><button>Delete</button></td>
+                </tr>
+              </table>-->
+            </div>
+
+                <!-- Footer del Modal -->
+            <div class="modallist-footer">
+            </div>
+          <!--Fin del modal content -->
+          </div>
+        <!--Fin del modal-->
+        </div>
 
     <!-- jQuery -->
     <script src="js/jquery.js"></script>
@@ -2042,16 +1532,12 @@
                 if( $('.ec2.col-sm-12 #maui').prop('checked') ) sw += "Maui ";
                 if( $('.ec2.col-sm-12 #openvpn').prop('checked') ) sw += "OpenVPN ";
                 if( $('.ec2.col-sm-12 #galaxy').prop('checked') ) sw += "Galaxy ";
-                if( $('.ec2.col-sm-12 #extra_hd').prop('checked') ) sw += "100GB Extra HD ";
                 //if( $('.ec2.col-sm-12 #galaxy-tools').prop('checked') ) sw += "Galaxy-tools";
                 //if( $('.ec2.col-sm-12 #sshtun').prop('checked') ) sw += "SSH tunnels ";
                 if( $('.ec2.col-sm-12 #octave').prop('checked') ) sw += "Octave ";
                 if( $('.ec2.col-sm-12 #docker').prop('checked') ) sw += "Docker ";
                 if( $('.ec2.col-sm-12 #gnuplot').prop('checked') ) sw += "Gnuplot ";
-                if( $('.ec2.col-sm-12 #tomcat').prop('checked') ) sw += "Tomcat ";
-                if( $('.ec2.col-sm-12 #marathon').prop('checked') ) sw += "Marathon ";
-                if( $('.ec2.col-sm-12 #chronos').prop('checked') ) sw += "Chronos ";
-                if( $('.ec2.col-sm-12 #hadoop').prop('checked') ) sw += "Hadoop";
+                if( $('.ec2.col-sm-12 #tomcat').prop('checked') ) sw += "Tomcat";
 
                 if (sw == ''){
                     sw +="nothing selected"
@@ -2096,461 +1582,6 @@
         </script>
 
 
-    <!-- Wizard plugin ONE -->
-        <script type="text/javascript">
-            $(document).ready(function() {
-                $.fn.wizard.logging = true;
-                var wizard = $('#one-wizard').wizard({
-                    keyboard : false,
-                    contentHeight : 400,
-                    contentWidth : 700,
-                    backdrop: 'static',
-                    submitUrl: "ec3-server-process.php"
-                });
-
-                $(".chzn-select").chosen();
-
-                wizard.on('closed', function() {
-                    wizard.reset();
-                });
-
-                wizard.on("reset", function() {
-                    wizard.modal.find(':input').val('').removeAttr('disabled');
-                    wizard.modal.find('input:checkbox').val('').removeAttr('checked');
-                    wizard.modal.find('.form-group').removeClass('has-error').removeClass('has-succes');
-                    wizard.modal.find('.chzn-select').val('').trigger("liszt:updated");
-                });
-
-                //http://api.jquery.com/jquery.ajax/
-                //Para mostrar la respuesta: http://stackoverflow.com/questions/14918462/get-response-from-php-file-using-ajax
-                wizard.on("submit", function(wizard) {
-                    //obtener el numero de nodos
-                    var nodes = parseInt($('#nodes-one').val());
-                    //avisar de evento a analytics
-                    ga('send','event','Submit','OpenNebula');
-                    $.ajax({
-                            type: "POST",
-                            url: wizard.args.submitUrl,
-                            //data: "cloud=one&" + wizard.serialize(),
-                            data: "cloud=one&" + wizard.serialize() + "&nodes-one=" + nodes,
-                            dataType: "json",
-                            success: function(response, status, data){
-                                    wizard.submitSuccess();         // displays the success card
-                                    //retValue = "<div> <b> " + JSON.stringify(response) + " </b></div> ";
-                                    var obj = jQuery.parseJSON(JSON.stringify(response));
-                                    retValue = "<div> Cluster name: <b> " + obj.name + " </b></div> <div> Frontend IP: <b> " + obj.ip + " </b></div> " +
-                                               "<div> Username: <b> " + obj.username + " </b></div> <div> Password: <b> " + obj.password + " </b></div> ";
-                                    $('.wizard-ip').html(retValue);
-                                    wizard.hideButtons();           // hides the next and back buttons
-                                    wizard.updateProgressBar(0);    // sets the progress meter to 0
-                            },
-                            error: function(response, status, error){
-                                    var obj = jQuery.parseJSON(JSON.stringify(response));
-                                    retValue = "<div> <b> " + obj.responseText + " </b></div> ";
-                                    //retValue = "<div> <b> " + JSON.stringify(response) + " </b></div> ";
-                                    //retValue += "<div> <b> " + JSON.stringify(status) + " </b></div> ";
-                                    //retValue += "<div> <b> " + JSON.stringify(error) + " </b></div> ";
-                                    $('.wizard-ip').html(retValue);
-                                    wizard.submitError();           // display the error card
-                                    wizard.hideButtons();           // hides the next and back buttons
-                            }
-                    });
-                });
-
-                /*wizard.on("submit", function(wizard) {
-                    $.ajax({
-                        type: "POST",
-                        url: wizard.args.submitUrl,
-                        data: "cloud=ec2&" + wizard.serialize(),
-                        dataType: "json"
-                    }).done(function(response) {
-                        wizard.submitSuccess();         // displays the success card
-                        wizard.hideButtons();           // hides the next and back buttons
-                        wizard.updateProgressBar(0);    // sets the progress meter to 0
-                    }).fail(function() {
-                        wizard.submitError();           // display the error card
-                        wizard.hideButtons();           // hides the next and back buttons
-                    });
-                });*/
-
-                //console.log(wizard.serialize()+"&wizard=ec2");
-                //Esto muestra lo siguiente:
-                //accesskey=&secretkey=&os-ec2=Ubuntu+12.04&lrms-ec2=SLURM&clues=clues&nodes-ec2=&wizard=ec2
-
-                wizard.el.find(".wizard-success .im-done").click(function() {
-                    wizard.hide();
-                    setTimeout(function() {
-                        wizard.reset();
-                        //$('#os-one').prop('selectedIndex', 0);
-                    }, 250);
-                });
-
-                wizard.el.find(".wizard-success .create-another-server").click(function() {
-                    wizard.reset();
-                });
-
-                wizard.el.find(".wizard-error .create-another-server").click(function() {
-                    wizard.reset();
-                });
-
-                wizard.el.find(".wizard-error .im-done").click(function() {
-                    wizard.hide();
-                    setTimeout(function() {
-                        wizard.reset();
-                    }, 250);
-
-                });
-
-                wizard.el.find(".wizard-failure .create-another-server").click(function() {
-                    wizard.hide();
-                    setTimeout(function() {
-                        wizard.reset();
-                    }, 250);
-                });
-
-                $(".wizard-group-list").click(function() {
-                    alert("Disabled for demo.");
-                });
-
-                $('#open-wizard-2').click(function(e) {
-                    e.preventDefault();
-                    wizard.show();
-                });
-            });
-
-            function validateValue(el) {
-                var name = el.val();
-                var retValue = {};
-
-                if (name == "") {
-                    retValue.status = false;
-                    retValue.msg = "Please enter a value";
-                } else {
-                    retValue.status = true;
-                }
-
-                return retValue;
-            };
-
-            function validateNumber(el) {
-                var number = el.val();
-                var retValue = {};
-
-                if (number == "" || !$.isNumeric(number)) {
-                    retValue.status = false;
-                    retValue.msg = "Please enter an integer value";
-                } else {
-                    retValue.status = true;
-                }
-
-                return retValue;
-            };
-
-            function showDetails_ONE() {
-                var retValue = ' '
-
-                //obtener access y secret keys
-                var username = $('#username').val();
-                var password = $('#pass').val();
-                password = "*********";
-                var endpoint = $('#endpoint').val();
-
-                //obtener el OS seleccionado
-                var os = $('#os-one').val();
-                var vmi = $('#vmi').val();
-                var vmi_user = $('#vmi-user').val();
-                var vmi_pass = $('#vmi-pass').val();
-
-                //obtener las caracteristicas de las VMs
-                var front_cpu = $('#front-cpu').val();
-                var front_mem = $('#front-mem').val();
-                var wn_cpu = $('#wn-cpu').val();
-                var wn_mem = $('#wn-mem').val();
-
-                //obtener el LRMS seleccionado
-                var lrms = $('#lrms-one').val();
-
-                //obtener el SW
-                var sw = '';
-                //if( $('.one.col-sm-12 #clues').prop('checked') ) sw += "CLUES ";
-                //if( $('.one.col-sm-12 #blcr').prop('checked') ) sw += "BLCR ";
-                if( $('.one.col-sm-12 #nfs').prop('checked') ) sw += "NFS ";
-                //if( $('.one.col-sm-12 #ckptman').prop('checked') ) sw += "ckptman ";
-                //if( $('.one.col-sm-12 #munge').prop('checked') ) sw += "Munge ";
-                if( $('.one.col-sm-12 #maui').prop('checked') ) sw += "Maui ";
-                if( $('.one.col-sm-12 #openvpn').prop('checked') ) sw += "OpenVPN ";
-                if( $('.one.col-sm-12 #galaxy').prop('checked') ) sw += "Galaxy ";
-                if( $('.one.col-sm-12 #extra_hd').prop('checked') ) sw += "100GB Extra HD ";
-                //if( $('.one.col-sm-12 #galaxy-tools').prop('checked') ) sw += "Galaxy-tools";
-                //if( $('.one.col-sm-12 #sshtun').prop('checked') ) sw += "SSH tunnels ";
-                if( $('.one.col-sm-12 #octave').prop('checked') ) sw += "Octave ";
-                if( $('.one.col-sm-12 #docker').prop('checked') ) sw += "Docker ";
-                if( $('.one.col-sm-12 #gnuplot').prop('checked') ) sw += "Gnuplot ";
-                if( $('.one.col-sm-12 #tomcat').prop('checked') ) sw += "Tomcat ";
-                if( $('.one.col-sm-12 #marathon').prop('checked') ) sw += "Marathon ";
-                if( $('.one.col-sm-12 #chronos').prop('checked') ) sw += "Chronos ";
-                if( $('.one.col-sm-12 #hadoop').prop('checked') ) sw += "Hadoop";
-
-                if (sw == ''){
-                    sw +="Nothing selected"
-                }
-
-                if (lrms == ''){
-                    lrms +="nothing selected"
-                }
-
-                //obtener el numero de nodos
-                var nodes = parseInt($('#nodes-one').val());
-
-                retValue = "<div> <b> Username: </b>" + username + "</div> <div><b>Password: </b>" + password + "</div> <div><b>Endpoint: </b>" + endpoint + "</div>";
-
-                if(vmi != ''){
-                    retValue += "<div> <b> VMI: </b>" + vmi + "</div><div> <b> VMI User: </b>" + vmi_user + "<b> VMI Password: </b>" + vmi_pass + "</div>";
-                } else if (os!= ''){
-                    retValue+= "<div> <b>Operating System: </b>" + os + "</div>";
-                } else {
-                    retValue+= "<div> <b>Operating System: </b> nothing selected</div>";
-                }
-
-                retValue +="<div> <b>Frontend CPU: </b>" + front_cpu + "<b></div> <div>Frontend RAM memory: </b>" + front_mem + " </div>" +
-                           "<div> <b>Working nodes CPU: </b>" + wn_cpu + "<b></div> <div> Working nodes RAM memory: </b>" + wn_mem + " </div>" +
-                           "<div> <b>Local Resource Management System: </b>" + lrms + "</div>" +
-                           "<div> <b>Software packages: </b>" + sw + "</div>" +
-                           "<div> <b>Maximum number of nodes: </b>" + nodes + "</div>";
-
-
-                //Mostramos los datos recogidos al usuario
-                //$('.wizard-resume').append(retValue);
-                $('.wizard-resume').html(retValue);
-            };
-
-            //Se podria meter tambien un metodo de validacion del endpoint
-
-        </script>
-
-    <!-- Wizard plugin Openstack -->
-        <script type="text/javascript">
-            $(document).ready(function() {
-                $.fn.wizard.logging = true;
-                var wizard = $('#openstack-wizard').wizard({
-                    keyboard : false,
-                    contentHeight : 400,
-                    contentWidth : 700,
-                    backdrop: 'static',
-                    submitUrl: "ec3-server-process.php"
-                });
-
-                $(".chzn-select").chosen();
-
-                wizard.on('closed', function() {
-                    wizard.reset();
-                });
-
-                wizard.on("reset", function() {
-                    wizard.modal.find(':input').val('').removeAttr('disabled');
-                    wizard.modal.find('input:checkbox').val('').removeAttr('checked');
-                    wizard.modal.find('.form-group').removeClass('has-error').removeClass('has-succes');
-                    wizard.modal.find('.chzn-select').val('').trigger("liszt:updated");
-                });
-
-                //http://api.jquery.com/jquery.ajax/
-                //Para mostrar la respuesta: http://stackoverflow.com/questions/14918462/get-response-from-php-file-using-ajax
-                wizard.on("submit", function(wizard) {
-                    //obtener el numero de nodos
-                    var nodes = parseInt($('#nodes-openstack').val());
-                    //avisar de evento a analytics
-                    ga('send','event','Submit','Openstack');
-                    $.ajax({
-                            type: "POST",
-                            url: wizard.args.submitUrl,
-                            //data: "cloud=one&" + wizard.serialize(),
-                            data: "cloud=openstack&" + wizard.serialize() + "&nodes-openstack=" + nodes,
-                            dataType: "json",
-                            success: function(response, status, data){
-                                    wizard.submitSuccess();         // displays the success card
-                                    //retValue = "<div> <b> " + JSON.stringify(response) + " </b></div>";
-                                    var obj = jQuery.parseJSON(JSON.stringify(response));
-                                    retValue = "<div> Cluster name: <b> " + obj.name + " </b></div> <div> Frontend IP: <b> " + obj.ip + " </b></div> <div> Username: <b> " + obj.username + " </b></div>";
-                                    //retValue += "<div> Secret key: <b> " + decodeURIComponent(obj.secretkey) + " </b></div>";
-                                    retValue += "<div> Secret key: <textarea id='private_key_value' name='private_key_value' style='display:none;'>" + decodeURIComponent(obj.secretkey) + "</textarea>" +
-                                    "<a class='download' href='javascript:download(\"private_key_value\", \"key.pem\");'>Download</a> </div>";
-                                    $('.wizard-ip').html(retValue);
-                                    wizard.hideButtons();           // hides the next and back buttons
-                                    wizard.updateProgressBar(0);    // sets the progress meter to 0
-                            },
-                            error: function(response, status, error){
-                                    var obj = jQuery.parseJSON(JSON.stringify(response));
-                                    retValue = "<div> <b> " + decodeURIComponent(obj.responseText) + " </b></div> ";
-                                    //retValue = "<div> <b> " + JSON.stringify(response) + " </b></div> ";
-                                    //retValue += "<div> <b> " + JSON.stringify(status) + " </b></div> ";
-                                    //retValue += "<div> <b> " + JSON.stringify(error) + " </b></div> ";
-                                    $('.wizard-ip').html(retValue);
-                                    wizard.submitError();           // display the error card
-                                    wizard.hideButtons();           // hides the next and back buttons
-                            }
-                    });
-                });
-
-                wizard.el.find(".wizard-success .im-done").click(function() {
-                    wizard.hide();
-                    setTimeout(function() {
-                        wizard.reset();
-                    }, 250);
-                });
-
-                wizard.el.find(".wizard-success .create-another-server").click(function() {
-                    wizard.reset();
-                });
-
-                wizard.el.find(".wizard-error .create-another-server").click(function() {
-                    wizard.reset();
-                });
-
-                wizard.el.find(".wizard-error .im-done").click(function() {
-                    wizard.hide();
-                    setTimeout(function() {
-                        wizard.reset();
-                    }, 250);
-
-                });
-
-                wizard.el.find(".wizard-failure .create-another-server").click(function() {
-                    wizard.hide();
-                    setTimeout(function() {
-                        wizard.reset();
-                    }, 250);
-                });
-
-                $(".wizard-group-list").click(function() {
-                    alert("Disabled for demo.");
-                });
-
-                $('#open-wizard-3').click(function(e) {
-                    e.preventDefault();
-                    wizard.show();
-                });
-            });
-
-            function download(id, filename) {
-                //var dataToDownload = $(id).val();
-                var dataToDownload = document.getElementById(id).value;
-                var link = document.createElement("a");
-                link.download = filename;
-                link.href = 'data:Application/octet-stream,' + encodeURIComponent(dataToDownload);
-                link.click();
-            }
-
-            function validateValue(el) {
-                var name = el.val();
-                var retValue = {};
-
-                if (name == "") {
-                    retValue.status = false;
-                    retValue.msg = "Please enter a value";
-                } else {
-                    retValue.status = true;
-                }
-
-                return retValue;
-            };
-
-            function validateNumber(el) {
-                var number = el.val();
-                var retValue = {};
-
-                if (number == "" || !$.isNumeric(number)) {
-                    retValue.status = false;
-                    retValue.msg = "Please enter an integer value";
-                } else {
-                    retValue.status = true;
-                }
-
-                return retValue;
-            };
-
-            //TODO adaptar para openstack
-            function showDetails_Openstack() {
-                var retValue = ' '
-
-                //obtener access y secret keys
-                var username = $('#username-openstack').val();
-                var password = $('#pass-openstack').val();
-                password = "*********";
-                var tenant = $('#tenant-openstack').val();
-                var endpoint = $('#endpoint-openstack').val();
-
-                //obtener el OS seleccionado
-                var os = $('#os-openstack').val();
-                var vmi = $('#vmi-openstack').val();
-                var vmi_user = $('#vmi-user-openstack').val();
-
-                //obtener las caracteristicas de las VMs
-                var front_cpu = $('#front-cpu-openstack').val();
-                var front_mem = $('#front-mem-openstack').val();
-                var wn_cpu = $('#wn-cpu-openstack').val();
-                var wn_mem = $('#wn-mem-openstack').val();
-
-                //obtener el LRMS seleccionado
-                var lrms = $('#lrms-openstack').val();
-
-                //obtener el SW
-                var sw = '';
-                //if( $('.openstack.col-sm-12 #clues').prop('checked') ) sw += "CLUES ";
-                //if( $('.openstack.col-sm-12 #blcr').prop('checked') ) sw += "BLCR ";
-                if( $('.openstack.col-sm-12 #nfs').prop('checked') ) sw += "NFS ";
-                //if( $('.openstack.col-sm-12 #ckptman').prop('checked') ) sw += "ckptman ";
-                //if( $('.openstack.col-sm-12 #munge').prop('checked') ) sw += "Munge ";
-                if( $('.openstack.col-sm-12 #maui').prop('checked') ) sw += "Maui ";
-                if( $('.openstack.col-sm-12 #openvpn').prop('checked') ) sw += "OpenVPN ";
-                if( $('.openstack.col-sm-12 #galaxy').prop('checked') ) sw += "Galaxy ";
-                if( $('.openstack.col-sm-12 #extra_hd').prop('checked') ) sw += "100GB Extra HD ";
-                //if( $('.openstack.col-sm-12 #galaxy-tools').prop('checked') ) sw += "Galaxy-tools";
-                //if( $('.openstack.col-sm-12 #sshtun').prop('checked') ) sw += "SSH tunnels ";
-                if( $('.openstack.col-sm-12 #octave').prop('checked') ) sw += "Octave ";
-                if( $('.openstack.col-sm-12 #docker').prop('checked') ) sw += "Docker ";
-                if( $('.openstack.col-sm-12 #gnuplot').prop('checked') ) sw += "Gnuplot ";
-                if( $('.openstack.col-sm-12 #tomcat').prop('checked') ) sw += "Tomcat ";
-                if( $('.openstack.col-sm-12 #marathon').prop('checked') ) sw += "Marathon ";
-                if( $('.openstack.col-sm-12 #chronos').prop('checked') ) sw += "Chronos ";
-                if( $('.openstack.col-sm-12 #hadoop').prop('checked') ) sw += "Hadoop";
-
-                if (sw == ''){
-                    sw +="Nothing selected"
-                }
-
-                if (lrms == ''){
-                    lrms +="nothing selected"
-                }
-
-                //obtener el numero de nodos
-                var nodes = parseInt($('#nodes-openstack').val());
-
-                //retValue = "<div> <b> Username: </b>" + username + "</div> <div><b>Password: </b>" + password + "</div> <div><b>Endpoint: </b>" + endpoint + "</div>";
-                retValue = "<div> <b> Username: </b>" + username + "     <b>Password: </b>" + password + "</div> <div><b>Tenant: </b>" + tenant + "</div> <div><b>Endpoint: </b>" + endpoint + "</div>";
-
-                if(vmi != ''){
-                    retValue += "<div> <b> VMI: </b>" + vmi + "</div><div> <b> VMI User: </b>" + vmi_user + "</div>";
-                } else if (os!= ''){
-                    retValue+= "<div> <b>Operating System: </b>" + os + "</div>";
-                } else {
-                    retValue+= "<div> <b>Operating System: </b> nothing selected</div>";
-                }
-
-                retValue +="<div> <b>Frontend CPU: </b>" + front_cpu + "<b></div> <div>Frontend RAM memory: </b>" + front_mem + " </div>" +
-                           "<div> <b>Working nodes CPU: </b>" + wn_cpu + "<b></div> <div> Working nodes RAM memory: </b>" + wn_mem + " </div>" +
-                           "<div> <b>Local Resource Management System: </b>" + lrms + "</div>" +
-                           "<div> <b>Software packages: </b>" + sw + "</div>" +
-                           "<div> <b>Maximum number of nodes: </b>" + nodes + "</div>";
-
-
-                //Mostramos los datos recogidos al usuario
-                //$('.wizard-resume').append(retValue);
-                $('.wizard-resume').html(retValue);
-            };
-
-            //Se podria meter tambien un metodo de validacion del endpoint
-
-        </script>
 
     <!-- Wizard plugin FedCloud -->
         <script type="text/javascript">
@@ -2586,8 +1617,8 @@
                     $.ajax({
                             type: "POST",
                             url: wizard.args.submitUrl,
+                            /*data: "cloud=fedcloud&" + wizard.serialize()+ "&nodes-fedcloud=" + nodes,*/
                             data: "cloud=fedcloud&endpointName=" + $('#endpoint-fedcloud option:selected').html() + "&" + wizard.serialize()+ "&nodes-fedcloud=" + nodes,
-                            //data: "cloud=fedcloud&" + wizard.serialize()+ "&nodes-fedcloud=" + nodes,
                             dataType: "json",
                             success: function(response, status, data){
                                     wizard.submitSuccess();         // displays the success card
@@ -2631,16 +1662,12 @@
                     });
                 });*/
 
-                //console.log(wizard.serialize()+"&wizard=ec2");
-                //Esto muestra lo siguiente:
-                //accesskey=&secretkey=&os-ec2=Ubuntu+12.04&lrms-ec2=SLURM&clues=clues&nodes-ec2=&wizard=ec2
 
                 wizard.el.find(".wizard-success .im-done").click(function() {
                     wizard.hide();
                     setTimeout(function() {
                         wizard.reset();
-                        //$('#os-one').prop('selectedIndex', 0);
-                    }, 250);
+                    }, 2);
                 });
 
                 wizard.el.find(".wizard-success .create-another-server").click(function() {
@@ -2655,7 +1682,7 @@
                     wizard.hide();
                     setTimeout(function() {
                         wizard.reset();
-                    }, 250);
+                    }, 2);
 
                 });
 
@@ -2670,9 +1697,22 @@
                     alert("Disabled for demo.");
                 });
 
-                $('#open-wizard-4').click(function(e) {
+                $('#open-wizard-deploy').click(function(e) {
                     e.preventDefault();
                     wizard.show();
+                    <!-- Send endpoint selected to the server to obtain instance types-->
+                    $.ajax({
+                        method: "POST",
+                        url: "print_select_endpoints.php",
+                        //data:{endpointfedcloud: $('#endpoint-fedcloud').val()},
+                        success : function(text)
+                        {  
+                            $('#endpoint_fedcloud_chzn').hide()
+                            $('#endpoint-fedcloud').prop('data-placeholder', "--Select one--");
+                            $('#endpoint-fedcloud').append(text).hide().show();
+                            //$('#endpoint-fedcloud').html(text);
+                        }
+                    });
                 });
             });
 
@@ -2703,31 +1743,14 @@
 
                 return retValue;
             };
-            
-            $('select#vo-fedcloud.chzn-select.form-control').change(function() {
-                <!-- Send vo selected to the server to obtain endpoints-->
-                $.ajax({
-                    method: "POST",
-                    url: "print_select_endpoints.php",
-                    data:{vofedcloud: $('#vo-fedcloud').val()},
-                    success : function(text)
-                    {  
-                        $('#endpoint_fedcloud_chzn').hide()
-                        $('#endpoint-fedcloud').prop('data-placeholder', "--Select one--");
-                        $('#endpoint-fedcloud').append(text).hide().show();
-                        //$('#endpoint-fedcloud').html(text);
-                    }
-                });
-            });
-            
-            
+
             $('select#endpoint-fedcloud.chzn-select.form-control').change(function() {
                 <!-- Send endpoint selected to the server to obtain OS-->
                 $.ajax({
                     method: "POST",
                     url: "print_select_os.php",
-                    data:{endpointfedcloud: $('#endpoint-fedcloud option:selected').html(), vofedcloud: $('#vo-fedcloud').val()},
-                    //data:{endpointfedcloud: $('#endpoint-fedcloud').val(), vofedcloud: $('#vo-fedcloud').val()},
+                    /*data:{endpointfedcloud: $('#endpoint-fedcloud').val()},*/
+                    data: {endpointfedcloud: $('#endpoint-fedcloud option:selected').html()},
                     success : function(text)
                     {   
                         $('#vmifedcloud').html(text);
@@ -2738,8 +1761,8 @@
                 $.ajax({
                     method: "POST",
                     url: "print_select_instances.php",
-                    data:{endpointfedcloud: $('#endpoint-fedcloud option:selected').html(), vofedcloud: $('#vo-fedcloud').val()},
-                    //data:{endpointfedcloud: $('#endpoint-fedcloud').val(), vofedcloud: $('#vo-fedcloud').val()},
+                    /*data:{endpointfedcloud: $('#endpoint-fedcloud').val()},*/
+                    data: {endpointfedcloud: $('#endpoint-fedcloud option:selected').html()},
                     success : function(text)
                     {   
                         $('#frontfedcloud').html(text);
@@ -2748,6 +1771,7 @@
                 });
             });
             
+
             function drop_down_validation(el){
                 var name = el.val();
                 var retValue = {};
@@ -2782,19 +1806,20 @@
 
             function showDetails_OCCI() {
                 var retValue = ' '
-                var vo = $('#vo-fedcloud').val();
+
                 //obtener proxy y endpoint
-                var proxy = $('#proxy').val();
-                if(proxy == ""){
-                    proxy = "not indicated";
-                }else{
-                    proxy = "*********";
-                }
+                //var proxy = $('#proxy').val();
+                //if(proxy == ""){
+                //    proxy = "not indicated";
+                //}else{
+                //    proxy = "*********";
+                //}
                 var endpoint = $('#endpoint-fedcloud').val();
                 var endpointName = $('#endpoint-fedcloud option:selected').html();
-                var proxyserver = $('#myproxy-server').val();
-                var proxyuser = $('#myproxy-user').val();
-                var proxypass = $('#myproxy-pass').val();
+                
+                //var proxyserver = $('#myproxy-server').val();
+                //var proxyuser = $('#myproxy-user').val();
+                //var proxypass = $('#myproxy-pass').val();
 
                 //obtener el OS seleccionado
                 //var os = $('#os-fedcloud').val();
@@ -2826,7 +1851,8 @@
                 if( $('.fedcloud.col-sm-12 #tomcat').prop('checked') ) sw += "Tomcat ";
                 if( $('.fedcloud.col-sm-12 #marathon').prop('checked') ) sw += "Marathon ";
                 if( $('.fedcloud.col-sm-12 #chronos').prop('checked') ) sw += "Chronos ";
-                if( $('.fedcloud.col-sm-12 #hadoop').prop('checked') ) sw += "Hadoop";
+                if( $('.fedcloud.col-sm-12 #hadoop').prop('checked') ) sw += "Hadoop ";
+                if( $('.fedcloud.col-sm-12 #namd').prop('checked') ) sw += "Namd";
 
                 if (sw == ''){
                     sw +="Nothing selected"
@@ -2839,11 +1865,12 @@
                 //obtener el numero de nodos
                 var nodes = parseInt($('#nodes-fedcloud').val());
 
-                retValue = "<div> <b> VO: </b> " + vo + "<b> Proxy: </b>" + proxy + "</div><div><b>Endpoint: </b>" + endpointName + "</div>";
+                retValue = "<div><b>Endpoint: </b>" + endpointName + "</div>";
+                /*retValue = "<div> <b> Proxy: </b>" + proxy + "</div><div><b>Endpoint: </b>" + endpoint + "</div>";
                 if(proxyserver != '' && proxyuser != '' && proxypass != ''){
                     proxypass = "**********";
                     retValue += "<div> <b> MyProxy Server: </b>" + proxyserver + "</div><div> <b> MyProxy User: </b>" + proxyuser + "</div><div><b> MyProxy Password: </b>" + proxypass + "</div>";
-                }
+                }*/
 
                 if(vmi != ''){
                     retValue += "<div> <b> VMI: </b>" + vmi + "</div>";
@@ -2875,7 +1902,7 @@
         </script>
 
     <!-- Wizard plugin delete a cluster -->
-        <script type="text/javascript">
+    <!--   <script type="text/javascript">
             $(document).ready(function() {
                 $.fn.wizard.logging = true;
                 var wizard = $('#delete-wizard').wizard({
@@ -2956,6 +1983,7 @@
                     wizard.show();
                 });
             });
+            
             function validateValue(el) {
                 var name = el.val();
                 var retValue = {};
@@ -2973,8 +2001,125 @@
                 card.wizard.el.find(".create-cluster-name").text(name);
             }
 
-        </script>
+        </script> -->
 
+    <!-- Modal box to list clusters -->
+        <script type="text/javascript">
+
+        // Get the modal
+        var modal = document.getElementById('myModal');
+
+        // Get the button that opens the modal
+        var btn = document.getElementById("myBtn");
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+
+        // When the user clicks the button, open the modal 
+        btn.onclick = function() {
+            modal.style.display = "block";
+            list();
+        }
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        function list(){
+            $.ajax({
+                    type: "POST",
+                    url: "ec3-list-clusters.php",
+                    data: "list=list",
+                    dataType: "json",
+                    success: function(response, status, data){
+                            var obj = jQuery.parseJSON(JSON.stringify(response));
+                            //retValue = "<div> <b> " + obj.responseText + " </b></div> ";
+                            retValue = "<p><i>Notice that if you destroy the cluster, this might take 10-15 seconds, please, wait for the response of the portal. </i></p>"
+                            retValue += "<table> <tr> <th>Cluster name</th> <th>State</th> <th>IP</th> <th>Nodes</th> <th>SSH key</th> <th>Action</th> </tr>";
+                            if (obj.length == 0) {
+                                retValue += "<tr> <td colspan=5>No clusters available for this user.</td> </tr>";
+                            }
+                            for (var i = 0; i < obj.length; i++){
+                                retValue += "<tr>";
+                                retValue += "<td> " + obj[i].name + " </th> ";
+                                retValue += "<td> " + obj[i].state + " </th> ";
+                                retValue += "<td> " + obj[i].IP + " </th> ";
+                                retValue += "<td> " + obj[i].nodes + " </th> ";
+                                retValue += "<td><a class=\"btn btn-ssh\" id=\"ssh_"+ obj[i].name + "\" href=\"ec3-ssh-key.php?clustername=" + obj[i].name + "\">Download</a></td>";
+                                retValue += "<td><button class=\"btn btn-deleting\" id=\"delete_"+ obj[i].name + "\" onclick=\"deleteCluster('"+ obj[i].name +"')\">Delete</button></td>";
+                                retValue += "</tr>";
+                            }
+                            retValue += "</table>"
+                            $('.wizard-ip').html(retValue); // display list information
+                    },
+                    error: function(response, status, error){
+                            var obj = jQuery.parseJSON(JSON.stringify(response));
+                            retValue = "<div> <b> ERROR: " + obj.responseText + " </b></div> ";
+                            //retValue = "<div> <b> " + JSON.stringify(response) + " </b></div> ";
+                            //retValue += "<div> <b> " + JSON.stringify(status) + " </b></div> ";
+                            //retValue += "<div> <b> " + JSON.stringify(error) + " </b></div> ";                              
+                            $('.wizard-ip').html(retValue);
+                    }
+            });
+        };
+            
+        function deleteCluster(name){
+            //$("#delete_"+name).text('Deleting...');
+            //$("#delete_"+name).prop("disabled",true);
+            //console.log($("#delete_"+name).text());
+            // http://www.java2s.com/Tutorials/HTML_CSS/Bootstrap_Example/Button/Click_to_change_button_text_and_state.htm
+            // http://getbootstrap.com/javascript/#buttons
+            // http://getbootstrap.com/javascript/#buttons-methods
+            //$("#delete_"+name).button();
+            /*$("#delete_"+name).on('click', function () {
+                var $btn = $(this).button('complete');
+            });*/
+
+            $.ajax({
+                    type: "POST",
+                    url: "ec3-destroy-cluster.php",
+                    data: "clustername=" + name, 
+                    dataType: "json",
+                    success: function(response, status, data){
+                        //$('.wizard-ip').html(retValue); // display list information
+                        //sleep(2000);
+                        list();
+                        alert('Cluster ' + name + ' succesfully deleted!')
+                    },
+                    error: function(response, status, error){
+                            var obj = jQuery.parseJSON(JSON.stringify(response));
+                            //retValue = "<div> <b> " + obj.responseText + " </b></div> ";
+                            //retValue = "<div> <b> " + JSON.stringify(response) + " </b></div> ";
+                            //$('.wizard-ip').html(retValue);
+                            //sleep(2000);
+                            list();
+                            //alert(obj.responseText);
+                            alert('Found problems deleting cluster ' + name + '. Try again, if the error persists, contact us.')
+                    }
+            });   
+        };
+         
+
+        function sleep(milliseconds) {
+          var start = new Date().getTime();
+          for (var i = 0; i < 1e7; i++) {
+            if ((new Date().getTime() - start) > milliseconds){
+              break;
+            }
+          }
+        }
+
+        </script> 
+
+		
     <!-- Plugin JavaScript -->
     <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
     <script src="js/classie.js"></script>
@@ -2986,6 +2131,36 @@
 
     <!-- Custom Theme JavaScript -->
     <script src="js/agency.js"></script>
+
+    <!-- Logout behaviour -->
+    <script>
+
+    // Get the logout button 
+    var btn = document.getElementById("logout");
+
+    // When the user clicks the button, open the modal 
+    btn.onclick = function() {
+        //Operacion de logout, que tiene que llamar en el servidor a "session_destroy()"
+        //http://stackoverflow.com/questions/23126582/destroy-php-session-in-javascript-function
+        //http://stackoverflow.com/questions/24923413/how-to-clear-a-php-session-using-jquery-javascript
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', 'logout.php', true);
+        /*xmlhttp.onreadystatechange=function(){
+           if (xmlhttp.readyState == 4){
+              if(xmlhttp.status == 200){
+                 alert(xmlhttp.responseText);
+             }
+           }
+        };*/
+        xhr.send();
+        redirection();
+        //alert('Goodbye!')
+    }
+    
+    function redirection(){  
+        window.location ="https://marketplace.egi.eu/42-applications-on-demand";
+    }
+    </script>
 
 </body>
 

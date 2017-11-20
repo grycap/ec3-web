@@ -86,6 +86,15 @@ h6 {
     background-color: #fed136;
 }
 
+.btn-deleting {
+    border-color: white;
+    text-transform: uppercase;
+    font-family: Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-weight: 700;
+    color: #fff;
+    background-color: red;
+}
+
 
 .btn-one {
     width: 280px;
@@ -110,9 +119,25 @@ h6 {
 }
 
 .btn-fedcloud {
+    /*width: 280px;
+    height: 180px;*/
+    width: 350px;
+    height: 225px;
+    background-image: url(../img/provider/fedcloud.png);
+    background-repeat: no-repeat;
+}
+
+.btn-delete{
     width: 280px;
     height: 180px;
-    background-image: url(../img/provider/fedcloud1.png);
+    background-image: url(../img/provider/delete1.png);
+    background-repeat: no-repeat;
+}
+
+.btn-list{
+    width: 350px;
+    height: 225px;
+    background-image: url(../img/provider/list2.png);
     background-repeat: no-repeat;
 }
 
@@ -214,6 +239,13 @@ fieldset[disabled] .btn-xl.active {
 .navbar-default {
     border-color: transparent;
     background-color: #222;
+}
+
+.navbar-welcome {
+    border-color: transparent;
+    background-color: transparent;
+	color: #fff;
+    text-align: right;
 }
 
 .navbar-default .navbar-brand {
@@ -377,6 +409,16 @@ section h2.section-heading {
 
 section h3.section-subheading {
     margin-bottom: 75px;
+    text-transform: none;
+    font-family: "Droid Serif","Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 16px;
+	line-height: 30px;
+    /*font-style: italic;*/
+    font-weight: 400;
+}
+
+section h3.section-subheading-contact {
+    /*margin-bottom: 75px;*/
     text-transform: none;
     font-family: "Droid Serif","Helvetica Neue",Helvetica,Arial,sans-serif;
     font-size: 16px;
@@ -925,3 +967,90 @@ img::-moz-selection {
 body {
     webkit-tap-highlight-color: #fed136;
 }
+
+/*estilo para una tabla responsive*/
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+    border: 1px solid #ddd;
+}
+
+th, td {
+    border: none;
+    text-align: left;
+    padding: 8px;
+}
+
+/* The Modal (background) */
+.modallist {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    padding-top: 180px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4); 
+}
+
+/* Modal Content */
+.modallist-content {
+    position: relative;
+    background-color: #fefefe;
+    margin: auto;
+    padding: 0;
+    border: 1px solid #888;
+    width: 80%;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s
+}
+
+/* Add Animation */
+@-webkit-keyframes animatetop {
+    from {top:-300px; opacity:0} 
+    to {top:0; opacity:1}
+}
+
+@keyframes animatetop {
+    from {top:-300px; opacity:0}
+    to {top:0; opacity:1}
+}
+
+/* The Close Button */
+.close {
+    color: grey;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modallist-header {
+    padding: 2px 16px;
+    /*background-color: #fec503;*/
+    background-color: white;
+    color: black;
+}
+
+.modallist-body {padding: 2px 16px;}
+
+.modallist-footer {
+    padding: 2px 16px;
+    background-color: #fec503;
+    color: white;
+}
+
+
