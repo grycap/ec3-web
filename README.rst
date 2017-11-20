@@ -28,3 +28,16 @@ The webpage has been developed by using the `Agency`_ theme for `Bootstrap`_ cre
 .. _`Start Bootstrap`: http://startbootstrap.com/
 .. _`Bootstrap`: http://getbootstrap.com/
 .. _`EC3aaS`: http://servproject.i3m.upv.es/ec3/
+.. _`CLUES`: http://www.grycap.upv.es/clues/
+.. _`RADL`: http://www.grycap.upv.es/im/doc/radl.html
+.. _`TORQUE`: http://www.adaptivecomputing.com/products/open-source/torque
+.. _`MAUI`: http://www.adaptivecomputing.com/products/open-source/maui/
+.. _`SLURM`: http://slurm.schedmd.com/
+.. _`Scientific Linux`: https://www.scientificlinux.org/
+.. _`Ubuntu`: http://www.ubuntu.com/
+.. _`OpenNebula`: http://www.opennebula.org/
+.. _`OpenStack`: http://www.openstack.org/
+.. _`Amazon Web Services`: https://aws.amazon.com/
+.. _`Google Cloud`: http://cloud.google.com/
+.. _`Microsoft Azure`: http://azure.microsoft.com/
+.. _`IM`: https://github.com/grycap/im
