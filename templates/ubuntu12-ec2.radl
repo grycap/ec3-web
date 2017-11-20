@@ -1,0 +1,17 @@
+system front (
+    cpu.arch='x86_64' and
+    instance_type='#INSTANCE_TYPE_FRONT#' and
+    disk.0.os.name='linux' and
+    disk.0.image.url = 'aws://us-east-1/ami-e50e888c' and
+    disk.0.os.credentials.username = 'ubuntu' and 
+    disk.0.os.credentials.new.password = '#PASSWORD#'
+)
+
+system wn (
+    ec3_max_instances = #INSTANCES# and
+    instance_type='#INSTANCE_TYPE_WN#' and
+    disk.0.os.name='linux' and
+    disk.0.image.url = 'aws://us-east-1/ami-e50e888c' and
+    disk.0.os.credentials.username = 'ubuntu' and 
+    disk.0.os.credentials.new.password = '#PASSWORD#'
+)

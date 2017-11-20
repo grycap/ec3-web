@@ -1,0 +1,15 @@
+system front (
+    instance_type='#INSTANCE_TYPE_FRONT#' and
+    disk.0.os.name = 'linux' and
+    disk.0.image.url = 'https://fc-one.i3m.upv.es:11443/uuid_image_for_ubuntu_server_1404_lts_ubuntu1404_ltskvm_im55_95' and
+    disk.0.os.credentials.username = 'ubuntu'
+)
+
+system wn (
+    ec3_max_instances = #INSTANCES# and
+    instance_type='#INSTANCE_TYPE_WN#' and
+    disk.0.os.name = 'linux' and
+    disk.0.image.url = 'https://fc-one.i3m.upv.es:11443/uuid_image_for_ubuntu_server_1404_lts_ubuntu1404_ltskvm_im55_95' and
+    disk.0.os.credentials.username = 'ubuntu'
+)
+
