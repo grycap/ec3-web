@@ -2,7 +2,7 @@
    :height: 50px
    :width: 41 px
    :scale: 50 %
-   :alt: alternate text
+   :alt: EC3 logo
    :align: right
    
 .. Elastic Cloud Computing Cluster (EC3)
