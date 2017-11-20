@@ -5,10 +5,8 @@ if (isset($_GET['clustername'])) {
  
     $clustername = $_GET['clustername'];
 	
-	//Actualizamos el proxy
-    if ( !session_id() ) {
-        session_start();
-    }
+    //Actualizamos el proxy
+    if(!isset($_SESSION)) session_start();
 
     if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
         include('auth.php');
@@ -38,8 +36,8 @@ if (isset($_GET['clustername'])) {
 	
     //Devolvemos los datos del front-end desplegado
 } else {
-echo "No clustername specified";
-exit(1);
+    echo "No clustername specified";
+    exit(1);
 }
 		
 ?>

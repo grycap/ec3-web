@@ -27,79 +27,32 @@ function getSSLPage($url) {
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     $result = curl_exec($ch);
     curl_close($ch);
+
+    // For unit tests
+    if ($GLOBALS["EC3UnitTest"]) return "line1\nline2\nline3";    
+
     return $result;
 }
 
 
 if($_POST){
    
-    $datosRecibidos = file_get_contents('php://input'); 
-   
-    // El string recibido tiene este aspecto: clustername=safsdfv3
-    
-    $stringSpliteado = explode('&', $datosRecibidos);
-    $clustername = explode('=', $stringSpliteado[0]);
-    $clustername = urldecode($clustername[1]);
-
-    //comprobamos si nos han pasado proxy
-    /*$proxy = explode('=', $stringSpliteado[1]);
-    if(count($proxy) > 1){
-        $proxy = urldecode($proxy[1]);
+    if (isset($_POST['clustername'])) {
+        $clustername = $_POST['clustername'];
     } else {
-        $proxy = "";
-    }*/
-    /*if($proxy!=""){
-        $auth_file = "/tmp/auth_" .substr($clustername, 8);
-        //tratamos la cadena del proxy
-        $proxy = str_replace("\r\n", "\\n", $proxy);
-        
-        //ahora recuperamos la linea de credenciales del IM
-        $im_line="";
-        $file = fopen($auth_file, "r") or exit("Unable to find the old auth file:" . $auth_file . ". Is the cluster name correct?");
-        while(!feof($file)){
-            $line = fgets($file);
-            if(strstr($line, "proxy")){
-                $proxy_line = $line;
-        $endpoint = substr($line, strpos($line, "host = ")+7);
-            }
-            if(strstr($line, "InfrastructureManager")){
-                $im_line=$line;
-            }
-        }
-        fclose($file);
-        //Y escribimos el nuevo fichero auth
-        $gestor = fopen($auth_file, "w");
-        fwrite($gestor, "id = occi; type = OCCI; proxy = " . $proxy . "; host = " . $endpoint . PHP_EOL);
-        fwrite($gestor, $im_line. PHP_EOL);
-        fclose($gestor);
-    }*/
-
-    // llamamos a EC3 para comprobar si el cluster existe:
-    /*$ec3_list_file = "/tmp/ec3_list_".random_string(5);
-    $process_1 = new Process("./command/ec3 list -r ", $ec3_list_file);
-    $process_1->start();
-  
-    sleep(1);
-    $log_content = file_get_contents($ec3_list_file);
-    if(strpos($log_content, $clustername) === False){
-        echo "Problems deleting the cluster. Is the name correct?";
-        exit (1);
-    }*/
-    
-    //Actualizamos el proxy
-    if ( !session_id() ) {
-        session_start();
+        exit("No clustername parameter specified.");
     }
 
+    if(!isset($_SESSION)) session_start();
+
     if (!isset($_SESSION["egi_user_sub"])) {
-        //echo "Error no unity user ID obtained.";
+        //echo "Error no EGI AAI user ID obtained.";
         header('Location:session_expired.html');
-        die();
+        die("");
     } else {
         $user_sub = $_SESSION["egi_user_sub"];
     }
 
-//    $proxy = file_get_contents("https://etokenserver.ct.infn.it:8443/eTokenServer/eToken/332576f78a4fe70a52048043e90cd11f?voms=vo.access.egi.eu:/vo.access.egi.eu&proxy-renewal=true&disable-voms-proxy=false&rfc-proxy=true&cn-label=eToken:" . $user_sub);
     $proxy = getSSLPage("https://etokenserver.ct.infn.it:8443/eTokenServer/eToken/332576f78a4fe70a52048043e90cd11f?voms=vo.access.egi.eu:/vo.access.egi.eu&proxy-renewal=true&disable-voms-proxy=false&rfc-proxy=true&cn-label=eToken:" . $user_sub);
     $proxy = str_replace("\n", "\\n", $proxy);
 
@@ -160,6 +113,8 @@ if($_POST){
         fwrite($gestor, "id = occi; type = OCCI; proxy = " . $proxy . "; host = " . $endpoint . PHP_EOL);
         fwrite($gestor, $im_line. PHP_EOL);
         fclose($gestor);
+    } else {
+        exit("Error contacting eToken server.");
     }
 
     // llamamos a EC3 para eliminar el cluster
@@ -187,7 +142,9 @@ if($_POST){
     if($status){
 	// Esperamos un poco para asegurarnos de borrar el fichero
         sleep(10);
-        unlink('/var/www/.ec3/clusters/'. $clustername);
+        if (file_exists('/var/www/.ec3/clusters/'. $clustername)) {
+            unlink('/var/www/.ec3/clusters/'. $clustername);
+        }
         echo "{}";
     } else {
         echo "Problems deleting the cluster. Try again or contact us if the error persists.";
