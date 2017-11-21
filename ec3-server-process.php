@@ -461,7 +461,7 @@ if($_POST){
         
     } elseif ($provider == 'one'){
         $username = (isset($_POST['username']) ? $_POST['username'] : "");
-        $password = (isset($_POST['password']) ? $_POST['password'] : "");
+        $password = (isset($_POST['pass']) ? $_POST['pass'] : "");
         $endpoint = (isset($_POST['endpoint']) ? $_POST['endpoint'] : "");
         $os = (isset($_POST['os-one']) ? $_POST['os-one'] : "");
         $vmi = (isset($_POST['vmi']) ? $_POST['vmi'] : "");
