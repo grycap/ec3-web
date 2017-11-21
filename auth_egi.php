@@ -1,7 +1,7 @@
 <?php
-require('OAuth2/Client.php');
-require('OAuth2/GrantType/IGrantType.php');
-require('OAuth2/GrantType/AuthorizationCode.php');
+require_once('OAuth2/Client.php');
+require_once('OAuth2/GrantType/IGrantType.php');
+require_once('OAuth2/GrantType/AuthorizationCode.php');
 
 const CLIENT_ID     = 'ec3ltos';
 const CLIENT_SECRET = 'ALcZo53x26AarJRTvcJh8n2z5-vOA9I87OxbDFQDWgs7Y27aMztpgKbJi-kzBH3xCi30BigE_e_HJ_pVBEwl9rI';
@@ -11,18 +11,22 @@ const AUTHORIZATION_ENDPOINT = 'https://aai.egi.eu/oidc/authorize';
 const TOKEN_ENDPOINT         = 'https://aai.egi.eu/oidc/token';
 const USER_INFO_ENDPOINT     = 'https://aai.egi.eu/oidc/userinfo';
 
-$client = new OAuth2\Client(CLIENT_ID, CLIENT_SECRET, OAuth2\Client::AUTH_TYPE_AUTHORIZATION_BASIC);
+if (isset($GLOBALS["EC3UnitTestOAuth2Client"])) {
+    // for mock in unit tests
+    $client = $GLOBALS["EC3UnitTestOAuth2Client"];
+} else {
+    $client = new OAuth2\Client(CLIENT_ID, CLIENT_SECRET, OAuth2\Client::AUTH_TYPE_AUTHORIZATION_BASIC);
+}
+
 if (isset($_GET['error']))
 {
 	header("HTTP/1.1 401 Unauthorized");
         echo $_GET['error'] . ": " . $_GET['error_description'];
-        die();
 }
 elseif (!isset($_GET['code']))
 {
     $auth_url = $client->getAuthenticationUrl(AUTHORIZATION_ENDPOINT, REDIRECT_URI, array('scope' => 'profile openid email'));
     header('Location: ' . $auth_url);
-    die('Redirect');
 }
 else
 {
@@ -36,14 +40,13 @@ else
     if ($response['code'] == 200) {
         $is_access_vo_member = false;
         foreach ($response['result']['edu_person_entitlements'] as $value) {
-		if ($value == "urn:mace:egi.eu:aai.egi.eu:member@vo.access.egi.eu" || $value == "urn:mace:egi.eu:aai.egi.eu:vm_operator@vo.access.egi.eu") {
-			$is_access_vo_member = true;
-		}
+		    if ($value == "urn:mace:egi.eu:aai.egi.eu:member@vo.access.egi.eu" || $value == "urn:mace:egi.eu:aai.egi.eu:vm_operator@vo.access.egi.eu") {
+			    $is_access_vo_member = true;
+		    }
         }
         if (!$is_access_vo_member) {
 		header("HTTP/1.1 401 Unauthorized");
 		echo "Non Authorized";
-		die();
 	}
         if ( !session_id() ) {
             session_start();
@@ -54,9 +57,8 @@ else
 
         header('Location: https://servproject.i3m.upv.es/ec3-ltos/index.php');
     } else {
-	header("HTTP/1.1 401 Unauthorized");
+        header("HTTP/1.1 401 Unauthorized");
         echo "Non Authorized";
-        die();
     }
 }
 ?>
