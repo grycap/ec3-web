@@ -18,22 +18,18 @@ function random_string($length) {
 }
 
 if($_POST){
-   
-    $datosRecibidos = file_get_contents('php://input'); 
-   
-    // El string recibido tiene este aspecto: clustername=safsdfv3
-    
-    $stringSpliteado = explode('&', $datosRecibidos);
-    $clustername = explode('=', $stringSpliteado[0]);
-    $clustername = urldecode($clustername[1]);
 
-    //comprobamos si nos han pasado proxy
-    $proxy = explode('=', $stringSpliteado[1]);
-    if(count($proxy) > 1){
-        $proxy = urldecode($proxy[1]);
+    if (isset($_POST['clustername'])) {
+        $clustername = $_POST['clustername'];
+    } else {
+        exit("No clustername parameter specified.");
+    }
+    if (isset($_POST['proxy'])) {
+        $proxy = $_POST['proxy'];
     } else {
         $proxy = "";
     }
+
     if($proxy!=""){
         $auth_file = "/tmp/auth_" .substr($clustername, 8);
         //tratamos la cadena del proxy
@@ -46,7 +42,7 @@ if($_POST){
             $line = fgets($file);
             if(strstr($line, "proxy")){
                 $proxy_line = $line;
-		$endpoint = substr($line, strpos($line, "host = ")+7);
+		        $endpoint = substr($line, strpos($line, "host = ")+7);
             }
             if(strstr($line, "InfrastructureManager")){
                 $im_line=$line;
