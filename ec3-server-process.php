@@ -109,7 +109,6 @@ function generate_system_image_radl($cloud, $ami, $region, $ami_user, $ami_passw
 
     //fwrite($new_file, "    disk.0.image.url = '".$region. "/" .$ami. "' and".PHP_EOL);
     fwrite($new_file, "    disk.0.image.url = 'appdb://".$region. "/" .$ami. "?vo.access.egi.eu' and".PHP_EOL);
-    //fwrite($new_file, "    instance_type='".$instancetype_front."'".PHP_EOL);
     fwrite($new_file, "    instance_type='".$instancetype_front."' and".PHP_EOL);
     fwrite($new_file, "    disk.0.os.credentials.username = '".$fcuser."' and".PHP_EOL);
     fwrite($new_file, "    ec3aas.username = '".$user_sub."'".PHP_EOL);
@@ -123,7 +122,6 @@ function generate_system_image_radl($cloud, $ami, $region, $ami_user, $ami_passw
 
     fwrite($new_file, "    disk.0.image.url = 'appdb://".$region. "/" .$ami. "?vo.access.egi.eu' and".PHP_EOL);
     //fwrite($new_file, "    disk.0.image.url = '".$region. "/" .$ami. "' and".PHP_EOL);
-    //fwrite($new_file, "    instance_type='".$instancetype_wn."'".PHP_EOL);
     fwrite($new_file, "    instance_type='".$instancetype_wn."' and".PHP_EOL);
     fwrite($new_file, "    disk.0.os.credentials.username = '".$fcuser."'".PHP_EOL);
 
