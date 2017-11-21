@@ -559,7 +559,7 @@ if($_POST){
         $pass = $data[2];
         
     } elseif ($provider == 'fedcloud'){
-        $endpointName = (isset($_POST['endpoint-fedcloud']) ? $_POST['endpoint-fedcloud'] : "");
+        $endpointName = (isset($_POST['endpointName']) ? $_POST['endpointName'] : "");
         $endpoint = (isset($_POST['endpoint-fedcloud']) ? $_POST['endpoint-fedcloud'] : "");
         $vo = (isset($_POST['vo-fedcloud']) ? $_POST['vo-fedcloud'] : "");
         $proxy = (isset($_POST['proxy']) ? $_POST['proxy'] : "");

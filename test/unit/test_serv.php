@@ -189,7 +189,7 @@ final class EC3PagesTest extends TestCase
         $this->expectOutputRegex('/{"ip":"10\.0\.0\.1\\n","name":"cluster_.{6}","username":"cloudadm","secretkey":"key%0A"}/');
         $_POST = array("cloud"=>"fedcloud", "vo-fedcloud"=>"vo", "proxy"=>"proxy", "endpoint-fedcloud"=>"serverfed",
                        "vmi-fedcloud"=>"fed1", "front-fedcloud"=>"fetype", "lrms-fedcloud"=>"torque",
-                       "wn-fedcloud"=>"wntype", "nfs"=>"nfs", "maui"=>"maui",
+                       "wn-fedcloud"=>"wntype", "nfs"=>"nfs", "maui"=>"maui", "endpointName"=>"endpointName",
                        "nodes-fedcloud"=>"2");
         include('../../ec3-server-process.php');
 
@@ -211,7 +211,7 @@ final class EC3PagesTest extends TestCase
             if (substr($file, 0, 7) === "system_") {
                 $found = True;
                 $data = file_get_contents('/tmp/' . $file);
-                $this->assertContains("disk.0.image.url = 'appdb://serverfed/fed1?vo'", $data);
+                $this->assertContains("disk.0.image.url = 'appdb://endpointName/fed1?vo'", $data);
                 $this->assertContains("ec3_max_instances = 2", $data);
                 unlink('/tmp/' . $file);
             }
