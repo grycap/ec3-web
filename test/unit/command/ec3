@@ -1,0 +1,10 @@
+#!/bin/bash
+
+if [ "$1" == "ssh" ]
+then
+    echo "key" > /tmp/ssh12.key
+    echo "ssh -i /tmp/ssh12.key -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ubuntu@10.0.0.1"
+else
+    echo $@
+    echo "running. IP: 10.0.0.1"
+fi
