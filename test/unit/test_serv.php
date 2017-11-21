@@ -1,5 +1,7 @@
 <?php
 
+require_once('../../OAuth2/Client.php');
+
 use PHPUnit\Framework\TestCase;
 
 final class EC3PagesTest extends TestCase
@@ -136,6 +138,72 @@ final class EC3PagesTest extends TestCase
         $this->expectOutputString('<select name="vmi-fedcloud" id="vmi-fedcloud" data-placeholder="--Select one--" style="width:350px;" class="chzn-select form-control" data-validate="drop_down_validation"><option value=""></option><option value="egi.centos.6">EGI Centos 6</option><option value="egi.centos.7">EGI CentOS 7</option></select>');
         $_POST = array("endpointfedcloud"=>"CESGA");
         include('../../print_select_os.php');
+    }
+
+    /**
+     * @runInSeparateProcess
+     */
+    public function testEC3LogOut()
+    {
+        $this->expectOutputString('');
+        $_SESSION = array("egi_user_sub"=>"egiusersub", "egi_user_name"=>"egiusername");
+        include('../../logout.php');
+        $this->assertFalse(isset($_SESSION['egi_user_sub']));
+        $this->assertContains('Location: https://marketplace.egi.eu/42-applications-on-demand',xdebug_get_headers()); 
+    }
+
+    /**
+     * @runInSeparateProcess
+     */
+    public function testEC3Auth()
+    {
+        $this->expectOutputString('');
+
+        $mock_client = $this->getMockBuilder(OAuth2\Client::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['getAuthenticationUrl'])
+            ->getMock();
+        $mock_client->method('getAuthenticationUrl')
+            ->willReturn("AuthURL");
+
+        $GLOBALS["EC3UnitTestOAuth2Client"] = $mock_client;
+        include('../../auth_egi.php');
+        $this->assertEquals(array('Location: AuthURL'),xdebug_get_headers());
+    }
+
+    /**
+     * @runInSeparateProcess
+     */
+    public function testEC3AuthCode()
+    {
+        $this->expectOutputString('');
+
+        $mock_client = $this->getMockBuilder(OAuth2\Client::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['getAccessToken', 'setAccessToken', 'fetch'])
+            ->getMock();
+        $response = array("code"=>200, "result"=>array("access_token"=>"AcccessToken"));
+        $mock_client->method('getAccessToken')
+            ->willReturn($response);
+        $mock_client->method('setAccessToken')
+            ->willReturn("");
+        $response = array("code"=>200, "result"=>array("name"=>"eginame", "sub"=>"egisub", "edu_person_entitlements"=>array("urn:mace:egi.eu:aai.egi.eu:member@vo.access.egi.eu")));
+        $mock_client->method('fetch')
+            ->willReturn($response);
+
+        $params = array('schema' => 'openid', 'access_token' => 'AcccessToken');
+        $mock_client->expects($this->once())
+            ->method('fetch')
+            ->with(
+                $this->equalTo('https://aai.egi.eu/oidc/userinfo'),
+                $params
+            );
+
+        $_GET['code'] = "code";
+        $GLOBALS["EC3UnitTestOAuth2Client"] = $mock_client;
+        include('../../auth_egi.php');
+        $this->assertEquals("eginame", $_SESSION['egi_user_name']);
+        $this->assertEquals("egisub", $_SESSION['egi_user_sub']);
     }
 }
 ?>
