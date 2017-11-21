@@ -76,7 +76,6 @@ final class EC3PagesTest extends TestCase
     */
     public function testEC3ServerFC()
     {
-        file_put_contents("/tmp/auth_clustername", "proxy = ; host = ");
         $GLOBALS['templates_path'] = "/tmp";
         $this->expectOutputRegex('/{"ip":"10\.0\.0\.1\\n","name":"cluster_.{6}","username":"cloudadm","secretkey":"key%0A"}/');
         $_POST = array("cloud"=>"fedcloud", "endpoint-fedcloud"=>"serverfed", "nodes-fedcloud"=>"2",
@@ -86,6 +85,18 @@ final class EC3PagesTest extends TestCase
         $GLOBALS["EC3UnitTest"] = true;
         include('../../ec3-server-process.php');
         $files = scandir('/tmp');
+
+        $found = False;
+        foreach ($files as $file) {
+            if (substr($file, 0, 5) === "auth_") {
+                $found = True;
+                $data = file_get_contents('/tmp/' . $file);
+                $this->assertContains("id = occi; type = OCCI; proxy = line1\\nline2\\nline3; host = serverfed", $data);
+                unlink('/tmp/' . $file);
+            }
+        }
+        $this->assertTrue($found);
+
         $found = False;
         foreach ($files as $file) {
             if (substr($file, 0, 7) === "system_") {
@@ -97,6 +108,7 @@ final class EC3PagesTest extends TestCase
             }
         }
         $this->assertTrue($found);
+
         $found = False;
         foreach ($files as $file) {
             if (substr($file, 0, 8) === "ec3_log_") {
