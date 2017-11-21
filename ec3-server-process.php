@@ -147,7 +147,7 @@ if($_POST){
     $provider = (isset($_POST['cloud']) ? $_POST['cloud'] : "unknown");
     
     if ($provider == 'fedcloud'){
-        $endpointName = (isset($_POST['endpoint-fedcloud']) ? $_POST['endpoint-fedcloud'] : "");
+        $endpointName = (isset($_POST['endpointName']) ? $_POST['endpointName'] : "");
         $endpoint = (isset($_POST['endpoint-fedcloud']) ? $_POST['endpoint-fedcloud'] : "");
         $vmi = (isset($_POST['vmi-fedcloud']) ? $_POST['vmi-fedcloud'] : "");
 
