@@ -135,7 +135,7 @@ final class EC3PagesTest extends TestCase
     {
         $GLOBALS['templates_path'] = "/tmp";
         $this->expectOutputRegex('/{"ip":"10\.0\.0\.1\\n","name":"cluster_.{6}","username":"user","secretkey":"key%0A"}/');
-        $_POST = array("cloud"=>"openstack", "username-openstack"=>"ak", "password-openstack"=>"sk", "endpoint-openstack"=>"serverost",
+        $_POST = array("cloud"=>"openstack", "username-openstack"=>"ak", "pass-openstack"=>"sk", "endpoint-openstack"=>"serverost",
                        "vmi-openstack"=>"ost1", "vmi-user-openstack"=>"user", "front-cpu-openstack"=>"1", "lrms-openstack"=>"torque",
                        "front-mem-openstack"=>"1", "wn-cpu-openstack"=>"1", "wn-mem-openstack"=>"2", "nfs"=>"nfs", "maui"=>"maui",
                        "nodes-openstack"=>"2", "tenant-openstack"=>"tenant");
@@ -148,7 +148,7 @@ final class EC3PagesTest extends TestCase
             if (substr($file, 0, 5) === "auth_") {
                 $found = True;
                 $data = file_get_contents('/tmp/' . $file);
-                $this->assertContains("id = ost; type = OpenStack; host = serverost; username = ak; password = ; tenant = tenant", $data);
+                $this->assertContains("id = ost; type = OpenStack; host = serverost; username = ak; password = sk; tenant = tenant", $data);
                 unlink('/tmp/' . $file);
             }
         }
