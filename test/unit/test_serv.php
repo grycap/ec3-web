@@ -1,5 +1,4 @@
 <?php
-
 use PHPUnit\Framework\TestCase;
 
 final class EC3PagesTest extends TestCase
