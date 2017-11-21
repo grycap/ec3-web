@@ -9,7 +9,7 @@ if (isset($_GET['clustername'])) {
     if(!isset($_SESSION)) session_start();
 
     if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
-        include('auth.php');
+        header('Location:session_expired.html');
     } else {
         $user_sub = $_SESSION["egi_user_sub"];
         $user_name = $_SESSION["egi_user_name"];
