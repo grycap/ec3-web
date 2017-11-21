@@ -185,8 +185,6 @@ final class EC3PagesTest extends TestCase
     */
     public function testEC3ServerFC()
     {
-       // file_put_contents("/tmp/auth_clustername", "proxy = ; host = ");
-
         $GLOBALS['templates_path'] = "/tmp";
         $this->expectOutputRegex('/{"ip":"10\.0\.0\.1\\n","name":"cluster_.{6}","username":"cloudadm","secretkey":"key%0A"}/');
         $_POST = array("cloud"=>"fedcloud", "vo-fedcloud"=>"vo", "proxy"=>"proxy", "endpoint-fedcloud"=>"serverfed",
