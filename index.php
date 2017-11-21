@@ -273,13 +273,6 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                         <a href="http://www.egi.eu/news-and-media/newsletters/Inspired_Issue_22/Custom_elastic_clusters_to_manage_Galaxy_environments.html" target="_blank">(See a case study here)</a>.
                     </div>
                 </div>
-                <!--<div class="col-sm-4">
-                    <div class="team-member">
-                        <button id="open-wizard-delete" class="btn btn-primary btn-delete"></button>
-                        <h4 class="provider">Delete your cluster</h4>
-                        <p class="text-muted-contact">And liberate the resources</p>
-                    </div>
-                </div>-->
                 <div class="col-sm-6">
                     <div class="team-member">
                         <!--<button id="open-wizard-list" class="btn btn-primary btn-list"></button>-->
@@ -289,27 +282,6 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                     </div>
                 </div>
             </div>
-            <!--<div class="row">
-                <div class="col-sm-1 text-center">
-                    <span class="fa-4x">
-                        <a id="open-wizard-list" href="#">
-                            <i class="fa fa-list fa-stack-8x fa-inverse"></i>
-                        </a>
-                    </span>
-                </div>
-                <div class="col-sm-3 text-left">
-                    </br>
-                    </br>
-                        <p class="text-muted-contact">Get info about your deployed clusters </p>
-                </div>
-            </div>-->
-            <!--<div class="row">
-                <div class="col-lg-8 col-lg-offset-2 text-center">
-                    <h3 class="section-subheading text-muted-contact" style="margin-bottom:10px">
-                    Is your favourite provider not available above? <a href="http://ec3.readthedocs.org/en/devel/faq.html">Check supported providers</a>.
-                    </h3>
-                </div>
-            </div>-->
         </div>
     </section>
 
@@ -347,39 +319,6 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
 					<h3 class="section-subheading-contact text-muted-contact">Anytime the user will be notified by e-mail about the status of his/her request.</h3>
                 </div>
             </div>
-            <!--<div class="row">
-                <div class="col-lg-12">
-                    <form name="sentMessage" id="contactForm" novalidate>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="Your Name *" name = "name" id="name" required data-validation-required-message="Please enter your name.">
-                                    <p class="help-block text-danger"></p>
-                                </div>
-                                <div class="form-group">
-                                    <input type="email" class="form-control" placeholder="Your Email *" name="email" id="email" required data-validation-required-message="Please enter your email address.">
-                                    <p class="help-block text-danger"></p>
-                                </div>
-                                <div class="form-group">
-                                    <input type="tel" class="form-control" placeholder="Your Institution *" name="institution" id="institution" required data-validation-required-message="Please enter your institution.">
-                                    <p class="help-block text-danger"></p>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <textarea class="form-control" placeholder="Your Message *" name="message" id="message" required data-validation-required-message="Please enter a message."></textarea>
-                                    <p class="help-block text-danger"></p>
-                                </div>
-                            </div>
-                            <div class="clearfix"></div>
-                            <div class="col-lg-12 text-center">
-                                <div id="success"></div>
-                                <button type="submit" class="btn btn-xl">Send Message</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div> -->
         </div>
     </section>
 
@@ -802,8 +741,6 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                                     wizard.submitSuccess();         // displays the success card
                                     //retValue = "<div> <b> " + JSON.stringify(response) + " </b></div> ";
                                     var obj = jQuery.parseJSON(JSON.stringify(response));
-                                    //retValue = "<div> Cluster name: <b> " + obj.name + " </b></div> <div> Frontend IP: <b> " + obj.ip + " </b></div> " +
-                                    //           "<div> Username: <b> " + obj.username + " </b></div> <div> Password: <b> " + obj.password + " </b></div> ";
                                     retValue = "<div> Cluster name: <b> " + obj.name + " </b></div> <div> Frontend IP: <b> " + obj.ip + " </b></div> <div> Username: <b> " + obj.username + " </b></div>";
                                     retValue += "<div> Secret key: <textarea id='private_key_value' name='private_key_value' style='display:none;'>" + decodeURIComponent(obj.secretkey) + "</textarea>" +
                                     "<a class='download' href='javascript:download(\"private_key_value\", \"key.pem\");'>Download</a> </div>";
@@ -823,23 +760,6 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                             }
                     });
                 });
-
-                /*wizard.on("submit", function(wizard) {
-                    $.ajax({
-                        type: "POST",
-                        url: wizard.args.submitUrl,
-                        data: "cloud=ec2&" + wizard.serialize(),
-                        dataType: "json"
-                    }).done(function(response) {
-                        wizard.submitSuccess();         // displays the success card
-                        wizard.hideButtons();           // hides the next and back buttons
-                        wizard.updateProgressBar(0);    // sets the progress meter to 0
-                    }).fail(function() {
-                        wizard.submitError();           // display the error card
-                        wizard.hideButtons();           // hides the next and back buttons
-                    });
-                });*/
-
 
                 wizard.el.find(".wizard-success .im-done").click(function() {
                     wizard.hide();
@@ -960,24 +880,6 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                     //wizard.errorPopover(el, retValue.msg);
                 } else {
                     retValue.status = true;
-                    /*$.ajax({
-                        method: "POST",
-                        url: "print_select_os.php",
-                        data:{endpointfedcloud: name},
-                        //data:{endpoint-fedcloud: $('#endpoint-fedcloud').val()},
-                        success : function(text)
-                        {   
-                            $('.vmifedcloud').html(text);
-                        }, 
-                        error: function(response, status, error){
-                            var obj = jQuery.parseJSON(JSON.stringify(response));
-                            //retValue = "<div> <b> " + obj.responseText + " </b></div> ";
-                            retValue = "<div> <b> " + JSON.stringify(response) + " </b></div> ";
-                            retValue += "<div> <b> " + JSON.stringify(status) + " </b></div> ";
-                            retValue += "<div> <b> " + JSON.stringify(error) + " </b></div> ";
-                            alert(retValue);
-                        }
-                    });*/
                 }
                 return retValue;
             }
