@@ -29,8 +29,6 @@ final class EC3PagesTest extends TestCase
     */
     public function testEC3ServerEC2()
     {
-        file_put_contents("/tmp/auth_clustername", "proxy = ; host = ");
-
         $GLOBALS['templates_path'] = "/tmp";
         $this->expectOutputRegex('/{"ip":"10\.0\.0\.1\\n","name":"cluster_.{6}","username":"user","secretkey":"key%0A"}/');
         $_POST = array("cloud"=>"ec2", "accesskey"=>"ak", "secretkey"=>"sk", "ami"=>"ami-12345678",
@@ -40,6 +38,17 @@ final class EC3PagesTest extends TestCase
         include('../../ec3-server-process.php');
 
         $files = scandir('/tmp');
+
+        $found = False;
+        foreach ($files as $file) {
+            if (substr($file, 0, 5) === "auth_") {
+                $found = True;
+                $data = file_get_contents('/tmp/' . $file);
+                $this->assertContains("type = EC2; username = ak; password = sk; id = ec2", $data);
+                unlink('/tmp/' . $file);
+            }
+        }
+        $this->assertTrue($found);
 
         $found = False;
         foreach ($files as $file) {
@@ -72,17 +81,26 @@ final class EC3PagesTest extends TestCase
     */
     public function testEC3ServerONE()
     {
-        file_put_contents("/tmp/auth_clustername", "proxy = ; host = ");
-
         $GLOBALS['templates_path'] = "/tmp";
         $this->expectOutputRegex('/{"ip":"10\.0\.0\.1\\n","name":"cluster_.{6}","username":"user","password":".*"}/');
-        $_POST = array("cloud"=>"one", "username"=>"ak", "password"=>"sk", "endpoint"=>"server:2633",
+        $_POST = array("cloud"=>"one", "username"=>"ak", "pass"=>"sk", "endpoint"=>"server:2633",
                        "vmi"=>"1", "vmi-user"=>"user", "vmi-pass"=>"pass", "front-cpu"=>"1", "lrms-one"=>"torque",
                        "front-mem"=>"1", "wn-cpu"=>"1", "wn-mem"=>"2", "nfs"=>"nfs", "maui"=>"maui",
                        "nodes-one"=>"2");
         include('../../ec3-server-process.php');
 
         $files = scandir('/tmp');
+
+        $found = False;
+        foreach ($files as $file) {
+            if (substr($file, 0, 5) === "auth_") {
+                $found = True;
+                $data = file_get_contents('/tmp/' . $file);
+                $this->assertContains("type = OpenNebula; host = server:2633; username = ak; password = sk; id = one", $data);
+                unlink('/tmp/' . $file);
+            }
+        }
+        $this->assertTrue($found);
 
         $found = False;
         foreach ($files as $file) {
@@ -115,17 +133,26 @@ final class EC3PagesTest extends TestCase
     */
     public function testEC3ServerOST()
     {
-        file_put_contents("/tmp/auth_clustername", "proxy = ; host = ");
-
         $GLOBALS['templates_path'] = "/tmp";
         $this->expectOutputRegex('/{"ip":"10\.0\.0\.1\\n","name":"cluster_.{6}","username":"user","secretkey":"key%0A"}/');
         $_POST = array("cloud"=>"openstack", "username-openstack"=>"ak", "password-openstack"=>"sk", "endpoint-openstack"=>"serverost",
                        "vmi-openstack"=>"ost1", "vmi-user-openstack"=>"user", "front-cpu-openstack"=>"1", "lrms-openstack"=>"torque",
                        "front-mem-openstack"=>"1", "wn-cpu-openstack"=>"1", "wn-mem-openstack"=>"2", "nfs"=>"nfs", "maui"=>"maui",
-                       "nodes-openstack"=>"2");
+                       "nodes-openstack"=>"2", "tenant-openstack"=>"tenant");
         include('../../ec3-server-process.php');
 
         $files = scandir('/tmp');
+
+        $found = False;
+        foreach ($files as $file) {
+            if (substr($file, 0, 5) === "auth_") {
+                $found = True;
+                $data = file_get_contents('/tmp/' . $file);
+                $this->assertContains("id = ost; type = OpenStack; host = serverost; username = ak; password = ; tenant = tenant", $data);
+                unlink('/tmp/' . $file);
+            }
+        }
+        $this->assertTrue($found);
 
         $found = False;
         foreach ($files as $file) {
@@ -158,7 +185,7 @@ final class EC3PagesTest extends TestCase
     */
     public function testEC3ServerFC()
     {
-        file_put_contents("/tmp/auth_clustername", "proxy = ; host = ");
+       // file_put_contents("/tmp/auth_clustername", "proxy = ; host = ");
 
         $GLOBALS['templates_path'] = "/tmp";
         $this->expectOutputRegex('/{"ip":"10\.0\.0\.1\\n","name":"cluster_.{6}","username":"cloudadm","secretkey":"key%0A"}/');
@@ -169,6 +196,17 @@ final class EC3PagesTest extends TestCase
         include('../../ec3-server-process.php');
 
         $files = scandir('/tmp');
+
+        $found = False;
+        foreach ($files as $file) {
+            if (substr($file, 0, 5) === "auth_") {
+                $found = True;
+                $data = file_get_contents('/tmp/' . $file);
+                $this->assertContains("id = occi; type = OCCI; proxy = proxy; host = serverfed", $data);
+                unlink('/tmp/' . $file);
+            }
+        }
+        $this->assertTrue($found);
 
         $found = False;
         foreach ($files as $file) {
