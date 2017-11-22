@@ -14,7 +14,9 @@ elif sys.argv[1] == "instances":
         res = "Error"
     else:
         res = "8192 MB - 2 CPUs;mem_medium\n"
-        res += "4096 MB - 4 CPUs;large"
+        res += "10240 MB - 10 CPUs;large\n"
+        res += "4096 MB - 4 CPUs;large\n"
+        res += "1024 MB - 1 CPUs;large"
     print(res)
 elif sys.argv[1] == "os":
     if sys.argv[2] != "UPV-GRyCAP" and sys.argv[3] != "fedcloud.egi.eu":

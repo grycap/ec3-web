@@ -1,10 +1,12 @@
 <?php
 	function cmp($a, $b)
 	{
-		if (strlen($a) == strlen($b)) {
-			return strcmp($a, $b);
+		list($inst_desc_a, $inst_name_a) = explode(";", $a);
+		list($inst_desc_b, $inst_name_b) = explode(";", $b);
+		if (strlen($inst_desc_a) == strlen($inst_desc_b)) {
+			return strcmp($inst_desc_a, $inst_desc_b);
 		}
-		return (strlen($a) < strlen($b)) ? -1 : 1;
+		return (strlen($inst_desc_a) < strlen($inst_desc_b)) ? -100 : 100;
 	}
 
     $return_string = "";

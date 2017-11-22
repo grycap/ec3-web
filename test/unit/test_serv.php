@@ -247,7 +247,7 @@ final class EC3PagesTest extends TestCase
      */
     public function testEC3PrintInstances()
     {
-        $this->expectOutputString('<select name="front-fedcloud" id="front-fedcloud" data-placeholder="--Select one--" style="width:350px;" class="chzn-select form-control" data-validate="drop_down_validation"><option value=""></option><option value="large">4096 MB - 4 CPUs</option><option value="mem_medium">8192 MB - 2 CPUs</option></select>');
+        $this->expectOutputString('<select name="front-fedcloud" id="front-fedcloud" data-placeholder="--Select one--" style="width:350px;" class="chzn-select form-control" data-validate="drop_down_validation"><option value=""></option><option value="large">1024 MB - 1 CPUs</option><option value="large">4096 MB - 4 CPUs</option><option value="mem_medium">8192 MB - 2 CPUs</option><option value="large">10240 MB - 10 CPUs</option></select>');
         $_POST = array("vofedcloud"=>"fedcloud.egi.eu", "endpointfedcloud"=>"UPV-GRyCAP");
         include('../../print_select_instances.php');
     }
