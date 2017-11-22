@@ -44,8 +44,8 @@ final class EC3PagesTest extends TestCase
             if (substr($file, 0, 5) === "auth_") {
                 $found = True;
                 $data = file_get_contents('/tmp/' . $file);
-                $this->assertContains("type = EC2; username = ak; password = sk; id = ec2", $data);
                 unlink('/tmp/' . $file);
+                $this->assertContains("type = EC2; username = ak; password = sk; id = ec2", $data);
             }
         }
         $this->assertTrue($found);
@@ -55,9 +55,9 @@ final class EC3PagesTest extends TestCase
             if (substr($file, 0, 7) === "system_") {
                 $found = True;
                 $data = file_get_contents('/tmp/' . $file);
+                unlink('/tmp/' . $file);
                 $this->assertContains("disk.0.image.url = 'aws://us-east-1/ami-12345678", $data);
                 $this->assertContains("ec3_max_instances = 2", $data);
-                unlink('/tmp/' . $file);
             }
         }
         $this->assertTrue($found);
@@ -67,10 +67,10 @@ final class EC3PagesTest extends TestCase
             if (substr($file, 0, 8) === "ec3_log_") {
                 $found = True;
                 $data = file_get_contents('/tmp/' . $file);
+                unlink('/tmp/' . $file);
                 $this->assertContains("launch -y cluster_", $data);
                 $this->assertContains("torque clues2 nfs maui system_", $data);
                 $this->assertContains("-a /tmp/auth_", $data);
-                unlink('/tmp/' . $file);
             }
         }
         $this->assertTrue($found);
@@ -96,8 +96,8 @@ final class EC3PagesTest extends TestCase
             if (substr($file, 0, 5) === "auth_") {
                 $found = True;
                 $data = file_get_contents('/tmp/' . $file);
-                $this->assertContains("type = OpenNebula; host = server:2633; username = ak; password = sk; id = one", $data);
                 unlink('/tmp/' . $file);
+                $this->assertContains("type = OpenNebula; host = server:2633; username = ak; password = sk; id = one", $data);
             }
         }
         $this->assertTrue($found);
@@ -107,9 +107,9 @@ final class EC3PagesTest extends TestCase
             if (substr($file, 0, 7) === "system_") {
                 $found = True;
                 $data = file_get_contents('/tmp/' . $file);
+                unlink('/tmp/' . $file);
                 $this->assertContains("disk.0.image.url = 'one://server/1'", $data);
                 $this->assertContains("ec3_max_instances = 2", $data);
-                unlink('/tmp/' . $file);
             }
         }
         $this->assertTrue($found);
@@ -119,10 +119,10 @@ final class EC3PagesTest extends TestCase
             if (substr($file, 0, 8) === "ec3_log_") {
                 $found = True;
                 $data = file_get_contents('/tmp/' . $file);
+                unlink('/tmp/' . $file);
                 $this->assertContains("launch -y cluster_", $data);
                 $this->assertContains("torque clues2 nfs maui system_", $data);
                 $this->assertContains("-a /tmp/auth_", $data);
-                unlink('/tmp/' . $file);
             }
         }
         $this->assertTrue($found);
@@ -148,8 +148,8 @@ final class EC3PagesTest extends TestCase
             if (substr($file, 0, 5) === "auth_") {
                 $found = True;
                 $data = file_get_contents('/tmp/' . $file);
-                $this->assertContains("id = ost; type = OpenStack; host = serverost; username = ak; password = sk; tenant = tenant", $data);
                 unlink('/tmp/' . $file);
+                $this->assertContains("id = ost; type = OpenStack; host = serverost; username = ak; password = sk; tenant = tenant", $data);
             }
         }
         $this->assertTrue($found);
@@ -159,9 +159,9 @@ final class EC3PagesTest extends TestCase
             if (substr($file, 0, 7) === "system_") {
                 $found = True;
                 $data = file_get_contents('/tmp/' . $file);
+                unlink('/tmp/' . $file);
                 $this->assertContains("disk.0.image.url = 'ost://serverost/ost1'", $data);
                 $this->assertContains("ec3_max_instances = 2", $data);
-                unlink('/tmp/' . $file);
             }
         }
         $this->assertTrue($found);
@@ -171,10 +171,10 @@ final class EC3PagesTest extends TestCase
             if (substr($file, 0, 8) === "ec3_log_") {
                 $found = True;
                 $data = file_get_contents('/tmp/' . $file);
+                unlink('/tmp/' . $file);
                 $this->assertContains("launch -y cluster_", $data);
                 $this->assertContains("torque clues2 nfs maui system_", $data);
                 $this->assertContains("-a /tmp/auth_", $data);
-                unlink('/tmp/' . $file);
             }
         }
         $this->assertTrue($found);
@@ -187,7 +187,7 @@ final class EC3PagesTest extends TestCase
     {
         $GLOBALS['templates_path'] = "/tmp";
         $this->expectOutputRegex('/{"ip":"10\.0\.0\.1\\n","name":"cluster_.{6}","username":"cloudadm","secretkey":"key%0A"}/');
-        $_POST = array("cloud"=>"fedcloud", "vo-fedcloud"=>"vo", "proxy"=>"proxy", "endpoint-fedcloud"=>"serverfed",
+        $_POST = array("cloud"=>"fedcloud", "vo-fedcloud"=>"vo", "proxy"=>"proxy\nproxy2", "endpoint-fedcloud"=>"serverfed",
                        "vmi-fedcloud"=>"fed1", "front-fedcloud"=>"fetype", "lrms-fedcloud"=>"torque",
                        "wn-fedcloud"=>"wntype", "nfs"=>"nfs", "maui"=>"maui", "endpointName"=>"endpointName",
                        "nodes-fedcloud"=>"2");
@@ -200,8 +200,8 @@ final class EC3PagesTest extends TestCase
             if (substr($file, 0, 5) === "auth_") {
                 $found = True;
                 $data = file_get_contents('/tmp/' . $file);
-                $this->assertContains("id = occi; type = OCCI; proxy = proxy; host = serverfed", $data);
                 unlink('/tmp/' . $file);
+                $this->assertContains("id = occi; type = OCCI; proxy = proxy\nproxy2; host = serverfed", $data);
             }
         }
         $this->assertTrue($found);
@@ -211,9 +211,9 @@ final class EC3PagesTest extends TestCase
             if (substr($file, 0, 7) === "system_") {
                 $found = True;
                 $data = file_get_contents('/tmp/' . $file);
+                unlink('/tmp/' . $file);
                 $this->assertContains("disk.0.image.url = 'appdb://endpointName/fed1?vo'", $data);
                 $this->assertContains("ec3_max_instances = 2", $data);
-                unlink('/tmp/' . $file);
             }
         }
         $this->assertTrue($found);
@@ -223,10 +223,10 @@ final class EC3PagesTest extends TestCase
             if (substr($file, 0, 8) === "ec3_log_") {
                 $found = True;
                 $data = file_get_contents('/tmp/' . $file);
+                unlink('/tmp/' . $file);
                 $this->assertContains("launch -y cluster_", $data);
                 $this->assertContains("torque clues2 nfs maui system_", $data);
                 $this->assertContains("-a /tmp/auth_", $data);
-                unlink('/tmp/' . $file);
             }
         }
         $this->assertTrue($found);
