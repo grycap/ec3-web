@@ -6,6 +6,7 @@
 	{
 		$selectOption = $_POST['endpointfedcloud']; 
 		exec('python EGI_AppDB.py ' . $selectOption . ' instances', $instances);
+		asort($instances);
 		foreach ($instances as $instance) {
 				list($inst_desc, $inst_name) = explode(";", $instance);
 				$return_string .= "<option value=\"" . $inst_name . "\">" . $inst_desc . "</option>";
