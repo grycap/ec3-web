@@ -37,7 +37,7 @@ function getSSLPage($url) {
     curl_close($ch);
 
     // For unit tests
-    if ($GLOBALS["EC3UnitTest"]) return "line1\nline2\nline3";   
+    if (isset($GLOBALS["EC3UnitTest"])) return "line1\nline2\nline3";   
 
     return $result;
 }
@@ -85,7 +85,7 @@ function generate_auth_file_fedcloud($endpoint) {
 //function generate_system_image_radl($cloud, $ami, $region, $ami_user, $ami_password, $instancetype_front, $instancetype_wn, $front_cpu, $front_mem, $wn_cpu, $wn_mem, $nodes, $os) {
 function generate_system_image_radl($cloud, $ami, $region, $ami_user, $ami_password, $instancetype_front, $instancetype_wn, $front_cpu, $front_mem, $wn_cpu, $wn_mem, $nodes){
     $rand_str = random_string(4); 
-    $templates_path = (isset($GLOBALS['templates_path']) ? $GLOBALS['templates_path'] : "/var/www/html/ec3/command/templates");
+    $templates_path = (isset($GLOBALS['templates_path']) ? $GLOBALS['templates_path'] : "/var/www/html/ec3-ltos/command/templates");
     $path_to_new_file = $templates_path . '/system_'.$rand_str.'.radl';
     $file_name = 'system_'.$rand_str;
     
