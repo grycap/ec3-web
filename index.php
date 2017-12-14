@@ -814,6 +814,18 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                 });
             });
 
+            function download(id, filename) {
+                var dataToDownload = document.getElementById(id).value;
+                var textFileAsBlob = new Blob([dataToDownload], {type:'text/plain'});
+                var link = document.createElement("a");
+                link.download = filename;
+                window.URL = window.URL || window.webkitURL;
+                link.href = window.URL.createObjectURL(textFileAsBlob);
+                link.style.display = "none";
+                document.body.appendChild(link);
+                link.click();
+            }
+
             function validateValue(el) {
                 var name = el.val();
                 var retValue = {};
