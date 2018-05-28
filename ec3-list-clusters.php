@@ -27,7 +27,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
 
 // llamamos a EC3 para listar los clusters
 $ec3_log_file = "/tmp/ec3_list_".random_string(5);
-$process_2 = new Process("./command/ec3 list --json --username " . $user_sub, $ec3_log_file);
+$process_2 = new Process("./command/ec3 list -r --json --username " . $user_sub, $ec3_log_file);
 
 $pid = $process_2->start();
 // Comprobamos si se ha listado correctamente
