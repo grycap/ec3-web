@@ -178,7 +178,7 @@ if($_POST){
         
         //$name = "cluster_" . $rand;
         $user_sub = $_SESSION["egi_user_sub"];
-        $name = $cluster_name . "$" . $user_sub;
+        $name = $cluster_name . "__" . $user_sub;
         $lrms = strtolower($lrms);
         $sw = strtolower($sw);
 

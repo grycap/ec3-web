@@ -608,7 +608,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                         Please, correct the name and try again or shutdown your virtual machines manually.
                         </br>
                         </br>
-                        <div class="wizard-ip"></div>
+                        <div class="wizard-delete"></div>
                         </br>
                         <a class="btn btn-default create-another-server">Try again</a>
                         <a class="btn btn-primary im-done">Close the wizard</a>
@@ -652,7 +652,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
             </div>
 
             <!-- Tabla -->
-            <div class="wizard-ip" style="overflow-x:auto;">
+            <div class="wizard-list" style="overflow-x:auto;">
                 <p> Loading... </p>
               <!--<table>
                 <tr>
@@ -748,7 +748,12 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                                     wizard.submitSuccess();         // displays the success card
                                     //retValue = "<div> <b> " + JSON.stringify(response) + " </b></div> ";
                                     var obj = jQuery.parseJSON(JSON.stringify(response));
-                                    retValue = "<div> Cluster name: <b> " + obj[i].name.substring(0, obj[i].name.indexOf("$")); + " </b></div> <div> Frontend IP: <b> " + obj.ip + " </b></div> <div> Username: <b> " + obj.username + " </b></div>";
+                                    var name = obj[i].name;
+                                    var index = obj[i].name.indexOf("__");
+                                    if (index > -1){
+                                        name = obj[i].name.substring(0, obj[i].name.indexOf("__"));
+                                    }
+                                    retValue = "<div> Cluster name: <b> " + name + " </b></div> <div> Frontend IP: <b> " + obj.ip + " </b></div> <div> Username: <b> " + obj.username + " </b></div>";
                                     retValue += "<div> Secret key: <textarea id='private_key_value' name='private_key_value' style='display:none;'>" + decodeURIComponent(obj.secretkey) + "</textarea>" +
                                     "<a class='download' href='javascript:download(\"private_key_value\", \"key.pem\");'>Download</a> </div>";
                                     $('.wizard-ip').html(retValue);
@@ -1028,8 +1033,13 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                                 retValue += "<tr> <td colspan=5>No clusters available for this user.</td> </tr>";
                             }
                             for (var i = 0; i < obj.length; i++){
+                                var name = obj[i].name;
+                                var index = obj[i].name.indexOf("__");
+                                if (index > -1){
+                                    name = obj[i].name.substring(0, obj[i].name.indexOf("__"));
+                                }
                                 retValue += "<tr>";
-                                retValue += "<td> " + obj[i].name.substring(0, obj[i].name.indexOf("$")); + " </th> ";
+                                retValue += "<td> " + name + " </th> ";
                                 retValue += "<td> " + obj[i].state + " </th> ";
                                 retValue += "<td> " + obj[i].IP + " </th> ";
                                 retValue += "<td> " + obj[i].nodes + " </th> ";
@@ -1038,7 +1048,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                                 retValue += "</tr>";
                             }
                             retValue += "</table>"
-                            $('.wizard-ip').html(retValue); // display list information
+                            $('.wizard-list').html(retValue); // display list information
                     },
                     error: function(response, status, error){
                             var obj = jQuery.parseJSON(JSON.stringify(response));
@@ -1046,7 +1056,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                             //retValue = "<div> <b> " + JSON.stringify(response) + " </b></div> ";
                             //retValue += "<div> <b> " + JSON.stringify(status) + " </b></div> ";
                             //retValue += "<div> <b> " + JSON.stringify(error) + " </b></div> ";                              
-                            $('.wizard-ip').html(retValue);
+                            $('.wizard-list').html(retValue);
                     }
             });
         };
@@ -1063,26 +1073,32 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                 var $btn = $(this).button('complete');
             });*/
 
+            var shortname = name;
+            var index = name.indexOf("__");
+            if (index > -1){
+                shortname = name.substring(0, name.indexOf("__"));
+            }
+          
             $.ajax({
                     type: "POST",
                     url: "ec3-destroy-cluster.php",
                     data: "clustername=" + name, 
                     dataType: "json",
                     success: function(response, status, data){
-                        //$('.wizard-ip').html(retValue); // display list information
+                        //$('.wizard-delete').html(retValue); // display list information
                         //sleep(2000);
                         list();
-                        alert('Cluster ' + name + ' succesfully deleted!')
+                        alert('Cluster ' + shortname + ' succesfully deleted!')
                     },
                     error: function(response, status, error){
                             var obj = jQuery.parseJSON(JSON.stringify(response));
                             //retValue = "<div> <b> " + obj.responseText + " </b></div> ";
                             //retValue = "<div> <b> " + JSON.stringify(response) + " </b></div> ";
-                            //$('.wizard-ip').html(retValue);
+                            //$('.wizard-delete').html(retValue);
                             //sleep(2000);
                             list();
-                            //alert(obj.responseText);
-                            alert('Found problems deleting cluster ' + name.substring(0, name.indexOf("$")) + '. Try again, if the error persists, contact us.')
+                            //alert(obj.responseText);        
+                            alert('Found problems deleting cluster ' + shortname + '. Try again, if the error persists, contact us.')
                     }
             });   
         };
