@@ -193,6 +193,7 @@ if($_POST){
         $rand = random_string(5);
     }
     //$name = "cluster_" . $rand;
+    $user_sub = $_SESSION["egi_user_sub"];
     $name = $cluster_name . "_" . $user_sub;
     $lrms = strtolower($lrms);
     $sw = strtolower($sw);
