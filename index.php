@@ -355,8 +355,59 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
         <!-- Wizard Fedcloud section -->
         <div class="wizard" id="fedcloud-wizard" name="fedcloud-wizard" data-title="Configure your cluster">
 
+            <!-- Step 1 Software packages -->
+            <div class="wizard-card wizard-card-overlay" data-cardname="swpkg-fedcloud">
+                <h3>Software Packages</h3>
 
-            <!-- Step 1 Cloud provider credentials -->
+                <div class="wizard-input-section">
+                    <p>
+                        Please choose the software packages you'd like EC3 to
+                        install in your cluster. They will be automatically installed and configured.
+                    </p>
+
+                    <div class="fedcloud col-sm-12">
+                        <p style="margin-bottom:0px; margin-top:5px;">Cluster utilities:</p>
+                        <div class="row">
+                            <!--<div class="col-sm-4"><input type="checkbox" value="clues" name="clues" id="clues" title="Cluster Energy Saving System, necessary if you want an elastic cluster" checked=true/> CLUES </div>-->
+                            <div class="col-sm-4"><input type="checkbox" value="nfs" name="nfs" id="nfs" title="Configure a shared file system"/> NFS </div>
+                            <div class="col-sm-4"><input type="checkbox" value="docker" name="docker" id="docker" title="An open-source tool to deploy applications inside software containers"/> Docker </div>
+                            <div class="col-sm-4"><input type="checkbox" value="openvpn" name="openvpn" id="openvpn" title="Application that implements virtual private network (VPN) techniques"/> OpenVPN </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4"><input type="checkbox" value="marathon" name="marathon" id="marathon" title="A job scheduler for Mesos tasks (framework for Mesos)"/> Marathon </div>
+                            <div class="col-sm-4"><input type="checkbox" value="chronos" name="chronos" id="chronos" title="A batch job scheduler for Mesos tasks (framework for Mesos)"/> Chronos </div>
+                            <div class="col-sm-4"><input type="checkbox" value="maui" name="maui" id="maui" title="A job scheduler for use with Torque"/> Maui </div>
+                        </div>
+                        <!--<div class="row">
+                            <div class="col-sm-4"><input type="checkbox" value="ckptman" name="ckptman" id="ckptman" title="A tool to automate the checkpointing in spot instances"/> Ckptman </div>
+                            <div class="col-sm-4"><input type="checkbox" value="munge" name="munge" id="munge" title="An authentication service for creating and validating credentials"/> Munge </div>
+                            <div class="col-sm-4"><input type="checkbox" value="maui" name="maui" id="maui" title="A job scheduler for use with Torque"/> Maui </div>
+                        </div>-->
+                        <div class="row">
+                            <div class="col-sm-4"><input type="checkbox" value="hadoop" name="hadoop" id="hadoop" title="A framework that allows for the distributed processing of large data sets across clusters of computers using simple programming models"/> Hadoop </div>
+                            <div class="col-sm-4"><input type="checkbox" value="galaxy" name="galaxy" id="galaxy" title="Web-based platform for data intensive biomedical research. Recommended to install with Torque and NFS."/> Galaxy </div>
+                            <div class="col-sm-4"><input type="checkbox" value="extra_hd" name="extra_hd" id="extra_hd" title="Add a 100GB Extra HD to the cluster"/> 100GB Extra HD </div>
+                            <!--<div class="col-sm-4"><input type="checkbox" value="galaxy-tools" name="galaxy-tools" id="galaxy-tools" title="Web-based platform for data intensive biomedical research"/> Galaxy tools </div>-->
+                            <!--<div class="col-sm-4"><input type="checkbox" value="sshtunnels" name="sshtunnels" id="sshtun" title="Used to interconnect working nodes in an hybrid cloud scenario"/> SSH tunnels </div>-->
+                        </div>
+                        <p style="margin-bottom:0px; margin-top:10px;">Software utilities:</p>
+                        <div class="row">
+                            <div class="col-sm-4"><input type="checkbox" value="octave" name="octave" id="octave" title="A high-level programming language, primarily intended for numerical computations"/> Octave </div>
+                            <div class="col-sm-4"><input type="checkbox" value="gnuplot" name="gnuplot" id="gnuplot" title="A program to generate two- and three-dimensional plots"/> Gnuplot </div>
+                            <div class="col-sm-4"><input type="checkbox" value="tomcat" name="tomcat" id="tomcat" title="An open-source web server and servlet container"/> Tomcat </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4"><input type="checkbox" value="namd" name="namd" id="namd" title="A parallel, object-oriented molecular dynamics code designed for high-performance simulation of large biomolecular systems"/> Namd </div>
+                            <!--<div class="col-sm-4"><input type="checkbox" value="docker" name="docker" id="docker" title="An open-source tool to deploy applications inside software containers"/> Docker </div>
+                            <div class="col-sm-4"><input type="checkbox" value="latex" name="latex" id="latex" title="Word processor and document markup language"/> Latex </div>-->
+                        </div>
+                    </div>
+                </div>
+                <p style="padding-top:180px; padding-right:160px;">Is your favourite software not available? <a href="mailto:ec3@upv.es?Subject=[EC3]%20Unsupported%20Software" target="_top">Let us know!</a></p>
+            </div>
+
+
+            <!-- Step 2 Cloud provider credentials -->
             <div class="wizard-card" data-cardname="provider-fedcloud">
                 <h3>Provider Account</h3>
                 <div class="wizard-input-section">
@@ -446,58 +497,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                 </div>
             </div>
 
-            <!-- Step 6 Software packages -->
-            <div class="wizard-card wizard-card-overlay" data-cardname="swpkg-fedcloud">
-                <h3>Software Packages</h3>
-
-                <div class="wizard-input-section">
-                    <p>
-                        Please choose the software packages you'd like EC3 to
-                        install in your cluster. They will be automatically installed and configured.
-                    </p>
-
-                    <div class="fedcloud col-sm-12">
-                        <p style="margin-bottom:0px; margin-top:5px;">Cluster utilities:</p>
-                        <div class="row">
-                            <!--<div class="col-sm-4"><input type="checkbox" value="clues" name="clues" id="clues" title="Cluster Energy Saving System, necessary if you want an elastic cluster" checked=true/> CLUES </div>-->
-                            <div class="col-sm-4"><input type="checkbox" value="nfs" name="nfs" id="nfs" title="Configure a shared file system"/> NFS </div>
-                            <div class="col-sm-4"><input type="checkbox" value="docker" name="docker" id="docker" title="An open-source tool to deploy applications inside software containers"/> Docker </div>
-                            <div class="col-sm-4"><input type="checkbox" value="openvpn" name="openvpn" id="openvpn" title="Application that implements virtual private network (VPN) techniques"/> OpenVPN </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4"><input type="checkbox" value="marathon" name="marathon" id="marathon" title="A job scheduler for Mesos tasks (framework for Mesos)"/> Marathon </div>
-                            <div class="col-sm-4"><input type="checkbox" value="chronos" name="chronos" id="chronos" title="A batch job scheduler for Mesos tasks (framework for Mesos)"/> Chronos </div>
-                            <div class="col-sm-4"><input type="checkbox" value="maui" name="maui" id="maui" title="A job scheduler for use with Torque"/> Maui </div>
-                        </div>
-                        <!--<div class="row">
-                            <div class="col-sm-4"><input type="checkbox" value="ckptman" name="ckptman" id="ckptman" title="A tool to automate the checkpointing in spot instances"/> Ckptman </div>
-                            <div class="col-sm-4"><input type="checkbox" value="munge" name="munge" id="munge" title="An authentication service for creating and validating credentials"/> Munge </div>
-                            <div class="col-sm-4"><input type="checkbox" value="maui" name="maui" id="maui" title="A job scheduler for use with Torque"/> Maui </div>
-                        </div>-->
-                        <div class="row">
-                            <div class="col-sm-4"><input type="checkbox" value="hadoop" name="hadoop" id="hadoop" title="A framework that allows for the distributed processing of large data sets across clusters of computers using simple programming models"/> Hadoop </div>
-                            <div class="col-sm-4"><input type="checkbox" value="galaxy" name="galaxy" id="galaxy" title="Web-based platform for data intensive biomedical research. Recommended to install with Torque and NFS."/> Galaxy </div>
-                            <div class="col-sm-4"><input type="checkbox" value="extra_hd" name="extra_hd" id="extra_hd" title="Add a 100GB Extra HD to the cluster"/> 100GB Extra HD </div>
-                            <!--<div class="col-sm-4"><input type="checkbox" value="galaxy-tools" name="galaxy-tools" id="galaxy-tools" title="Web-based platform for data intensive biomedical research"/> Galaxy tools </div>-->
-                            <!--<div class="col-sm-4"><input type="checkbox" value="sshtunnels" name="sshtunnels" id="sshtun" title="Used to interconnect working nodes in an hybrid cloud scenario"/> SSH tunnels </div>-->
-                        </div>
-                        <p style="margin-bottom:0px; margin-top:10px;">Software utilities:</p>
-                        <div class="row">
-                            <div class="col-sm-4"><input type="checkbox" value="octave" name="octave" id="octave" title="A high-level programming language, primarily intended for numerical computations"/> Octave </div>
-                            <div class="col-sm-4"><input type="checkbox" value="gnuplot" name="gnuplot" id="gnuplot" title="A program to generate two- and three-dimensional plots"/> Gnuplot </div>
-                            <div class="col-sm-4"><input type="checkbox" value="tomcat" name="tomcat" id="tomcat" title="An open-source web server and servlet container"/> Tomcat </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4"><input type="checkbox" value="namd" name="namd" id="namd" title="A parallel, object-oriented molecular dynamics code designed for high-performance simulation of large biomolecular systems"/> Namd </div>
-                            <!--<div class="col-sm-4"><input type="checkbox" value="docker" name="docker" id="docker" title="An open-source tool to deploy applications inside software containers"/> Docker </div>
-                            <div class="col-sm-4"><input type="checkbox" value="latex" name="latex" id="latex" title="Word processor and document markup language"/> Latex </div>-->
-                        </div>
-                    </div>
-                </div>
-                <p style="padding-top:180px; padding-right:160px;">Is your favourite software not available? <a href="mailto:ec3@upv.es?Subject=[EC3]%20Unsupported%20Software" target="_top">Let us know!</a></p>
-            </div>
-
-            <!-- Step 7 Cluster's size -->
+            <!-- Step 6 Cluster's size -->
             <div class="wizard-card wizard-card-overlay" data-cardname="size-fedcloud">
                 <h3>Cluster's size & Name</h3>
 
@@ -534,7 +534,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                 </div>
             </div>
 
-            <!-- Step 8 Resume and launch -->
+            <!-- Step 7 Resume and launch -->
             <div class="wizard-card" data-cardname="resume-fedcloud" data-onSelected="showDetails_OCCI">
                 <h3>Resume and launch</h3>
                 <div>
