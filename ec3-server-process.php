@@ -173,7 +173,7 @@ if($_POST){
 
         $nodes = (isset($_POST['nodes-fedcloud']) ? $_POST['nodes-fedcloud'] : "1");
         
-        $cluster_name = (isset($_POST['cluster-name']) ? $_POST['cluster-name'] : "mycluster");
+        $cluster_name = (isset($_POST['cluster-name']) ? $_POST['cluster-name'] : "");
 
         $auth_file = generate_auth_file_fedcloud($endpoint);
 

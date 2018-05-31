@@ -528,7 +528,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                        <div class="col-sm-8">
                             </br>
                             <p> Cluster name (must be unique): </p>
-                            <input type="text" class="form-control" id="cluster-name" name="cluster-name" placeholder="Cluster name">
+                            <input type="text" class="form-control" id="cluster-name" name="cluster-name" placeholder="Cluster name" data-validate="validateValue">
                         </div>
                     </div>
                 </div>
