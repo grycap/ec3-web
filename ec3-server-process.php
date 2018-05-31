@@ -46,9 +46,10 @@ function getSSLPage($url) {
 
 // Generates the auth file for FedCloud deployments
 //function generate_auth_file_fedcloud($proxy, $endpoint, $myproxyserver, $myproxyuser, $myproxypass) {
-function generate_auth_file_fedcloud($endpoint) {
-    $auth = '';
-    $auth = tempnam("/tmp", "auth_");
+function generate_auth_file_fedcloud($endpoint, $clustername) {
+    //$auth = '';
+    //$auth = tempnam("/tmp", "auth_");
+    $auth = "/tmp/auth_" . $clustername;
     chmod($auth, 0644);
 
     //Write user credentials in IM format, like: 
@@ -174,8 +175,14 @@ if($_POST){
         $nodes = (isset($_POST['nodes-fedcloud']) ? $_POST['nodes-fedcloud'] : "1");
         
         $cluster_name = (isset($_POST['cluster-name']) ? $_POST['cluster-name'] : "");
+        
+        //$name = "cluster_" . $rand;
+        $user_sub = $_SESSION["egi_user_sub"];
+        $name = $cluster_name . "$" . $user_sub;
+        $lrms = strtolower($lrms);
+        $sw = strtolower($sw);
 
-        $auth_file = generate_auth_file_fedcloud($endpoint);
+        $auth_file = generate_auth_file_fedcloud($endpoint, $name);
 
         $data = generate_system_image_radl($provider, $vmi, $endpointName, '', '', $front_type, $wn_type, '', '', '', '', $nodes);
 
@@ -187,16 +194,12 @@ if($_POST){
         exit(1);
     }
 
-    if($auth_file != ""){
+    /*if($auth_file != ""){
         $rand = substr($auth_file, 10);
     } else {
         $rand = random_string(5);
-    }
-    //$name = "cluster_" . $rand;
-    $user_sub = $_SESSION["egi_user_sub"];
-    $name = $cluster_name . "_" . $user_sub;
-    $lrms = strtolower($lrms);
-    $sw = strtolower($sw);
+    }*/
+
 
     // Modificamos el numero maximo de nodos del cluster
     /*$path_to_file = '/var/www/html/ec3/command/templates/'.$os.".radl";
@@ -208,7 +211,7 @@ if($_POST){
     //-q para que no muestre el gusano y -y para que no pregunte lo de la conexion segura
     // quitamos el -q para que muestre el error, si ocurre, en el log
 
-    $ec3_log_file = "/tmp/ec3_log_".$rand;
+    $ec3_log_file = "/tmp/ec3_log_".$name;
     //$process = new Process("./command/ec3 -q launch -y " . $name . " " . $lrms . " " . $sw . $os . " -a " . $auth_file . " -u http://servproject.i3m.upv.es:8899", $ec3_log_file);
     /*if($lrms=='mesos'){
         $lrms = 'docker mesos';
@@ -233,9 +236,9 @@ if($_POST){
             $cond = True;
         } elseif(!$process->status()){
             if(strpos($log_content, "Error") && strpos($log_content, "Attempt 1:")){
-                echo "Found problems deploying your cluster " . $name. ": ". substr($log_content, strpos($log_content, "Attempt 1:") + 10);
+                echo "Found problems deploying your cluster " . $cluster_name. ": ". substr($log_content, strpos($log_content, "Attempt 1:") + 10);
             } else{
-                echo "Unexpected problems deploying the cluster ". $name .". Check the introduced data and try again. If the error persists, please contact us.";
+                echo "Unexpected problems deploying the cluster ". $cluster_name .". Check the introduced data and try again. If the error persists, please contact us.";
             }
             $ec3_del_file = "/tmp/ec3_del_".$name;
             $process_2 = new Process("./command/ec3 destroy --yes --force " . $name, $ec3_del_file);
@@ -245,7 +248,7 @@ if($_POST){
     }    
 
     //Si ya esta running, podemos obtener la clave privada generada por el im para conectarnos al frontend
-    $ec3_ssh_file = "/tmp/ec3_ssh_".$rand;
+    $ec3_ssh_file = "/tmp/ec3_ssh_".$name;
     $process_ssh = new Process("./command/ec3 ssh " . $name . "  --show-only ", $ec3_ssh_file);
     $process_ssh->start();
     sleep(1);

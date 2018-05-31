@@ -57,7 +57,8 @@ if($_POST){
     $proxy = str_replace("\n", "\\n", $proxy);
 
     if($proxy!=""){
-        $auth_file = "/tmp/auth_" .substr($clustername, 8);
+        //$auth_file = "/tmp/auth_" .substr($clustername, 8);
+        $auth_file = "/tmp/auth_" .$clustername;
         
         //ahora recuperamos la linea de credenciales del IM
         $im_line="";
@@ -119,7 +120,7 @@ if($_POST){
 
     // llamamos a EC3 para eliminar el cluster
     //$ec3_log_file = "/tmp/ec3_del_".random_string(5);
-    $ec3_log_file = "/tmp/ec3_del_".substr($clustername, 8);
+    $ec3_log_file = "/tmp/ec3_del_". $clustername;
     if($auth_file != ""){
         $process_2 = new Process("./command/ec3 destroy --yes --force -a " . $auth_file. " " . $clustername, $ec3_log_file);
     } else {

@@ -747,7 +747,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                                     wizard.submitSuccess();         // displays the success card
                                     //retValue = "<div> <b> " + JSON.stringify(response) + " </b></div> ";
                                     var obj = jQuery.parseJSON(JSON.stringify(response));
-                                    retValue = "<div> Cluster name: <b> " + obj[i].name.substring(0, obj[i].name.indexOf("_")); + " </b></div> <div> Frontend IP: <b> " + obj.ip + " </b></div> <div> Username: <b> " + obj.username + " </b></div>";
+                                    retValue = "<div> Cluster name: <b> " + obj[i].name.substring(0, obj[i].name.indexOf("$")); + " </b></div> <div> Frontend IP: <b> " + obj.ip + " </b></div> <div> Username: <b> " + obj.username + " </b></div>";
                                     retValue += "<div> Secret key: <textarea id='private_key_value' name='private_key_value' style='display:none;'>" + decodeURIComponent(obj.secretkey) + "</textarea>" +
                                     "<a class='download' href='javascript:download(\"private_key_value\", \"key.pem\");'>Download</a> </div>";
                                     $('.wizard-ip').html(retValue);
@@ -1028,7 +1028,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                             }
                             for (var i = 0; i < obj.length; i++){
                                 retValue += "<tr>";
-                                retValue += "<td> " + obj[i].name.substring(0, obj[i].name.indexOf("_")); + " </th> ";
+                                retValue += "<td> " + obj[i].name.substring(0, obj[i].name.indexOf("$")); + " </th> ";
                                 retValue += "<td> " + obj[i].state + " </th> ";
                                 retValue += "<td> " + obj[i].IP + " </th> ";
                                 retValue += "<td> " + obj[i].nodes + " </th> ";
@@ -1081,7 +1081,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                             //sleep(2000);
                             list();
                             //alert(obj.responseText);
-                            alert('Found problems deleting cluster ' + name + '. Try again, if the error persists, contact us.')
+                            alert('Found problems deleting cluster ' + name.substring(0, name.indexOf("$")) + '. Try again, if the error persists, contact us.')
                     }
             });   
         };

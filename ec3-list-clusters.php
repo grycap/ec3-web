@@ -1,6 +1,7 @@
 <?php
 include_once('process.php');
 
+//TODO: use clustername not a random string
 // Generates a random string for the name of the cluster
 function random_string($length) {
     $key = '';
