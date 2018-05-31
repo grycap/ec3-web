@@ -499,15 +499,14 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
 
             <!-- Step 7 Cluster's size -->
             <div class="wizard-card wizard-card-overlay" data-cardname="size-fedcloud">
-                <h3>Cluster's size</h3>
+                <h3>Cluster's size & Name</h3>
 
                 <div class="wizard-input-section">
                     <p>
                         Introduce the maximum number of nodes of your cluster (without including the front-end node).
                     </p>
-                    </br>
-                    <p>
-                        Note that EC3 will initially provision only the front-end node and it will dynamically deploy additional working nodes as necessary.
+                    <p style="font-size:12px"> <em>
+                        Note that EC3 will initially provision only the front-end node and it will dynamically deploy additional working nodes as necessary. </em>
                     </p>
                     </br>
                     <div class="form-group">
@@ -524,6 +523,12 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                             <option value="9">9</option>
                             <option value="10">10</option>
                             </select>
+                        </div>
+                        
+                       <div class="col-sm-8">
+                            </br>
+                            <p> Cluster name (must be unique): </p>
+                            <input type="text" class="form-control" id="cluster-name" name="cluster-name" placeholder="Cluster name">
                         </div>
                     </div>
                 </div>
@@ -946,6 +951,9 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
 
                 //obtener el numero de nodos
                 var nodes = parseInt($('#nodes-fedcloud').val());
+                
+                //obtener el nombre del cluster
+                var clustername = $('#cluster-name').val();
 
                 retValue = "<div><b>Endpoint: </b>" + endpointName + "</div>";
 
@@ -959,7 +967,8 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                            "<div> <b>Working nodes instance type: </b>" + wn_type + "</div>" +
                            "<div> <b>Local Resource Management System: </b>" + lrms + "</div>" +
                            "<div> <b>Software packages: </b>" + sw + "</div>" +
-                           "<div> <b>Maximum number of nodes: </b>" + nodes + "</div>";
+                           "<div> <b>Maximum number of nodes: </b>" + nodes + "</div>" +
+                           "<div> <b>Cluster name: </b>" + clustername + "</div>";
 
 
                 //Mostramos los datos recogidos al usuario

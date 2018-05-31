@@ -172,6 +172,8 @@ if($_POST){
         }
 
         $nodes = (isset($_POST['nodes-fedcloud']) ? $_POST['nodes-fedcloud'] : "1");
+        
+        $cluster_name = (isset($_POST['cluster-name']) ? $_POST['cluster-name'] : "mycluster");
 
         $auth_file = generate_auth_file_fedcloud($endpoint);
 
@@ -190,7 +192,8 @@ if($_POST){
     } else {
         $rand = random_string(5);
     }
-    $name = "cluster_" . $rand;
+    //$name = "cluster_" . $rand;
+    $name = $cluster_name . $user_sub;
     $lrms = strtolower($lrms);
     $sw = strtolower($sw);
 
