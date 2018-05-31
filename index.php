@@ -5,6 +5,7 @@ if ( !session_id() ) {
 
 if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
     include('auth_egi.php');
+    $user_name = "";
 } else {
     $user_sub = $_SESSION["egi_user_sub"];
     $user_name = $_SESSION["egi_user_name"];
