@@ -1029,7 +1029,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                     success: function(response, status, data){
                             var obj = jQuery.parseJSON(JSON.stringify(response));
                             //retValue = "<div> <b> " + obj.responseText + " </b></div> ";
-                            var retValue = "<p><i>Notice that if you destroy the cluster, this might take 10-15 seconds, please, wait for the response of the portal. </i></p>"
+                            var retValue = "<p><i>Notice that if you destroy the cluster, this might take 15-30 seconds, please, wait for the response of the portal. </i></p>"
                             retValue += "<table> <tr> <th>Cluster name</th> <th>State</th> <th>IP</th> <th>Nodes</th> <th>SSH key</th> <th>Action</th> </tr>";
                             if (obj.length == 0) {
                                 retValue += "<tr> <td colspan=5>No clusters available for this user.</td> </tr>";
