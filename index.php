@@ -756,6 +756,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                                     var retValue = "<div> Cluster name: <b> " + name + " </b></div> <div> Frontend IP: <b> " + obj.ip + " </b></div> <div> Username: <b> " + obj.username + " </b></div>";
                                     retValue += "<div> Secret key: <textarea id='private_key_value' name='private_key_value' style='display:none;'>" + decodeURIComponent(obj.secretkey) + "</textarea>" +
                                     "<a class='download' href='javascript:download(\"private_key_value\", \"key.pem\");'>Download</a> </div>";
+                                    alert(retValue);
                                     $('.wizard-ip').html(retValue);
                                     //$('.wizard-ip').append(retValue).hide().show();
                                     wizard.hideButtons();           // hides the next and back buttons
