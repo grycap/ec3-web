@@ -748,15 +748,14 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                                     wizard.submitSuccess();         // displays the success card
                                     //retValue = "<div> <b> " + JSON.stringify(response) + " </b></div> ";
                                     var obj = jQuery.parseJSON(JSON.stringify(response));
-                                    var name = obj[i].name;
-                                    var index = obj[i].name.indexOf("__");
+                                    var name = obj.name;
+                                    var index = obj.name.indexOf("__");
                                     if (index > -1){
-                                        name = obj[i].name.substring(0, obj[i].name.indexOf("__"));
+                                        name = obj.name.substring(0, obj.name.indexOf("__"));
                                     }
                                     var retValue = "<div> Cluster name: <b> " + name + " </b></div> <div> Frontend IP: <b> " + obj.ip + " </b></div> <div> Username: <b> " + obj.username + " </b></div>";
                                     retValue += "<div> Secret key: <textarea id='private_key_value' name='private_key_value' style='display:none;'>" + decodeURIComponent(obj.secretkey) + "</textarea>" +
                                     "<a class='download' href='javascript:download(\"private_key_value\", \"key.pem\");'>Download</a> </div>";
-                                    alert(retValue);
                                     $('.wizard-ip').html(retValue);
                                     //$('.wizard-ip').append(retValue).hide().show();
                                     wizard.hideButtons();           // hides the next and back buttons
