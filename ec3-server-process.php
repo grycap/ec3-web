@@ -176,8 +176,17 @@ if($_POST){
         
         $cluster_name = (isset($_POST['cluster-name']) ? $_POST['cluster-name'] : "");
         
-        //$name = "cluster_" . $rand;
         $user_sub = $_SESSION["egi_user_sub"];
+        
+        if(!isset($_SESSION)) session_start();
+        if (!isset($_SESSION["egi_user_sub"])) {
+            //$user_sub = random_string(5);
+            header('Location:session_expired.html');
+            die();
+        } else {
+            $user_sub = $_SESSION["egi_user_sub"];
+        }
+        
         $name = $cluster_name . "__" . $user_sub;
         $lrms = strtolower($lrms);
         $sw = strtolower($sw);
@@ -198,7 +207,10 @@ if($_POST){
         $rand = substr($auth_file, 10);
     } else {
         $rand = random_string(5);
-    }*/
+    }
+    $name = "cluster_" . $rand;
+    
+    */
 
 
     // Modificamos el numero maximo de nodos del cluster

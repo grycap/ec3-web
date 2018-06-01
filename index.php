@@ -753,20 +753,22 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                                     if (index > -1){
                                         name = obj[i].name.substring(0, obj[i].name.indexOf("__"));
                                     }
-                                    retValue = "<div> Cluster name: <b> " + name + " </b></div> <div> Frontend IP: <b> " + obj.ip + " </b></div> <div> Username: <b> " + obj.username + " </b></div>";
+                                    var retValue = "<div> Cluster name: <b> " + name + " </b></div> <div> Frontend IP: <b> " + obj.ip + " </b></div> <div> Username: <b> " + obj.username + " </b></div>";
                                     retValue += "<div> Secret key: <textarea id='private_key_value' name='private_key_value' style='display:none;'>" + decodeURIComponent(obj.secretkey) + "</textarea>" +
                                     "<a class='download' href='javascript:download(\"private_key_value\", \"key.pem\");'>Download</a> </div>";
                                     $('.wizard-ip').html(retValue);
+                                    //$('.wizard-ip').append(retValue).hide().show();
                                     wizard.hideButtons();           // hides the next and back buttons
                                     wizard.updateProgressBar(0);    // sets the progress meter to 0
                             },
                             error: function(response, status, error){
                                     var obj = jQuery.parseJSON(JSON.stringify(response));
-                                    retValue = "<div> <b> " + obj.responseText + " </b></div> ";
+                                    var retValue = "<div> <b> " + obj.responseText + " </b></div> ";
                                     //retValue = "<div> <b> " + JSON.stringify(response) + " </b></div> ";
                                     //retValue += "<div> <b> " + JSON.stringify(status) + " </b></div> ";
                                     //retValue += "<div> <b> " + JSON.stringify(error) + " </b></div> ";
                                     $('.wizard-ip').html(retValue);
+                                    //$('.wizard-ip').append(retValue).hide().show();
                                     wizard.submitError();           // display the error card
                                     wizard.hideButtons();           // hides the next and back buttons
                             }
@@ -1027,7 +1029,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                     success: function(response, status, data){
                             var obj = jQuery.parseJSON(JSON.stringify(response));
                             //retValue = "<div> <b> " + obj.responseText + " </b></div> ";
-                            retValue = "<p><i>Notice that if you destroy the cluster, this might take 10-15 seconds, please, wait for the response of the portal. </i></p>"
+                            var retValue = "<p><i>Notice that if you destroy the cluster, this might take 15-30 seconds, please, wait for the response of the portal. </i></p>"
                             retValue += "<table> <tr> <th>Cluster name</th> <th>State</th> <th>IP</th> <th>Nodes</th> <th>SSH key</th> <th>Action</th> </tr>";
                             if (obj.length == 0) {
                                 retValue += "<tr> <td colspan=5>No clusters available for this user.</td> </tr>";
@@ -1052,7 +1054,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                     },
                     error: function(response, status, error){
                             var obj = jQuery.parseJSON(JSON.stringify(response));
-                            retValue = "<div> <b> ERROR: " + obj.responseText + " </b></div> ";
+                            var retValue = "<div> <b> ERROR: " + obj.responseText + " </b></div> ";
                             //retValue = "<div> <b> " + JSON.stringify(response) + " </b></div> ";
                             //retValue += "<div> <b> " + JSON.stringify(status) + " </b></div> ";
                             //retValue += "<div> <b> " + JSON.stringify(error) + " </b></div> ";                              
