@@ -493,7 +493,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                         <option>Torque</option>
                         <option>SGE</option>
                         <option>Mesos</option>
-                        <option>Kubernetes</option>
+                        <!--<option>Kubernetes</option>-->
                     </select>
                 </div>
             </div>
