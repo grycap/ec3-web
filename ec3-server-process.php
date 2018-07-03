@@ -1,15 +1,4 @@
 <?php
-//Tuto basico de PHP: http://www.w3schools.com/php/php_variables.asp
-
-//PHP is NOT case-sensitive BUT variable names are case-sensitive
-//LOS ECHO VAN DIRECTOS AL CLIENTE, PARECE QUE LOS PRINT NO
-
-//AJAX y PHP: http://www.w3schools.com/php/php_ajax_php.asp
-//Funcion PHP para ejecutar un comando linux: http://php.net/manual/en/function.exec.php
-//Funcion PHP para ejecutar un comando shell: http://php.net/manual/en/function.shell-exec.php
-
-//funcion AJAX de Jquery para enviar los datos al servidor: http://api.jquery.com/jquery.ajax/ (estan explicados todos los formatos disponibles)
-//AJAX envia los datos en UTF-8, si no se ven bien probar: http://www.desarrolloweb.com/articulos/convertir-caracteres-utf-8-con-php.html
 
 include_once('process.php');
 
@@ -25,52 +14,18 @@ function random_string($length) {
     return $key;
 }
 
-function getSSLPage($url) {
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_HEADER, false);
-    curl_setopt($ch, CURLOPT_URL, $url);
-//    curl_setopt($ch, CURLOPT_SSLVERSION,3); 
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    $result = curl_exec($ch);
-    curl_close($ch);
-
-    // For unit tests
-    if (isset($GLOBALS["EC3UnitTest"])) return "line1\nline2\nline3";   
-
-    return $result;
-}
-
-//NOTA: no es posible la sobrecarga de metodos en PHP porque solo tiene en cuenta el nombre, no los parametros
-
-// Generates the auth file for FedCloud deployments
-//function generate_auth_file_fedcloud($proxy, $endpoint, $myproxyserver, $myproxyuser, $myproxypass) {
-function generate_auth_file_fedcloud($endpoint, $clustername) {
+// Generates the auth file for Fogbow deployments
+function generate_auth_file_fogbow($endpoint, $token, $clustername) {
     //$auth = '';
     //$auth = tempnam("/tmp", "auth_");
     $auth = "/tmp/auth_" . $clustername;
     chmod($auth, 0644);
 
     //Write user credentials in IM format, like: 
-    //id = occi; type = OCCI; proxy = file(/tmp/proxy.pem); host = https://stack-server-01.ct.infn.it:8787
-    //id = occi; type = OCCI; proxy = asdasd; host = https://stack-server-01.ct.infn.it:8787
-    
-    if(!isset($_SESSION)) session_start();
-
-    if (!isset($_SESSION["egi_user_sub"])) {
-        //echo "Error no unity user ID obtained.";
-        header('Location:session_expired.html');
-        die();
-    } else {
-        $user_sub = $_SESSION["egi_user_sub"];
-    }
-
-    $proxy = getSSLPage("https://etokenserver.ct.infn.it:8443/eTokenServer/eToken/08b435574d4f19c734f19514828ad0ab?voms=vo.access.egi.eu:/vo.access.egi.eu&proxy-renewal=true&disable-voms-proxy=false&rfc-proxy=true&cn-label=eToken:" . $user_sub);
-    $proxy = str_replace("\n", "\\n", $proxy);
+    //id = fogbow; type = FogBow; host = 150.165.85.52:8182; token = eyJsb2duaW4iOiJ1cHZ
     
     $gestor = fopen($auth, "w");
-    fwrite($gestor, "id = occi; type = OCCI; proxy = " . $proxy . "; host = " . $endpoint . PHP_EOL);
+    fwrite($gestor, "id = fogbow; type = FogBow; host = " . "$endpoint . "; token = " . $token . PHP_EOL);
     //Write needed credentials of IM and VMRC
     fwrite($gestor, "type = InfrastructureManager; username = " . random_string(8) . "; password = " . random_string(10). PHP_EOL);
     //fwrite($gestor, "type = VMRC; host = http://servproject.i3m.upv.es:8080/vmrc/vmrc; username = micafer; password = ttt25");
@@ -83,7 +38,6 @@ function generate_auth_file_fedcloud($endpoint, $clustername) {
 
 
 // Generates the system RADL file for the deployments that the user has indicated an AMI or VMI
-//function generate_system_image_radl($cloud, $ami, $region, $ami_user, $ami_password, $instancetype_front, $instancetype_wn, $front_cpu, $front_mem, $wn_cpu, $wn_mem, $nodes, $os) {
 function generate_system_image_radl($cloud, $ami, $region, $ami_user, $ami_password, $instancetype_front, $instancetype_wn, $front_cpu, $front_mem, $wn_cpu, $wn_mem, $nodes){
     $rand_str = random_string(4); 
     $templates_path = (isset($GLOBALS['templates_path']) ? $GLOBALS['templates_path'] : "/var/www/html/ec3-ltos/command/templates");
@@ -94,16 +48,6 @@ function generate_system_image_radl($cloud, $ami, $region, $ami_user, $ami_passw
     $fcuser = 'cloudadm';
     $pass = random_string(3).'#'. random_string(3).'5A';
 
-    //obtain UNITY user
-    if(!isset($_SESSION)) session_start();
-
-    if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
-        header('Location:session_expired.html');
-    } else {
-        $user_sub = $_SESSION["egi_user_sub"];
-        $user_name = $_SESSION["egi_user_name"];
-    }
-
     $new_file = fopen($path_to_new_file, "w");
     fwrite($new_file, "system front (".PHP_EOL);
     fwrite($new_file, "    disk.0.os.name='linux' and".PHP_EOL);
@@ -112,7 +56,7 @@ function generate_system_image_radl($cloud, $ami, $region, $ami_user, $ami_passw
     fwrite($new_file, "    disk.0.image.url = 'appdb://".$region. "/" .$ami. "?vo.access.egi.eu' and".PHP_EOL);
     fwrite($new_file, "    instance_type='".$instancetype_front."' and".PHP_EOL);
     fwrite($new_file, "    disk.0.os.credentials.username = '".$fcuser."' and".PHP_EOL);
-    fwrite($new_file, "    ec3aas.username = '".$user_sub."'".PHP_EOL);
+    //fwrite($new_file, "    ec3aas.username = '".$user_sub."'".PHP_EOL);
     
     fwrite($new_file, ")".PHP_EOL);
     fwrite($new_file, PHP_EOL);
@@ -133,84 +77,152 @@ function generate_system_image_radl($cloud, $ami, $region, $ami_user, $ami_passw
     return array($file_name, $fcuser, $pass);
 }
 
+// Generates the system RADL file for the deployments that the user DOES NOT has indicated an AMI or VMI
+function generate_system_template_radl($cloud, $os, $instancetype_front, $instancetype_wn, $front_cpu, $front_mem, $wn_cpu, $wn_mem, $nodes){
+    $rand_str = random_string(4);
+    $templates_path = (isset($GLOBALS['templates_path']) ? $GLOBALS['templates_path'] : "/var/www/html/ec3/command/templates");
+    $path_to_new_file = $templates_path . '/'.$os.'-'.$cloud.'_'.$rand_str.'.radl';
+    $file_name = $os.'-'.$cloud.'_'.$rand_str;
+    $path_to_template = '/etc/ec3/templates/'.$os.'-'.$cloud.".radl";
+    $new_file = fopen($path_to_new_file, "w");
+    $template_file = fopen($path_to_template, "r");
+    if($template_file != False){
+        while(!feof($template_file)) {
+            $line = fgets($template_file);
+            fwrite($new_file, $line);
+        }
+    }
+    fclose($template_file);
+    fclose($new_file);
+    
+    // Obtenemos user y pass de la imagen
+    $userpass = get_vmi_credentials($os);
+    $user = $userpass[0];
+    $pass = $userpass[1];
+    if($cloud == 'one'){
+        $file_contents = file_get_contents($path_to_new_file);
+        $file_contents = str_replace("#INSTANCES#",$nodes,$file_contents);
+        $file_contents = str_replace("#CPU_FRONT#",$front_cpu,$file_contents);
+        $file_contents = str_replace("#MEM_FRONT#",$front_mem."m",$file_contents);
+        $file_contents = str_replace("#CPU_WN#",$wn_cpu,$file_contents);
+        $file_contents = str_replace("#MEM_WN#",$wn_mem."m",$file_contents);
+        //$file_contents = str_replace("#USER#",$user,$file_contents);
+        $file_contents = str_replace("#PASSWORD#",$pass,$file_contents);
+        file_put_contents($path_to_new_file,$file_contents);
+    } elseif ($cloud == 'openstack') {
+        $file_contents = file_get_contents($path_to_new_file);
+        $file_contents = str_replace("#INSTANCES#",$nodes,$file_contents);
+        $file_contents = str_replace("#CPU_FRONT#",$front_cpu,$file_contents);
+        $file_contents = str_replace("#MEM_FRONT#",$front_mem."m",$file_contents);
+        $file_contents = str_replace("#CPU_WN#",$wn_cpu,$file_contents);
+        $file_contents = str_replace("#MEM_WN#",$wn_mem."m",$file_contents);
+        file_put_contents($path_to_new_file,$file_contents);
+    } elseif ($cloud == 'fedcloud'){
+        $file_contents = file_get_contents($path_to_new_file);
+        $file_contents = str_replace("#INSTANCES#",$nodes,$file_contents);
+        $file_contents = str_replace("#INSTANCE_TYPE_FRONT#", $instancetype_front, $file_contents);
+        $file_contents = str_replace("#INSTANCE_TYPE_WN#", $instancetype_wn, $file_contents);
+        file_put_contents($path_to_new_file,$file_contents);
+    } else{ //$cloud=ec2
+        $file_contents = file_get_contents($path_to_new_file);
+        $file_contents = str_replace("#INSTANCES#",$nodes,$file_contents);
+        $file_contents = str_replace("#INSTANCE_TYPE_FRONT#", $instancetype_front, $file_contents);
+        $file_contents = str_replace("#INSTANCE_TYPE_WN#", $instancetype_wn, $file_contents);
+        //$file_contents = str_replace("#USER#",$user,$file_contents);
+        $file_contents = str_replace("#PASSWORD#",$pass,$file_contents);
+        file_put_contents($path_to_new_file,$file_contents);
+    }
+    if($cloud == 'fedcloud'){
+        $user = 'cloudadm';
+    }
+    return array($file_name, $user, $pass);
+}
+// Translates the OS name to the name of the EC3 recipe
+function translate_os($os) {
+    switch ($os) {
+        case "Ubuntu 12.04":
+            $os = "ubuntu12";
+            break;
+        case "Ubuntu 14.04":
+            $os = "ubuntu14";
+            break;
+        case "CentOS 7":
+            $os = "centos7";
+            break;
+        case "CentOS 6.5":
+            $os = "centos";
+            break;
+        case "CentOS 6":
+            $os = "centos";
+            break;
+        case "Scientific Linux":
+            $os = "sl";
+            break;
+    }
+    return $os;
+}
+
 
 if($_POST){
-    //echo "recibo algo POST";
-    //echo "{}";
     $possible_sw = array("nfs", "maui", "openvpn", "octave", "docker", "gnuplot", "tomcat", "galaxy", "marathon", "chronos", "hadoop", "namd", "extra_hd");    
 
-    // El string recibido tiene este aspecto: cloud=ec2&accesskey=ffffff&secretkey=hhhhhhhhh&os-ec2=Ubuntu+12.04&lrms-ec2=SLURM&clues=clues&nodes-ec2=5
+    // El string recibido tiene este aspecto: cloud=fogbow&accesskey=ffffff&secretkey=hhhhhhhhh&os-ec2=Ubuntu+12.04&lrms-ec2=SLURM&clues=clues&nodes-ec2=5
     // Pero tenemos que devolver un JSON si todo ha ido bien
     //json_encode($stringSpliteado);
 
     $provider = (isset($_POST['cloud']) ? $_POST['cloud'] : "unknown");
     
-    if ($provider == 'fedcloud'){
-        $endpointName = (isset($_POST['endpointName']) ? $_POST['endpointName'] : "");
-        $endpoint = (isset($_POST['endpoint-fedcloud']) ? $_POST['endpoint-fedcloud'] : "");
-        $vmi = (isset($_POST['vmi-fedcloud']) ? $_POST['vmi-fedcloud'] : "");
+    if ($provider == 'fogbow'){
+        $endpointName = (isset($_POST['endpoint-fogbow']) ? $_POST['endpoint-fogbow'] : "");
+        $token = (isset($_POST['token-fogbow']) ? $_POST['token-fogbow'] : "");
+        $os = (isset($_POST['os-fogbow']) ? $_POST['os-fogbow'] : "");
 
-        if($vmi == ''){
-            echo 'Image ID not provided. Impossible to launch a cluster without these data. Please, enter the required information and try again.';
+        if($os == ''){
+            echo 'Image SO not provided. Impossible to launch a cluster without these data. Please, enter the required information and try again.';
             exit(1);
         }
 
-        $front_type = (isset($_POST['front-fedcloud']) ? $_POST['front-fedcloud'] : "");
-        $wn_type = (isset($_POST['wn-fedcloud']) ? $_POST['wn-fedcloud'] : "");
+        $front_cpu = (isset($_POST['front-cpu-fogbow']) ? $_POST['front-cpu-fogbow'] : "");
+        $front_mem = (isset($_POST['front-mem-fogbow']) ? $_POST['front-mem-fogbow'] : "");
+        $wn_cpu = (isset($_POST['wn-cpu-fogbow']) ? $_POST['wn-cpu-fogbow'] : "");
+        $wn_mem = (isset($_POST['wn-mem-fogbow']) ? $_POST['wn-mem-fogbow'] : "");
 
-        $lrms = (isset($_POST['lrms-fedcloud']) ? $_POST['lrms-fedcloud'] : "");
+        $lrms = (isset($_POST['lrms-fogbow']) ? $_POST['lrms-fogbow'] : "");
         
         if($lrms == '' ){
             echo 'LRMS not provided. Impossible to launch a cluster without this data. Please, enter the required information and try again.';
             exit(1);
         }
         
-        $sw = "clues2 myproxy_ltos ";
+        $sw = "clues2 ";
         foreach ($possible_sw as $item_sw) {
             if (isset($_POST[$item_sw])) {
                 $sw .= $item_sw . " ";
             }
         }
 
-        $nodes = (isset($_POST['nodes-fedcloud']) ? $_POST['nodes-fedcloud'] : "1");
+        $nodes = (isset($_POST['nodes-fogbow']) ? $_POST['nodes-fogbow'] : "1");
         
         $cluster_name = (isset($_POST['cluster-name']) ? $_POST['cluster-name'] : "");
-        
-        $user_sub = $_SESSION["egi_user_sub"];
-        
-        if(!isset($_SESSION)) session_start();
-        if (!isset($_SESSION["egi_user_sub"])) {
-            //$user_sub = random_string(5);
-            header('Location:session_expired.html');
-            die();
-        } else {
-            $user_sub = $_SESSION["egi_user_sub"];
-        }
-        
-        $name = $cluster_name . "__" . $user_sub;
+        //TODO: ver como gestionamos el clustername ya que no tenemos usuarios
+        //$name = $cluster_name . "__" . $user_sub;
+        $name = $cluster_name;
         $lrms = strtolower($lrms);
         $sw = strtolower($sw);
 
-        $auth_file = generate_auth_file_fedcloud($endpoint, $name);
 
-        $data = generate_system_image_radl($provider, $vmi, $endpointName, '', '', $front_type, $wn_type, '', '', '', '', $nodes);
-
-        $os = $data[0];
+        $auth_file = generate_auth_file_fogbow($endpoint, $token, $name);
+        //TODO: adaptarlo a fogbow, porque tendremos que tener predefinidos los OS que soporta y por tanto solo modificar las recetas
+        $data = generate_system_template_radl($provider, translate_os($os), '', '', $front_cpu, $front_mem, $wn_cpu, $wn_mem, $nodes);
+        //$data = generate_system_image_radl($provider, $vmi, $endpointName, '', '', $front_type, $wn_type, '', '', '', '', $nodes);
+        //$os = $data[0];
         $user = $data[1];
         $pass = $data[2];
+        
     } else {
         echo 'Unknown provider';
         exit(1);
     }
-
-    /*if($auth_file != ""){
-        $rand = substr($auth_file, 10);
-    } else {
-        $rand = random_string(5);
-    }
-    $name = "cluster_" . $rand;
-    
-    */
 
 
     // Modificamos el numero maximo de nodos del cluster

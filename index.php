@@ -1,18 +1,3 @@
-<?php
-if ( !session_id() ) {
-    session_start();
-}
-
-if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
-    include('auth_egi.php');
-    $user_name = "";
-} else {
-    $user_sub = $_SESSION["egi_user_sub"];
-    $user_name = $_SESSION["egi_user_name"];
-}
-
-
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -76,26 +61,20 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
     <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
 
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
 </head>
 
 <body id="page-top" class="index">
-<?php include_once("analyticstracking.php") ?>
+    
+<!--add analytics tracking  < ? php include_once("analyticstracking.php") ?>-->
 
     <!-- Navigation -->
     <nav class="navbar navbar-default navbar-fixed-top">
-        <div class="container">
+        <!--<div class="container">
             <div class="navbar-right page-scroll">
 				<button id="logout" class="navbar-welcome navbar-right page-scroll" type="button" style="color:#fed136;"> Log out </button>
-                <p class="navbar-welcome navbar-right page-scroll"> Welcome <?php echo $user_name;?> | </p>
+                <p class="navbar-welcome navbar-right page-scroll"> Welcome ATM user! | </p>
             </div>
-        </div>
+        </div>-->
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header page-scroll">
@@ -137,7 +116,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
     <header>
         <div class="container">
             <div class="intro-text">
-                  <div class="intro-lead-in">Cluster as a Service</div>
+                  <div class="intro-lead-in">Elastic Clusters as a Service</div>
                 <div class="intro-heading">Deploy Virtual Elastic Clusters on the Cloud</div>
                 <a href="#try" class="page-scroll btn btn-xl">Deploy your cluster!</a>
                 <a href="#services" class="page-scroll btn btn-xl">Learn more</a>
@@ -213,7 +192,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <h2 class="section-heading">Deploy a virtual elastic cluster in minutes</h2>
-                    <h3 class="section-subheading text-muted">No registration is required. You only need valid user credentials for the Cloud. Pay only for the resources consumed.<br> This service is offered at no additional cost.</h3>
+                    <h3 class="section-subheading text-muted">No registration is required. You only need valid user credentials for the Fogbow Cloud. <br> This service is offered at no additional cost thanks to the ATMOSPHERE project.</h3>
                 </div>
             </div>
             <div class="row text-center">
@@ -247,7 +226,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                         </a>
                     </span>
                     <h4 class="service-heading">EC3 @ YouTube</h4>
-                    <p class="text-muted">Stay tuned for upcoming tutorials.</p>
+                    <p class="text-muted">Videotutorials with EC3aaS and EC3 CLI. Stay tuned for upcoming tutorials.</p>
                 </div>
             </div>
         </div>
@@ -258,20 +237,21 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
-                    <h2 class="section-heading">Manage your clusters deployed with EC3</h2>
+                    <h2 class="section-heading">Deploy and Manage your virtual clusters with EC3</h2>
                     <h3 class="section-subheading text-muted-contact">You will need to provide valid credentials for the Cloud provider. Not sure if this is safe? <a <a href="http://ec3.readthedocs.org/en/devel/ec3.html#authorization-file">Check the docs.</a>
                       <br>
-                      Wanted to deploy a hybrid cluster? You can do it with the <a href="https://github.com/grycap/ec3">CLI</a>.
+                      <!--Wanted to deploy a hybrid cluster? You can do it with the <a href="https://github.com/grycap/ec3">CLI</a>.-->
                     </h3>
                 </div>
             </div>
             <div class="row">
                 <div class="col-sm-6">
                     <div class="team-member">
-                        <button id="open-wizard-deploy" class="btn btn-primary btn-fedcloud" onclick="ga('send','event','Providers','EGI FedCloud')"></button>
+                        <!--avisar a analytics -->
+                        <!--onclick="ga('send','event','Providers','Fogbow')"-->
+                        <button id="open-wizard-deploy" class="btn btn-primary btn-fogbow" ></button>
                         <h4 class="provider">Deploy your cluster</h4>
-                        <p class="text-muted-contact">In the European Federated Cloud</p>
-                        <a href="http://www.egi.eu/news-and-media/newsletters/Inspired_Issue_22/Custom_elastic_clusters_to_manage_Galaxy_environments.html" target="_blank">(See a case study here)</a>.
+                        <p class="text-muted-contact">In the Fogbow Cloud provided by ATMOSPHERE</p>
                     </div>
                 </div>
                 <div class="col-sm-6">
@@ -315,8 +295,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <h2 class="section-heading">Contact Us</h2>
-                    <h3 class="section-subheading-contact text-muted-contact">In case of problems, please send a request for support at: <a href="mailto:applications-platform-info@mailman.egi.eu">applications-platform-info@mailman.egi.eu</a> </h3>
-					<h3 class="section-subheading-contact text-muted-contact">The request will generate a GGUS ticket to track your problem.</h3>
+                    <h3 class="section-subheading-contact text-muted-contact">In case of problems, please send a request for support at: <a href="mailto:atmosphere-rtb@upv.es">atmosphere-rtb@upv.es</a> </h3>
 					<h3 class="section-subheading-contact text-muted-contact">Anytime the user will be notified by e-mail about the status of his/her request.</h3>
                 </div>
             </div>
@@ -335,7 +314,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
 					<a href="terms.html">Terms of Service</a>
                 </div>	
                 <div class="col-md-12">
-                    <span class="copyright"><img src="img/EGI_Logo.png" border="0" width="30" align="bottom"/> EC3 is an EGI service provided by <a href="http://www.grycap.upv.es">GRyCAP-I3M-UPV</a>. Copyright &copy; 2015, <a href="http://www.upv.es">Universitat Politècnica de València.</a> 
+                    <span class="copyright"> EC3 is a service provided by <a href="http://www.grycap.upv.es">GRyCAP-I3M-UPV</a>. This portal is maintained by the <a href="https://www.atmosphere-eubrazil.eu/">ATMOSPHERE</a> project. Copyright &copy; 2015, <a href="http://www.upv.es">Universitat Politècnica de València.</a> 
                       <br>
 
                     </span>
@@ -353,11 +332,11 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
     </footer>
 
         
-        <!-- Wizard Fedcloud section -->
-        <div class="wizard" id="fedcloud-wizard" name="fedcloud-wizard" data-title="Configure your cluster">
+        <!-- Wizard Fogbow section -->
+        <div class="wizard" id="fogbow-wizard" name="fogbow-wizard" data-title="Configure your cluster">
 
             <!-- Step 1 Software packages -->
-            <div class="wizard-card wizard-card-overlay" data-cardname="swpkg-fedcloud">
+            <div class="wizard-card wizard-card-overlay" data-cardname="swpkg-fogbow">
                 <h3>Software Packages</h3>
 
                 <div class="wizard-input-section">
@@ -366,7 +345,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                         install in your cluster. They will be automatically installed and configured.
                     </p>
 
-                    <div class="fedcloud col-sm-12">
+                    <div class="fogbow col-sm-12">
                         <p style="margin-bottom:0px; margin-top:5px;">Cluster utilities:</p>
                         <div class="row">
                             <!--<div class="col-sm-4"><input type="checkbox" value="clues" name="clues" id="clues" title="Cluster Energy Saving System, necessary if you want an elastic cluster" checked=true/> CLUES </div>-->
@@ -409,27 +388,32 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
 
 
             <!-- Step 2 Cloud provider credentials -->
-            <div class="wizard-card" data-cardname="provider-fedcloud">
+            <div class="wizard-card" data-cardname="provider-fogbow">
                 <h3>Provider Account</h3>
                 <div class="wizard-input-section">
                     <p>
-                        FedCloud endpoint:
+                        Fogbow endpoint:
                     </p>
-                    <div class="form-group" style="height:250px;">
-                        <div class="col-sm-8" style="width:350px; height:240px;">
-                            <!--<p> Loading options from EGI AppDB... </p>-->
-                            <!--<input type="text" class="form-control" id="endpoint-fedcloud" name="endpoint-fedcloud" placeholder="endpoint" data-validate="validateValue">-->
-                            <select name="endpoint-fedcloud" id="endpoint-fedcloud" data-placeholder="Loading options from EGI AppDB..." style="width:350px;" class="chzn-select form-control" data-validate="drop_down_validation">
-                                <option value=""></option>
-                            </select>
+                    <div class="form-group">
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="endpoint-fogbow" name="endpoint-fogbow" placeholder="endpoint" data-validate="validateValue">
                         </div>
                     </div>
                 </div>
-
+                 <div class="wizard-input-section">
+                    <p>
+                        Fogbow token:
+                    </p>
+                    <div class="form-group">
+                        <div class="col-sm-11">
+                            <textarea rows="4" class="form-control" id="token-fogbow" name="token-fogbow" placeholder="You will need to contact with people in UFCG to obtain a Fogbow user and the private key file to generate the token." data-validate="validateValue"></textarea>
+                        </div>
+                    </div>
+                </div>
             </div>
             
             <!-- Step 3 - Operating System -->
-            <div class="wizard-card wizard-card-overlay" data-cardname="os-fedcloud">
+            <div class="wizard-card wizard-card-overlay" data-cardname="os-fogbow">
                 <h3>Operating System</h3>
 
                 <div class="wizard-input-section">
@@ -438,68 +422,74 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                     </p>
                     </br>
                     <div class="form-group" style="height:250px;">
-                        <div class="col-sm-6" style="width:350px; height:250px;" name="vmifedcloud" id="vmifedcloud">
-                            <p> Loading options from EGI AppDB... </p>
-                            <!--<select name="vmi-fedcloud" id="vmi-fedcloud" data-placeholder="--Select one--" style="width:350px; height:250px;" class="chzn-select form-control" data-validate="drop_down_validation">
-                            </select>-->
-                            <!--<input type="text" class="form-control" id="vmi-fedcloud" name="vmi-fedcloud" placeholder="VMI identifier" data-validate="validateValue">-->
+                        <div class="col-sm-6" style="width:350px; height:250px;" name="vmifogbow" id="vmifogbow">
+                            <select name="os-fogbow" id="os-fogbow" data-placeholder="--Select one--" style="width:350px;" class="chzn-select form-control" data-validate="">
+                                <option value=""></option>
+                                <optgroup label="Linux">
+                                    <option>CentOS 6.5</option>
+                                    <!--<option>CentOS 7</option>-->
+                                    <option>Ubuntu 14.04</option>
+                                </optgroup>
+                            </select>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Step 4 instance characteristics -->
-            <div class="wizard-card" data-cardname="instance-details">
+            <div class="wizard-card" data-cardname="instance-details-fogbow">
                 <h3>Instance details</h3>
+
                 <div class="wizard-input-section">
-                    <p>Front-end instance type:</p>
-                    <div class="form-group" style="height:30px;">
-                        <div class="col-sm-6" style="width:350px; height:30px;" name="frontfedcloud" id="frontfedcloud">
-                            <p> Loading options from EGI AppDB... </p>
-                            <!--<input type="text" class="form-control" id="front-type" name="front-type" placeholder="frontend instance type" data-validate="validateValue">-->
-                            <!--<select name="front-type" id="front-type" data-placeholder="--Select one--" style="width:350px; height:50px;" class="chzn-select form-control" data-validate="drop_down_validation">
-                                <option value=""></option>
-                            </select>-->
+                    <p>
+                        Frontend CPU and RAM memory (in MB) values:
+                    </p>
+                    <div class="form-group">
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" id="front-cpu-fogbow" name="front-cpu-fogbow" placeholder="frontend CPU" data-validate="validateNumber">
+                        </div>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" id="front-mem-fogbow" name="front-mem-fogbow" placeholder="frontend memory" data-validate="validateNumber">
                         </div>
                     </div>
                 </div>
+                </br>
                 <div class="wizard-input-section">
                     <p>
-                        Working nodes instance type:
+                        Working nodes CPU and RAM memory (in MB) values:
                     </p>
-                    <div class="form-group" style="height:100px;">
-                        <div class="col-sm-6" style="width:350px; height:100px;" name="wnfedcloud" id="wnfedcloud">
-                            <p> Loading options from EGI AppDB... </p>
-                            <!--<input type="text" class="form-control" id="wn-type" name="wn-type" placeholder="WN instance type" data-validate="validateValue">-->
-                            <!--<select name="wn-type" id="wn-type" data-placeholder="--Select one--" style="width:350px; height:50px;" class="chzn-select form-control" data-validate="drop_down_validation">
-                                <option value=""></option>
-                            </select>-->
+                    <div class="form-group">
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" id="wn-cpu-fogbow" name="wn-cpu-fogbow" placeholder="WN CPU" data-validate="validateNumber">
+                        </div>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" id="wn-mem-fogbow" name="wn-mem-fogbow" placeholder="WN memory" data-validate="validateNumber">
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Step 5 Local Resource Management System -->
-            <div class="wizard-card wizard-card-overlay" data-cardname="lrms-fedcloud">
+            <div class="wizard-card wizard-card-overlay" data-cardname="lrms-fogbow">
                 <h3>LRMS Selection</h3>
 
                 <div class="wizard-input-section">
                     <p>
                         Please choose the LRMS (Local Resource Management System) of your cluster
                     </p>
-                    <select name="lrms-fedcloud" id="lrms-fedcloud" data-placeholder="--Select one--" style="width:350px;" class="chzn-select form-control" data-validate="drop_down_validation">
+                    <select name="lrms-fogbow" id="lrms-fogbow" data-placeholder="--Select one--" style="width:350px;" class="chzn-select form-control" data-validate="drop_down_validation">
                         <option value=""></option>
                         <option>SLURM</option>
                         <option>Torque</option>
                         <option>SGE</option>
                         <option>Mesos</option>
-                        <!--<option>Kubernetes</option>-->
+                        <option>Kubernetes</option>
                     </select>
                 </div>
             </div>
 
             <!-- Step 6 Cluster's size -->
-            <div class="wizard-card wizard-card-overlay" data-cardname="size-fedcloud">
+            <div class="wizard-card wizard-card-overlay" data-cardname="size-fogbow">
                 <h3>Cluster's size & Name</h3>
 
                 <div class="wizard-input-section">
@@ -512,7 +502,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                     </br>
                     <div class="form-group">
                         <div class="col-sm-6">
-                            <select type="text" class="form-control" id="nodes-fedcloud" name="nodes-fedcloud" placeholder="number of nodes" data-validate="validateNumber">
+                            <select type="text" class="form-control" id="nodes-fogbow" name="nodes-fogbow" placeholder="number of nodes" data-validate="validateNumber">
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -536,7 +526,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
             </div>
 
             <!-- Step 7 Resume and launch -->
-            <div class="wizard-card" data-cardname="resume-fedcloud" data-onSelected="showDetails_OCCI">
+            <div class="wizard-card" data-cardname="resume-fogbow" data-onSelected="showDetails_Fogbow">
                 <h3>Resume and launch</h3>
                 <div>
                     <p>These are the details of your cluster: </p>
@@ -568,7 +558,6 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
 
                 <div class="wizard-success">
                     <div class="alert alert-success">
-                        <!--<span class="create-server-name"></span>-->
                         Cluster Front-end deployed <strong>Successfully!</strong>
                     </div>
 
@@ -586,7 +575,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
             </div>
         </div>
 
-        <!-- End of wizard FedCloud section -->
+        <!-- End of wizard Fogbow section -->
 
         <!-- Wizard Delete section -->
         <div class="wizard" id="delete-wizard" name="delete-wizard" data-title="Destroy your cluster">
@@ -654,36 +643,6 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
             <!-- Tabla -->
             <div class="wizard-list" style="overflow-x:auto;">
                 <p> Loading... </p>
-              <!--<table>
-                <tr>
-                  <th>Cluster name</th>
-                  <th>State</th>
-                  <th>IP</th>
-                  <th>Nodes</th>
-                  <th>Action</th>
-                </tr>
-                <tr>
-                  <td>cluster_nfjbsdfa</td>
-                  <td>configured</td>
-                  <td>158.42.105.22</td>
-                  <td>3</td>
-                  <td><button>Delete</button></td>
-                </tr>
-                <tr>
-                  <td>cluster_nna84bd</td>
-                  <td>unconfigured</td>
-                  <td>157.152.4.45</td>
-                  <td>1</td>
-                  <td><button>Delete</button></td>
-                </tr>
-                <tr>
-                  <td>cluster_pjds33</td>
-                  <td>running</td>
-                  <td>96.47.62.214</td>
-                  <td>0</td>
-                  <td><button>Delete</button></td>
-                </tr>
-              </table>-->
             </div>
 
                 <!-- Footer del Modal -->
@@ -707,11 +666,11 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
     <script src="src/bootstrap-wizard.js" type="text/javascript"></script>
 
 
-    <!-- Wizard plugin FedCloud -->
+    <!-- Wizard plugin Fogbow -->
         <script type="text/javascript">
             $(document).ready(function() {
                 $.fn.wizard.logging = true;
-                var wizard = $('#fedcloud-wizard').wizard({
+                var wizard = $('#fogbow-wizard').wizard({
                     keyboard : false,
                     contentHeight : 430,
                     contentWidth : 700,
@@ -732,21 +691,16 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                     wizard.modal.find('.chzn-select').val('').trigger("liszt:updated");
                 });
 
-                //http://api.jquery.com/jquery.ajax/
-                //Para mostrar la respuesta: http://stackoverflow.com/questions/14918462/get-response-from-php-file-using-ajax
                 wizard.on("submit", function(wizard) {
-                    var nodes = parseInt($('#nodes-fedcloud').val());
                     //avisar de evento a analytics
-                    ga('send','event','Submit','EGI FedCloud');
+                    //ga('send','event','Submit','Fogbow');
                     $.ajax({
                             type: "POST",
                             url: wizard.args.submitUrl,
-                            /*data: "cloud=fedcloud&" + wizard.serialize()+ "&nodes-fedcloud=" + nodes,*/
-                            data: "cloud=fedcloud&endpointName=" + $('#endpoint-fedcloud option:selected').html() + "&" + wizard.serialize()+ "&nodes-fedcloud=" + nodes,
+                            data: "cloud=fogbow&" + wizard.serialize(),
                             dataType: "json",
                             success: function(response, status, data){
                                     wizard.submitSuccess();         // displays the success card
-                                    //retValue = "<div> <b> " + JSON.stringify(response) + " </b></div> ";
                                     var obj = jQuery.parseJSON(JSON.stringify(response));
                                     var name = obj.name;
                                     var index = obj.name.indexOf("__");
@@ -757,7 +711,6 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                                     retValue += "<div> Secret key: <textarea id='private_key_value' name='private_key_value' style='display:none;'>" + decodeURIComponent(obj.secretkey) + "</textarea>" +
                                     "<a class='download' href='javascript:download(\"private_key_value\", \"key.pem\");'>Download</a> </div>";
                                     $('.wizard-ip').html(retValue);
-                                    //$('.wizard-ip').append(retValue).hide().show();
                                     wizard.hideButtons();           // hides the next and back buttons
                                     wizard.updateProgressBar(0);    // sets the progress meter to 0
                             },
@@ -910,44 +863,48 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                 return retValue;
             }
 
-            function showDetails_OCCI() {
+            function showDetails_Fogbow() {
                 var retValue = ' '
 
                 //obtener endpoint
-                var endpoint = $('#endpoint-fedcloud').val();
-                var endpointName = $('#endpoint-fedcloud option:selected').html();
+                var endpoint = $('#endpoint-fogbow').val();
+                
+                var token = $('#token-fogbow').val();
+                token = "*********";
 
                 //obtener la vmi seleccionada
-                var vmi = $('#vmi-fedcloud').val();
+                var os = $('#os-fogbow').val();
 
                 //obtener las caracteristicas de las VMs
-                var front_type = $('#front-fedcloud').val();
-                var wn_type = $('#wn-fedcloud').val();
+                var front_cpu = $('#front-cpu-fogbow').val();
+                var front_mem = $('#front-mem-fogbow').val();
+                var wn_cpu = $('#wn-cpu-fogbow').val();
+                var wn_mem = $('#wn-mem-fogbow').val();;
 
                 //obtener el LRMS seleccionado
-                var lrms = $('#lrms-fedcloud').val();
+                var lrms = $('#lrms-fogbow').val();
 
                 //obtener el SW
                 var sw = '';
-                //if( $('.fedcloud.col-sm-12 #clues').prop('checked') ) sw += "CLUES ";
-                //if( $('.fedcloud.col-sm-12 #blcr').prop('checked') ) sw += "BLCR ";
-                if( $('.fedcloud.col-sm-12 #nfs').prop('checked') ) sw += "NFS ";
-                //if( $('.fedcloud.col-sm-12 #ckptman').prop('checked') ) sw += "ckptman ";
-                //if( $('.fedcloud.col-sm-12 #munge').prop('checked') ) sw += "Munge ";
-                if( $('.fedcloud.col-sm-12 #maui').prop('checked') ) sw += "Maui ";
-                if( $('.fedcloud.col-sm-12 #openvpn').prop('checked') ) sw += "OpenVPN ";
-                if( $('.fedcloud.col-sm-12 #galaxy').prop('checked') ) sw += "Galaxy ";
-                if( $('.fedcloud.col-sm-12 #extra_hd').prop('checked') ) sw += "100GB Extra HD ";
-                //if( $('.fedcloud.col-sm-12 #galaxy-tools').prop('checked') ) sw += "Galaxy-tools";
-                //if( $('.fedcloud.col-sm-12 #sshtun').prop('checked') ) sw += "SSH tunnels ";
-                if( $('.fedcloud.col-sm-12 #octave').prop('checked') ) sw += "Octave ";
-                if( $('.fedcloud.col-sm-12 #docker').prop('checked') ) sw += "Docker ";
-                if( $('.fedcloud.col-sm-12 #gnuplot').prop('checked') ) sw += "Gnuplot ";
-                if( $('.fedcloud.col-sm-12 #tomcat').prop('checked') ) sw += "Tomcat ";
-                if( $('.fedcloud.col-sm-12 #marathon').prop('checked') ) sw += "Marathon ";
-                if( $('.fedcloud.col-sm-12 #chronos').prop('checked') ) sw += "Chronos ";
-                if( $('.fedcloud.col-sm-12 #hadoop').prop('checked') ) sw += "Hadoop ";
-                if( $('.fedcloud.col-sm-12 #namd').prop('checked') ) sw += "Namd";
+                //if( $('.fogbow.col-sm-12 #clues').prop('checked') ) sw += "CLUES ";
+                //if( $('.fogbow.col-sm-12 #blcr').prop('checked') ) sw += "BLCR ";
+                if( $('.fogbow.col-sm-12 #nfs').prop('checked') ) sw += "NFS ";
+                //if( $('.fogbow.col-sm-12 #ckptman').prop('checked') ) sw += "ckptman ";
+                //if( $('.fogbow.col-sm-12 #munge').prop('checked') ) sw += "Munge ";
+                if( $('.fogbow.col-sm-12 #maui').prop('checked') ) sw += "Maui ";
+                if( $('.fogbow.col-sm-12 #openvpn').prop('checked') ) sw += "OpenVPN ";
+                if( $('.fogbow.col-sm-12 #galaxy').prop('checked') ) sw += "Galaxy ";
+                if( $('.fogbow.col-sm-12 #extra_hd').prop('checked') ) sw += "100GB Extra HD ";
+                //if( $('.fogbow.col-sm-12 #galaxy-tools').prop('checked') ) sw += "Galaxy-tools";
+                //if( $('.fogbow.col-sm-12 #sshtun').prop('checked') ) sw += "SSH tunnels ";
+                if( $('.fogbow.col-sm-12 #octave').prop('checked') ) sw += "Octave ";
+                if( $('.fogbow.col-sm-12 #docker').prop('checked') ) sw += "Docker ";
+                if( $('.fogbow.col-sm-12 #gnuplot').prop('checked') ) sw += "Gnuplot ";
+                if( $('.fogbow.col-sm-12 #tomcat').prop('checked') ) sw += "Tomcat ";
+                if( $('.fogbow.col-sm-12 #marathon').prop('checked') ) sw += "Marathon ";
+                if( $('.fogbow.col-sm-12 #chronos').prop('checked') ) sw += "Chronos ";
+                if( $('.fogbow.col-sm-12 #hadoop').prop('checked') ) sw += "Hadoop ";
+                if( $('.fogbow.col-sm-12 #namd').prop('checked') ) sw += "Namd";
 
                 if (sw == ''){
                     sw +="Nothing selected"
@@ -958,29 +915,27 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                 }
 
                 //obtener el numero de nodos
-                var nodes = parseInt($('#nodes-fedcloud').val());
+                var nodes = parseInt($('#nodes-fogbow').val());
                 
                 //obtener el nombre del cluster
                 var clustername = $('#cluster-name').val();
 
-                retValue = "<div><b>Endpoint: </b>" + endpointName + "</div>";
+                retValue = "<div><b>Endpoint: </b>" + endpoint + "</div> <div><b>Token: </b>" + token + "</div>";
 
-                if(vmi != ''){
-                    retValue += "<div> <b> VMI: </b>" + vmi + "</div>";
+                if(os != ''){
+                    retValue += "<div> <b>OS VMI: </b>" + os + "</div>";
                 } else {
-                    retValue += "<div> <b>VMI: </b> nothing indicated</div>";
+                    retValue += "<div> <b>OS VMI: </b> nothing indicated</div>";
                 }
 
-                retValue +="<div> <b>Frontend instance type: </b>" + front_type + "</div>" +
-                           "<div> <b>Working nodes instance type: </b>" + wn_type + "</div>" +
+                retValue +="<div> <b>Frontend CPU: </b>" + front_cpu + "<b></div> <div>Frontend RAM memory: </b>" + front_mem + " </div>" +
+                           "<div> <b>Working nodes CPU: </b>" + wn_cpu + "<b></div> <div> Working nodes RAM memory: </b>" + wn_mem + " </div>" +
                            "<div> <b>Local Resource Management System: </b>" + lrms + "</div>" +
                            "<div> <b>Software packages: </b>" + sw + "</div>" +
                            "<div> <b>Maximum number of nodes: </b>" + nodes + "</div>" +
                            "<div> <b>Cluster name: </b>" + clustername + "</div>";
 
-
                 //Mostramos los datos recogidos al usuario
-                //$('.wizard-resume').append(retValue);
                 $('.wizard-resume').html(retValue);
             };
             

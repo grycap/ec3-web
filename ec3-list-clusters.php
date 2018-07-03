@@ -15,20 +15,13 @@ function random_string($length) {
 }
 
     
-//obtain UNITY user
-if(!isset($_SESSION)) session_start();
+//obtain user
 
-if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
-    header('Location:session_expired.html');
-    die();
-} else {
-    $user_sub = $_SESSION["egi_user_sub"];
-    $user_name = $_SESSION["egi_user_name"];
-}
 
 // llamamos a EC3 para listar los clusters
 $ec3_log_file = "/tmp/ec3_list_".random_string(5);
-$process_2 = new Process("./command/ec3 list -r --json --username " . $user_sub, $ec3_log_file);
+//$process_2 = new Process("./command/ec3 list -r --json --username " . $user_sub, $ec3_log_file);
+$process_2 = new Process("./command/ec3 list -r --json ", $ec3_log_file);
 
 $pid = $process_2->start();
 // Comprobamos si se ha listado correctamente

@@ -1,5 +1,4 @@
 <?php
-//Tuto basico de PHP: http://www.w3schools.com/php/php_variables.asp
 
 //la clase Process habra que sacarla a un fichero ya que es comun
 
@@ -17,23 +16,6 @@ function random_string($length) {
     return $key;
 }
 
-function getSSLPage($url) {
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_HEADER, false);
-    curl_setopt($ch, CURLOPT_URL, $url);
-//    curl_setopt($ch, CURLOPT_SSLVERSION,3); 
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    $result = curl_exec($ch);
-    curl_close($ch);
-
-    // For unit tests
-    if ($GLOBALS["EC3UnitTest"]) return "line1\nline2\nline3";    
-
-    return $result;
-}
-
 
 if($_POST){
    
@@ -42,19 +24,6 @@ if($_POST){
     } else {
         exit("No clustername parameter specified.");
     }
-
-    if(!isset($_SESSION)) session_start();
-
-    if (!isset($_SESSION["egi_user_sub"])) {
-        //echo "Error no EGI AAI user ID obtained.";
-        header('Location:session_expired.html');
-        die("");
-    } else {
-        $user_sub = $_SESSION["egi_user_sub"];
-    }
-
-    $proxy = getSSLPage("https://etokenserver.ct.infn.it:8443/eTokenServer/eToken/08b435574d4f19c734f19514828ad0ab?voms=vo.access.egi.eu:/vo.access.egi.eu&proxy-renewal=true&disable-voms-proxy=false&rfc-proxy=true&cn-label=eToken:" . $user_sub);
-    $proxy = str_replace("\n", "\\n", $proxy);
 
     if($proxy!=""){
         //$auth_file = "/tmp/auth_" .substr($clustername, 8);
@@ -115,7 +84,7 @@ if($_POST){
         fwrite($gestor, $im_line. PHP_EOL);
         fclose($gestor);
     } else {
-        exit("Error contacting eToken server.");
+        exit("Error contacting server.");
     }
 
     // llamamos a EC3 para eliminar el cluster
@@ -134,8 +103,6 @@ if($_POST){
     }
 
     $log_content = file_get_contents($ec3_log_file);
-    //if(strpos($log_content, "Success") === True){
-    //if(strpos($log_content, "Error") === False && strpos($log_content, "not found") === False){
     if(strpos($log_content, "Error") === False){
         $status = True;
     }
