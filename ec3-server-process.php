@@ -84,6 +84,7 @@ function generate_system_template_radl($cloud, $os, $instancetype_front, $instan
     $path_to_new_file = $templates_path . '/'.$os.'-'.$cloud.'_'.$rand_str.'.radl';
     $file_name = $os.'-'.$cloud.'_'.$rand_str;
     $path_to_template = '/etc/ec3/templates/'.$os.'-'.$cloud.".radl";
+
     $new_file = fopen($path_to_new_file, "w");
     $template_file = fopen($path_to_template, "r");
     if($template_file != False){
@@ -95,48 +96,18 @@ function generate_system_template_radl($cloud, $os, $instancetype_front, $instan
     fclose($template_file);
     fclose($new_file);
     
-    // Obtenemos user y pass de la imagen
-    $userpass = get_vmi_credentials($os);
-    $user = $userpass[0];
-    $pass = $userpass[1];
-    if($cloud == 'one'){
-        $file_contents = file_get_contents($path_to_new_file);
-        $file_contents = str_replace("#INSTANCES#",$nodes,$file_contents);
-        $file_contents = str_replace("#CPU_FRONT#",$front_cpu,$file_contents);
-        $file_contents = str_replace("#MEM_FRONT#",$front_mem."m",$file_contents);
-        $file_contents = str_replace("#CPU_WN#",$wn_cpu,$file_contents);
-        $file_contents = str_replace("#MEM_WN#",$wn_mem."m",$file_contents);
-        //$file_contents = str_replace("#USER#",$user,$file_contents);
-        $file_contents = str_replace("#PASSWORD#",$pass,$file_contents);
-        file_put_contents($path_to_new_file,$file_contents);
-    } elseif ($cloud == 'openstack') {
-        $file_contents = file_get_contents($path_to_new_file);
-        $file_contents = str_replace("#INSTANCES#",$nodes,$file_contents);
-        $file_contents = str_replace("#CPU_FRONT#",$front_cpu,$file_contents);
-        $file_contents = str_replace("#MEM_FRONT#",$front_mem."m",$file_contents);
-        $file_contents = str_replace("#CPU_WN#",$wn_cpu,$file_contents);
-        $file_contents = str_replace("#MEM_WN#",$wn_mem."m",$file_contents);
-        file_put_contents($path_to_new_file,$file_contents);
-    } elseif ($cloud == 'fedcloud'){
-        $file_contents = file_get_contents($path_to_new_file);
-        $file_contents = str_replace("#INSTANCES#",$nodes,$file_contents);
-        $file_contents = str_replace("#INSTANCE_TYPE_FRONT#", $instancetype_front, $file_contents);
-        $file_contents = str_replace("#INSTANCE_TYPE_WN#", $instancetype_wn, $file_contents);
-        file_put_contents($path_to_new_file,$file_contents);
-    } else{ //$cloud=ec2
-        $file_contents = file_get_contents($path_to_new_file);
-        $file_contents = str_replace("#INSTANCES#",$nodes,$file_contents);
-        $file_contents = str_replace("#INSTANCE_TYPE_FRONT#", $instancetype_front, $file_contents);
-        $file_contents = str_replace("#INSTANCE_TYPE_WN#", $instancetype_wn, $file_contents);
-        //$file_contents = str_replace("#USER#",$user,$file_contents);
-        $file_contents = str_replace("#PASSWORD#",$pass,$file_contents);
-        file_put_contents($path_to_new_file,$file_contents);
-    }
-    if($cloud == 'fedcloud'){
-        $user = 'cloudadm';
-    }
-    return array($file_name, $user, $pass);
+    $file_contents = file_get_contents($path_to_new_file);
+    $file_contents = str_replace("#INSTANCES#",$nodes,$file_contents);
+    $file_contents = str_replace("#CPU_FRONT#",$front_cpu,$file_contents);
+    $file_contents = str_replace("#MEM_FRONT#",$front_mem."m",$file_contents);
+    $file_contents = str_replace("#CPU_WN#",$wn_cpu,$file_contents);
+    $file_contents = str_replace("#MEM_WN#",$wn_mem."m",$file_contents);
+    file_put_contents($path_to_new_file,$file_contents);
+
+    return array($file_name);
 }
+           
+
 // Translates the OS name to the name of the EC3 recipe
 function translate_os($os) {
     switch ($os) {
@@ -145,6 +116,9 @@ function translate_os($os) {
             break;
         case "Ubuntu 14.04":
             $os = "ubuntu14";
+            break;
+        case "Ubuntu 16.04":
+            $os = "ubuntu16";
             break;
         case "CentOS 7":
             $os = "centos7";
@@ -162,7 +136,7 @@ function translate_os($os) {
     return $os;
 }
 
-
+           
 if($_POST){
     $possible_sw = array("nfs", "maui", "openvpn", "octave", "docker", "gnuplot", "tomcat", "galaxy", "marathon", "chronos", "hadoop", "namd", "extra_hd");    
 
@@ -215,41 +189,23 @@ if($_POST){
         //TODO: adaptarlo a fogbow, porque tendremos que tener predefinidos los OS que soporta y por tanto solo modificar las recetas
         $data = generate_system_template_radl($provider, translate_os($os), '', '', $front_cpu, $front_mem, $wn_cpu, $wn_mem, $nodes);
         //$data = generate_system_image_radl($provider, $vmi, $endpointName, '', '', $front_type, $wn_type, '', '', '', '', $nodes);
-        //$os = $data[0];
-        $user = $data[1];
-        $pass = $data[2];
+        $os = $data[0];
+        $user = "fogbow";
         
     } else {
         echo 'Unknown provider';
         exit(1);
     }
-
-
-    // Modificamos el numero maximo de nodos del cluster
-    /*$path_to_file = '/var/www/html/ec3/command/templates/'.$os.".radl";
-    $file_contents = file_get_contents($path_to_file);
-    $file_contents = preg_replace('~ec3_max_instances = [0-9]+~', "ec3_max_instances = " .$nodes, $file_contents); 
-    file_put_contents($path_to_file,$file_contents);*/
     
     //Hay que hacer una llamada al comando EC3 de la forma: $ ./ec3 launch mycluster slurm clues2 ubuntu-vmrc -a auth.dat -u http://servproject.i3m.upv.es:8899
     //-q para que no muestre el gusano y -y para que no pregunte lo de la conexion segura
     // quitamos el -q para que muestre el error, si ocurre, en el log
 
     $ec3_log_file = "/tmp/ec3_log_".$name;
-    //$process = new Process("./command/ec3 -q launch -y " . $name . " " . $lrms . " " . $sw . $os . " -a " . $auth_file . " -u http://servproject.i3m.upv.es:8899", $ec3_log_file);
-    /*if($lrms=='mesos'){
-        $lrms = 'docker mesos';
-    }*/
-        
     $process = new Process("./command/ec3 launch -y " . $name . " " . $lrms . " " . $sw . $os . " -a " . $auth_file, $ec3_log_file);
     $process->start();
     
     // Recuperamos la salida del comando ec3 (con el fichero que guarda en /tmp)
-    /* El contenido del fichero tiene la forma:
-        1047
-        Front-end state: pending, IP: 158.42.105.207Front-end state: running, IP: 158.42.105.207
-    */
-
     $ip = " ";
     $cond = False;
     while(!$cond){
@@ -271,7 +227,7 @@ if($_POST){
         }
     }    
 
-    //Si ya esta running, podemos obtener la clave privada generada por el im para conectarnos al frontend
+    //Si ya esta running, podemos obtener la clave privada generada por el IM para conectarnos al frontend
     $ec3_ssh_file = "/tmp/ec3_ssh_".$name;
     $process_ssh = new Process("./command/ec3 ssh " . $name . "  --show-only ", $ec3_ssh_file);
     $process_ssh->start();

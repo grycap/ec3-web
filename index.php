@@ -383,7 +383,7 @@
                         </div>
                     </div>
                 </div>
-                <p style="padding-top:180px; padding-right:160px;">Is your favourite software not available? <a href="mailto:ec3@upv.es?Subject=[EC3]%20Unsupported%20Software" target="_top">Let us know!</a></p>
+                <p style="padding-top:180px; padding-right:160px; margin-top:55px;">Is your favourite software not available? <a href="mailto:ec3@upv.es?Subject=[EC3]%20Unsupported%20Software" target="_top">Let us know!</a></p>
             </div>
 
 
@@ -426,9 +426,11 @@
                             <select name="os-fogbow" id="os-fogbow" data-placeholder="--Select one--" style="width:350px;" class="chzn-select form-control" data-validate="">
                                 <option value=""></option>
                                 <optgroup label="Linux">
-                                    <option>CentOS 6.5</option>
+                                    <!--TODO: ask fubica which images fogbow has avaliable and their IDs -->
+                                    <!--<option>CentOS 6.5</option>-->
                                     <!--<option>CentOS 7</option>-->
-                                    <option>Ubuntu 14.04</option>
+                                    <!--<option>Ubuntu 14.04</option>-->
+                                    <option>Ubuntu 16.04</option>
                                 </optgroup>
                             </select>
                         </div>
