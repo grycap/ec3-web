@@ -15,7 +15,7 @@ function random_string($length) {
 }
 
     
-//obtain user
+//TODO: obtain user_id to filter the results
 
 
 // llamamos a EC3 para listar los clusters

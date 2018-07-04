@@ -517,10 +517,11 @@
                             <option value="10">10</option>
                             </select>
                         </div>
-                        
-                       <div class="col-sm-8">
+                        <div class="col-sm-12">
                             </br>
                             <p> Cluster name (must be unique): </p>
+                        </div> 
+                       <div class="col-sm-8">
                             <input type="text" class="form-control" id="cluster-name" name="cluster-name" placeholder="Cluster name" data-validate="validateValue">
                         </div>
                     </div>

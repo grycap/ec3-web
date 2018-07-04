@@ -78,7 +78,7 @@ function generate_system_image_radl($cloud, $ami, $region, $ami_user, $ami_passw
 }
 
 // Generates the system RADL file for the deployments that the user DOES NOT has indicated an AMI or VMI
-function generate_system_template_radl($cloud, $os, $instancetype_front, $instancetype_wn, $front_cpu, $front_mem, $wn_cpu, $wn_mem, $nodes){
+function generate_system_template_radl($cloud, $os, $instancetype_front, $instancetype_wn, $front_cpu, $front_mem, $wn_cpu, $wn_mem, $nodes, $user_id){
     $rand_str = random_string(4);
     $templates_path = (isset($GLOBALS['templates_path']) ? $GLOBALS['templates_path'] : "/var/www/html/ec3/command/templates");
     $path_to_new_file = $templates_path . '/'.$os.'-'.$cloud.'_'.$rand_str.'.radl';
@@ -100,6 +100,7 @@ function generate_system_template_radl($cloud, $os, $instancetype_front, $instan
     $file_contents = str_replace("#INSTANCES#",$nodes,$file_contents);
     $file_contents = str_replace("#CPU_FRONT#",$front_cpu,$file_contents);
     $file_contents = str_replace("#MEM_FRONT#",$front_mem."m",$file_contents);
+    $file_contents = str_replace("#USERID#",$user_id,$file_contents);
     $file_contents = str_replace("#CPU_WN#",$wn_cpu,$file_contents);
     $file_contents = str_replace("#MEM_WN#",$wn_mem."m",$file_contents);
     file_put_contents($path_to_new_file,$file_contents);
@@ -149,6 +150,7 @@ if($_POST){
     if ($provider == 'fogbow'){
         $endpointName = (isset($_POST['endpoint-fogbow']) ? $_POST['endpoint-fogbow'] : "");
         $token = (isset($_POST['token-fogbow']) ? $_POST['token-fogbow'] : "");
+        $user_id = hash('md5', $token);
         $os = (isset($_POST['os-fogbow']) ? $_POST['os-fogbow'] : "");
 
         if($os == ''){
@@ -178,16 +180,15 @@ if($_POST){
         $nodes = (isset($_POST['nodes-fogbow']) ? $_POST['nodes-fogbow'] : "1");
         
         $cluster_name = (isset($_POST['cluster-name']) ? $_POST['cluster-name'] : "");
-        //TODO: ver como gestionamos el clustername ya que no tenemos usuarios
-        //$name = $cluster_name . "__" . $user_sub;
-        $name = $cluster_name;
+        //TODO: ver si implementamos un sistema de autenticacion de usuarios, de momento usamos el token
+        $name = $cluster_name . "__" . $user_id;
         $lrms = strtolower($lrms);
         $sw = strtolower($sw);
 
 
         $auth_file = generate_auth_file_fogbow($endpoint, $token, $name);
         //TODO: adaptarlo a fogbow, porque tendremos que tener predefinidos los OS que soporta y por tanto solo modificar las recetas
-        $data = generate_system_template_radl($provider, translate_os($os), '', '', $front_cpu, $front_mem, $wn_cpu, $wn_mem, $nodes);
+        $data = generate_system_template_radl($provider, translate_os($os), '', '', $front_cpu, $front_mem, $wn_cpu, $wn_mem, $nodes,$user_id);
         //$data = generate_system_image_radl($provider, $vmi, $endpointName, '', '', $front_type, $wn_type, '', '', '', '', $nodes);
         $os = $data[0];
         $user = "fogbow";
