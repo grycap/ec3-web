@@ -256,12 +256,18 @@
                 </div>
                 <div class="col-sm-6">
                     <div class="team-member">
-                        <!--<button id="open-wizard-list" class="btn btn-primary btn-list"></button>-->
+                        <button id="open-wizard-delete" class="btn btn-primary btn-delete"></button>
+                        <h4 class="provider">Delete your cluster</h4>
+                        <p class="text-muted-contact">And liberate the resources</p>
+                    </div>
+                </div>
+                <!--<div class="col-sm-6">
+                    <div class="team-member">
                         <button id="myBtn" class="btn btn-primary btn-list"></button>
                         <h4 class="provider">Manage your deployed clusters</h4>
                         <p class="text-muted-contact">And get info about them</p>
                     </div>
-                </div>
+                </div>-->
             </div>
         </div>
     </section>
@@ -593,11 +599,21 @@
                         </div>
                     </div>
                 </div>
+                <div class="wizard-input-section">
+                    <p>
+                        Fogbow token:
+                    </p>
+                    <div class="form-group">
+                        <div class="col-sm-11">
+                            <textarea rows="4" class="form-control" id="token-fogbow" name="token-fogbow" placeholder="The token used in the creation process of the cluster." data-validate="validateValue"></textarea>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="wizard-error">
                     <div class="alert alert-error">
                         <strong>There was a problem</strong> deleting your cluster.
-                        Please, correct the name and try again or shutdown your virtual machines manually.
+                        Please, revise the cluster name and/or the token and try again or shutdown your virtual machines manually.
                         </br>
                         </br>
                         <div class="wizard-delete"></div>
@@ -947,6 +963,109 @@
             };
 
         </script>
+
+    <!-- Wizard plugin delete a cluster -->
+    <script type="text/javascript">
+            $(document).ready(function() {
+                $.fn.wizard.logging = true;
+                var wizard = $('#delete-wizard').wizard({
+                    keyboard : false,
+                    contentHeight : 400,
+                    contentWidth : 700,
+                    backdrop: 'static',
+                    submitUrl: "ec3-destroy-cluster.php"
+                });
+
+                $(".chzn-select").chosen();
+                wizard.on('closed', function() {
+                    wizard.reset();
+                });
+                wizard.on("reset", function() {
+                    wizard.modal.find(':input').val('').removeAttr('disabled');
+                    wizard.modal.find('.form-group').removeClass('has-error').removeClass('has-succes');
+                });
+                wizard.on("submit", function(wizard) {
+                    $.ajax({
+                            type: "POST",
+                            url: wizard.args.submitUrl,
+                            data: wizard.serialize(),
+                            dataType: "json",
+                            success: function(response, status, data){
+                                    wizard.submitSuccess();         // displays the success card
+                                    wizard.hideButtons();           // hides the next and back buttons
+                                    wizard.updateProgressBar(0);    // sets the progress meter to 0
+                            },
+                            error: function(response, status, error){
+                                    var obj = jQuery.parseJSON(JSON.stringify(response));
+                                    retValue = "<div> <b> " + obj.responseText + " </b></div> ";
+                                    //retValue = "<div> <b> " + JSON.stringify(response) + " </b></div> ";
+                                    //retValue += "<div> <b> " + JSON.stringify(status) + " </b></div> ";
+                                    //retValue += "<div> <b> " + JSON.stringify(error) + " </b></div> ";
+                                    $('.wizard-ip').html(retValue);
+                                    wizard.submitError();           // display the error card
+                                    wizard.hideButtons();           // hides the next and back buttons
+                            }
+                    });
+                });
+                wizard.el.find(".wizard-success .im-done").click(function() {
+                    wizard.hide();
+                    setTimeout(function() {
+                        wizard.reset();
+                    }, 250);
+
+                });
+
+                wizard.el.find(".wizard-success .create-another-server").click(function() {
+                    wizard.reset();
+                });
+
+                wizard.el.find(".wizard-error .create-another-server").click(function() {
+                    wizard.reset();
+                });
+
+                wizard.el.find(".wizard-error .im-done").click(function() {
+                    wizard.hide();
+                    setTimeout(function() {
+                        wizard.reset();
+                    }, 250);
+
+                });
+
+                wizard.el.find(".wizard-failure .create-another-server").click(function() {
+                    wizard.hide();
+                    setTimeout(function() {
+                        wizard.reset();
+                    }, 250);
+                });
+
+                $(".wizard-group-list").click(function() {
+                    alert("Disabled for demo.");
+                });
+                $('#open-wizard-delete').click(function(e) {
+                    e.preventDefault();
+                    wizard.show();
+                });
+            });
+            
+            function validateValue(el) {
+                var name = el.val();
+                var retValue = {};
+                if (name == "") {
+                    retValue.status = false;
+                    retValue.msg = "Please enter a value";
+                } else {
+                    retValue.status = true;
+                }
+                return retValue;
+            };
+
+            function setClusterName(card) {
+                var name = $("#clustername").val();
+                card.wizard.el.find(".create-cluster-name").text(name);
+            }
+
+        </script> 
+
 
     <!-- Modal box to list clusters -->
         <script type="text/javascript">

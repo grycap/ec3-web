@@ -246,7 +246,7 @@ if($_POST){
     }
 
     //Devolvemos los datos del front-end desplegado
-    echo "{\"ip\":\"$ip\",\"name\":\"$name\",\"username\":\"$user\",\"secretkey\":\"$secret_key\"}";
+    echo "{\"ip\":\"$ip\",\"name\":\"$cluster_name\",\"username\":\"$user\",\"secretkey\":\"$secret_key\"}";
 }else {
     echo "Found errors receiving POST data";
 }

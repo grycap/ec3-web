@@ -24,6 +24,14 @@ if($_POST){
     } else {
         exit("No clustername parameter specified.");
     }
+    
+    if (isset($_POST['token'])) {
+        $token = $_POST['token'];
+    } else {
+        exit("No token parameter specified.");
+    }
+    
+    $clustername = $clustername . "__" . hash('md5', $token);
 
     if($proxy!=""){
         //$auth_file = "/tmp/auth_" .substr($clustername, 8);
