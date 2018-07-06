@@ -605,7 +605,7 @@
                     </p>
                     <div class="form-group">
                         <div class="col-sm-11">
-                            <textarea rows="4" class="form-control" id="token-fogbow" name="token-fogbow" placeholder="The token used in the creation process of the cluster." data-validate="validateValue"></textarea>
+                            <textarea rows="4" class="form-control" id="token-delete" name="token-delete" placeholder="The token used in the creation process of the cluster." data-validate="validateValue"></textarea>
                         </div>
                     </div>
                 </div>

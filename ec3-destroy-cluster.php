@@ -25,8 +25,8 @@ if($_POST){
         exit("No clustername parameter specified.");
     }
     
-    if (isset($_POST['token'])) {
-        $token = $_POST['token'];
+    if (isset($_POST['token-delete'])) {
+        $token = $_POST['token-delete'];
     } else {
         exit("No token parameter specified.");
     }
