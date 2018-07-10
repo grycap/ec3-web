@@ -254,7 +254,7 @@
                         <p class="text-muted-contact">In the Fogbow Cloud provided by ATMOSPHERE</p>
                     </div>
                 </div>
-                <div class="col-sm-6">
+               <div class="col-sm-6">
                     <div class="team-member">
                         <button id="open-wizard-delete" class="btn btn-primary btn-delete"></button>
                         <h4 class="provider">Delete your cluster</h4>
@@ -343,9 +343,22 @@
 
             <!-- Step 1 Software packages -->
             <div class="wizard-card wizard-card-overlay" data-cardname="swpkg-fogbow">
-                <h3>Software Packages</h3>
+                <h3>Cluster type</h3>
+                <p>
+                    What type of cluster do you want to deploy? 
+                </p>
+                </br>
+                <div class="form-group" style="height:250px;">
+                    <div class="col-sm-6" style="width:350px; height:250px;" name="clusterfogbow" id="clusterfogbow">
+                        <select name="cluster-fogbow" id="cluster-fogbow" data-placeholder="--Select one--" style="width:350px;" class="chzn-select form-control" data-validate="">
+                            <option value=""></option>
+                            <option value="kubernetes">Kubernetes + Jupyter notebook</option>
+                            <option value="mesos">Mesos + Spark + LEMONADE</option>
+                        </select>
+                    </div>
+                </div>
 
-                <div class="wizard-input-section">
+                <!--<div class="wizard-input-section">
                     <p>
                         Please choose the software packages you'd like EC3 to
                         install in your cluster. They will be automatically installed and configured.
@@ -354,7 +367,6 @@
                     <div class="fogbow col-sm-12">
                         <p style="margin-bottom:0px; margin-top:5px;">Cluster utilities:</p>
                         <div class="row">
-                            <!--<div class="col-sm-4"><input type="checkbox" value="clues" name="clues" id="clues" title="Cluster Energy Saving System, necessary if you want an elastic cluster" checked=true/> CLUES </div>-->
                             <div class="col-sm-4"><input type="checkbox" value="nfs" name="nfs" id="nfs" title="Configure a shared file system"/> NFS </div>
                             <div class="col-sm-4"><input type="checkbox" value="docker" name="docker" id="docker" title="An open-source tool to deploy applications inside software containers"/> Docker </div>
                             <div class="col-sm-4"><input type="checkbox" value="openvpn" name="openvpn" id="openvpn" title="Application that implements virtual private network (VPN) techniques"/> OpenVPN </div>
@@ -364,17 +376,10 @@
                             <div class="col-sm-4"><input type="checkbox" value="chronos" name="chronos" id="chronos" title="A batch job scheduler for Mesos tasks (framework for Mesos)"/> Chronos </div>
                             <div class="col-sm-4"><input type="checkbox" value="maui" name="maui" id="maui" title="A job scheduler for use with Torque"/> Maui </div>
                         </div>
-                        <!--<div class="row">
-                            <div class="col-sm-4"><input type="checkbox" value="ckptman" name="ckptman" id="ckptman" title="A tool to automate the checkpointing in spot instances"/> Ckptman </div>
-                            <div class="col-sm-4"><input type="checkbox" value="munge" name="munge" id="munge" title="An authentication service for creating and validating credentials"/> Munge </div>
-                            <div class="col-sm-4"><input type="checkbox" value="maui" name="maui" id="maui" title="A job scheduler for use with Torque"/> Maui </div>
-                        </div>-->
                         <div class="row">
                             <div class="col-sm-4"><input type="checkbox" value="hadoop" name="hadoop" id="hadoop" title="A framework that allows for the distributed processing of large data sets across clusters of computers using simple programming models"/> Hadoop </div>
                             <div class="col-sm-4"><input type="checkbox" value="galaxy" name="galaxy" id="galaxy" title="Web-based platform for data intensive biomedical research. Recommended to install with Torque and NFS."/> Galaxy </div>
                             <div class="col-sm-4"><input type="checkbox" value="extra_hd" name="extra_hd" id="extra_hd" title="Add a 100GB Extra HD to the cluster"/> 100GB Extra HD </div>
-                            <!--<div class="col-sm-4"><input type="checkbox" value="galaxy-tools" name="galaxy-tools" id="galaxy-tools" title="Web-based platform for data intensive biomedical research"/> Galaxy tools </div>-->
-                            <!--<div class="col-sm-4"><input type="checkbox" value="sshtunnels" name="sshtunnels" id="sshtun" title="Used to interconnect working nodes in an hybrid cloud scenario"/> SSH tunnels </div>-->
                         </div>
                         <p style="margin-bottom:0px; margin-top:10px;">Software utilities:</p>
                         <div class="row">
@@ -384,12 +389,11 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-4"><input type="checkbox" value="namd" name="namd" id="namd" title="A parallel, object-oriented molecular dynamics code designed for high-performance simulation of large biomolecular systems"/> Namd </div>
-                            <!--<div class="col-sm-4"><input type="checkbox" value="docker" name="docker" id="docker" title="An open-source tool to deploy applications inside software containers"/> Docker </div>
-                            <div class="col-sm-4"><input type="checkbox" value="latex" name="latex" id="latex" title="Word processor and document markup language"/> Latex </div>-->
                         </div>
                     </div>
                 </div>
-                <p style="padding-top:180px; padding-right:160px; margin-top:55px;">Is your favourite software not available? <a href="mailto:ec3@upv.es?Subject=[EC3]%20Unsupported%20Software" target="_top">Let us know!</a></p>
+                <p style="padding-top:180px; padding-right:160px; margin-top:55px;">Is your favourite software not available? <a href="mailto:ec3@upv.es?Subject=[EC3]%20Unsupported%20Software" target="_top">Let us know!</a></p>-->
+                
             </div>
 
 
@@ -478,7 +482,7 @@
             </div>
 
             <!-- Step 5 Local Resource Management System -->
-            <div class="wizard-card wizard-card-overlay" data-cardname="lrms-fogbow">
+            <!--<div class="wizard-card wizard-card-overlay" data-cardname="lrms-fogbow">
                 <h3>LRMS Selection</h3>
 
                 <div class="wizard-input-section">
@@ -494,7 +498,7 @@
                         <option>Kubernetes</option>
                     </select>
                 </div>
-            </div>
+            </div>-->
 
             <!-- Step 6 Cluster's size -->
             <div class="wizard-card wizard-card-overlay" data-cardname="size-fogbow">
@@ -901,37 +905,40 @@
                 var wn_mem = $('#wn-mem-fogbow').val();;
 
                 //obtener el LRMS seleccionado
-                var lrms = $('#lrms-fogbow').val();
+                //var lrms = $('#lrms-fogbow').val();
 
                 //obtener el SW
-                var sw = '';
+                //var sw = '';
                 //if( $('.fogbow.col-sm-12 #clues').prop('checked') ) sw += "CLUES ";
                 //if( $('.fogbow.col-sm-12 #blcr').prop('checked') ) sw += "BLCR ";
-                if( $('.fogbow.col-sm-12 #nfs').prop('checked') ) sw += "NFS ";
+                //if( $('.fogbow.col-sm-12 #nfs').prop('checked') ) sw += "NFS ";
                 //if( $('.fogbow.col-sm-12 #ckptman').prop('checked') ) sw += "ckptman ";
                 //if( $('.fogbow.col-sm-12 #munge').prop('checked') ) sw += "Munge ";
-                if( $('.fogbow.col-sm-12 #maui').prop('checked') ) sw += "Maui ";
-                if( $('.fogbow.col-sm-12 #openvpn').prop('checked') ) sw += "OpenVPN ";
-                if( $('.fogbow.col-sm-12 #galaxy').prop('checked') ) sw += "Galaxy ";
-                if( $('.fogbow.col-sm-12 #extra_hd').prop('checked') ) sw += "100GB Extra HD ";
+                //if( $('.fogbow.col-sm-12 #maui').prop('checked') ) sw += "Maui ";
+                //if( $('.fogbow.col-sm-12 #openvpn').prop('checked') ) sw += "OpenVPN ";
+                //if( $('.fogbow.col-sm-12 #galaxy').prop('checked') ) sw += "Galaxy ";
+                //if( $('.fogbow.col-sm-12 #extra_hd').prop('checked') ) sw += "100GB Extra HD ";
                 //if( $('.fogbow.col-sm-12 #galaxy-tools').prop('checked') ) sw += "Galaxy-tools";
                 //if( $('.fogbow.col-sm-12 #sshtun').prop('checked') ) sw += "SSH tunnels ";
-                if( $('.fogbow.col-sm-12 #octave').prop('checked') ) sw += "Octave ";
-                if( $('.fogbow.col-sm-12 #docker').prop('checked') ) sw += "Docker ";
-                if( $('.fogbow.col-sm-12 #gnuplot').prop('checked') ) sw += "Gnuplot ";
-                if( $('.fogbow.col-sm-12 #tomcat').prop('checked') ) sw += "Tomcat ";
-                if( $('.fogbow.col-sm-12 #marathon').prop('checked') ) sw += "Marathon ";
-                if( $('.fogbow.col-sm-12 #chronos').prop('checked') ) sw += "Chronos ";
-                if( $('.fogbow.col-sm-12 #hadoop').prop('checked') ) sw += "Hadoop ";
-                if( $('.fogbow.col-sm-12 #namd').prop('checked') ) sw += "Namd";
+                //if( $('.fogbow.col-sm-12 #octave').prop('checked') ) sw += "Octave ";
+                //if( $('.fogbow.col-sm-12 #docker').prop('checked') ) sw += "Docker ";
+                //if( $('.fogbow.col-sm-12 #gnuplot').prop('checked') ) sw += "Gnuplot ";
+                //if( $('.fogbow.col-sm-12 #tomcat').prop('checked') ) sw += "Tomcat ";
+                //if( $('.fogbow.col-sm-12 #marathon').prop('checked') ) sw += "Marathon ";
+                //if( $('.fogbow.col-sm-12 #chronos').prop('checked') ) sw += "Chronos ";
+                //if( $('.fogbow.col-sm-12 #hadoop').prop('checked') ) sw += "Hadoop ";
+                //if( $('.fogbow.col-sm-12 #namd').prop('checked') ) sw += "Namd";
 
-                if (sw == ''){
+                /*if (sw == ''){
                     sw +="Nothing selected"
                 }
 
                 if (lrms == ''){
                     lrms +="nothing selected"
-                }
+                }*/
+                
+                //obtener el tipo de cluster a desplegar
+                var clustertype = $('#cluster-fogbow').val();
 
                 //obtener el numero de nodos
                 var nodes = parseInt($('#nodes-fogbow').val());
@@ -947,10 +954,11 @@
                     retValue += "<div> <b>OS VMI: </b> nothing indicated</div>";
                 }
 
-                retValue +="<div> <b>Frontend CPU: </b>" + front_cpu + "<b></div> <div>Frontend RAM memory: </b>" + front_mem + " </div>" +
+                retValue +="<div> <b>Cluster type: </b>" + clustertype + "</div>" +
+                           "<div> <b>Frontend CPU: </b>" + front_cpu + "<b></div> <div>Frontend RAM memory: </b>" + front_mem + " </div>" +
                            "<div> <b>Working nodes CPU: </b>" + wn_cpu + "<b></div> <div> Working nodes RAM memory: </b>" + wn_mem + " </div>" +
-                           "<div> <b>Local Resource Management System: </b>" + lrms + "</div>" +
-                           "<div> <b>Software packages: </b>" + sw + "</div>" +
+                           //"<div> <b>Local Resource Management System: </b>" + lrms + "</div>" +
+                           //"<div> <b>Software packages: </b>" + sw + "</div>" +
                            "<div> <b>Maximum number of nodes: </b>" + nodes + "</div>" +
                            "<div> <b>Cluster name: </b>" + clustername + "</div>";
 

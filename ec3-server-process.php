@@ -163,27 +163,42 @@ if($_POST){
         $wn_cpu = (isset($_POST['wn-cpu-fogbow']) ? $_POST['wn-cpu-fogbow'] : "");
         $wn_mem = (isset($_POST['wn-mem-fogbow']) ? $_POST['wn-mem-fogbow'] : "");
 
-        $lrms = (isset($_POST['lrms-fogbow']) ? $_POST['lrms-fogbow'] : "");
+        //$lrms = (isset($_POST['lrms-fogbow']) ? $_POST['lrms-fogbow'] : "");
         
-        if($lrms == '' ){
+        /*if($lrms == '' ){
             echo 'LRMS not provided. Impossible to launch a cluster without this data. Please, enter the required information and try again.';
+            exit(1);
+        }*/
+        
+        $clustertype = (isset($_POST['cluster-fogbow']) ? $_POST['cluster-fogbow'] : "");
+                
+        if($clustertype == '' ){
+            echo 'Cluster type not provided. Impossible to launch a cluster without this data. Please, enter the required information and try again.';
             exit(1);
         }
         
+        $lrms = strtolower($clustertype);
         $sw = "clues2 ";
-        foreach ($possible_sw as $item_sw) {
+        if(strpos($lrms, 'kubernetes') !== false) {
+            $sw = "jupyter ";
+        } else if (strpos($lrms, 'mesos') !== false)) {
+            $sw = "lemonade spark ";
+        }
+
+        
+        /*foreach ($possible_sw as $item_sw) {
             if (isset($_POST[$item_sw])) {
                 $sw .= $item_sw . " ";
             }
-        }
+        }*/
 
         $nodes = (isset($_POST['nodes-fogbow']) ? $_POST['nodes-fogbow'] : "1");
         
         $cluster_name = (isset($_POST['cluster-name']) ? $_POST['cluster-name'] : "");
         //TODO: ver si implementamos un sistema de autenticacion de usuarios, de momento usamos el token
         $name = $cluster_name . "__" . $user_id;
-        $lrms = strtolower($lrms);
-        $sw = strtolower($sw);
+        //$lrms = strtolower($lrms);
+        //$sw = strtolower($sw);
 
 
         $auth_file = generate_auth_file_fogbow($endpoint, $token, $name);
