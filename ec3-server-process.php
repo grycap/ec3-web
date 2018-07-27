@@ -182,7 +182,7 @@ if($_POST){
         if(strpos($lrms, 'kubernetes') !== false) {
             $sw = "jupyter ";
         } else if (strpos($lrms, 'mesos') !== false)) {
-            $sw = "lemonade spark ";
+            $sw = "lemonade compose spark ";
         }
 
         
