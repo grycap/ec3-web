@@ -950,11 +950,11 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                 if( $('.fedcloud.col-sm-12 #namd').prop('checked') ) sw += "Namd";
 
                 if (sw == ''){
-                    sw +="Nothing selected"
+                    sw +="Nothing selected";
                 }
 
                 if (lrms == ''){
-                    lrms +="nothing selected"
+                    lrms +="nothing selected";
                 }
 
                 //obtener el numero de nodos
