@@ -410,7 +410,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
 
             <!-- Step 2 Cloud provider credentials -->
             <div class="wizard-card" data-cardname="provider-fedcloud">
-                <h3>Provider Account</h3>
+                <h3>Endpoint</h3>
                 <div class="wizard-input-section">
                     <p>
                         FedCloud endpoint:
@@ -493,7 +493,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                         <option>Torque</option>
                         <option>SGE</option>
                         <option>Mesos</option>
-                        <!--<option>Kubernetes</option>-->
+                        <option>Kubernetes</option>
                     </select>
                 </div>
             </div>
@@ -950,11 +950,11 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                 if( $('.fedcloud.col-sm-12 #namd').prop('checked') ) sw += "Namd";
 
                 if (sw == ''){
-                    sw +="Nothing selected"
+                    sw +="Nothing selected";
                 }
 
                 if (lrms == ''){
-                    lrms +="nothing selected"
+                    lrms +="nothing selected";
                 }
 
                 //obtener el numero de nodos
