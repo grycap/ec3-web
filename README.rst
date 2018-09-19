@@ -17,7 +17,7 @@ it starts with a single-node cluster and working nodes will be dynamically deplo
 to fit increasing load, in terms of the number of jobs at the LRMS (Local Resource Management System). Working nodes will be undeployed when they are idle.
 This introduces a cost-efficient approach for Cluster-based computing.
 
-This repository includes the developments of the service EC3aaS, the web interface of EC3, that is currently available in the `EGI LTOS`_ service. More information about EC3 and the CLI version can be found in `EC3 Command-line Interface`_
+This repository includes the developments of the service EC3aaS, the web interface of EC3, that is part of the developments of the `ATMOSPHERE`_ project. More information about EC3 and the CLI version can be found in `EC3 Command-line Interface`_
 
 
 The webpage has been developed by using the `Agency`_ theme for `Bootstrap`_ created by `Start Bootstrap`_. 
@@ -41,4 +41,4 @@ The webpage has been developed by using the `Agency`_ theme for `Bootstrap`_ cre
 .. _`Google Cloud`: http://cloud.google.com/
 .. _`Microsoft Azure`: http://azure.microsoft.com/
 .. _`IM`: https://github.com/grycap/im
-.. _`EGI LTOS`: https://access.egi.eu/start
+.. _`ATMOSPHERE`: https://www.atmosphere-eubrazil.eu/
