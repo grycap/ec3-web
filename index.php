@@ -939,6 +939,11 @@
                 
                 //obtener el tipo de cluster a desplegar
                 var clustertype = $('#cluster-fogbow').val();
+                if (clustertype == 'kubernetes'){
+                    clustertype = "Kubernetes + Jupyter notebook";
+                } else if (clustertype == 'mesos'){
+                    clustertype = "Mesos + Spark + LEMONADE";
+                }
 
                 //obtener el numero de nodos
                 var nodes = parseInt($('#nodes-fogbow').val());
@@ -959,7 +964,7 @@
                            "<div> <b>Working nodes CPU: </b>" + wn_cpu + "<b></div> <div> Working nodes RAM memory: </b>" + wn_mem + " </div>" +
                            //"<div> <b>Local Resource Management System: </b>" + lrms + "</div>" +
                            //"<div> <b>Software packages: </b>" + sw + "</div>" +
-                           "<div> <b>Maximum number of nodes: </b>" + nodes + "</div>" +
+                           "<div> <b>Maximum number of nodes: </b>" + nodes + "</div>" + 
                            "<div> <b>Cluster name: </b>" + clustername + "</div>";
 
                 //Mostramos los datos recogidos al usuario
