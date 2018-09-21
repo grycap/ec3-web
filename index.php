@@ -278,17 +278,17 @@
             <div class="row">
                 <div class="col-md-4 col-sm-6">
                     <a href="http://www.grycap.upv.es/">
-                        <img src="img/logos/grycap.png" class="img-responsive img-centered" alt="">
+                        <img src="img/logos/EU.jpg" class="img-responsive img-centered" alt="">
                     </a>
                 </div>
                 <div class="col-md-4 col-sm-6">
                     <a href="http://www.i3m.upv.es/">
-                        <img src="img/logos/i3m.png" class="img-responsive img-centered" alt="">
+                        <img src="img/logos/br.png" class="img-responsive img-centered" alt="">
                     </a>
                 </div>
                 <div class="col-md-4 col-sm-6">
                     <a href="http://www.upv.es/index-es.html">
-                        <img src="img/logos/upv.png" class="img-responsive img-centered" alt="">
+                        <img src="img/logos/upvnew.png" class="img-responsive img-centered" alt="">
                     </a>
                 </div>
             </div>
