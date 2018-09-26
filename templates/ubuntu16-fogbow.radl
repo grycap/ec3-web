@@ -4,7 +4,7 @@ system front (
     disk.0.os.name='linux' and
     disk.0.os.flavour='ubuntu' and
     disk.0.image.url = 'fbw://fogbow-ubuntu-no-apt-daily.service' and
-    ec3aas.username=#USERID#
+    ec3aas.username='#USERID#'
 )
 
 system wn (
