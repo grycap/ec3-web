@@ -40,7 +40,7 @@ function generate_auth_file_fogbow($endpoint, $token, $clustername) {
 // Generates the system RADL file for the deployments that the user has indicated an AMI or VMI
 function generate_system_image_radl($cloud, $ami, $region, $ami_user, $ami_password, $instancetype_front, $instancetype_wn, $front_cpu, $front_mem, $wn_cpu, $wn_mem, $nodes){
     $rand_str = random_string(4); 
-    $templates_path = (isset($GLOBALS['templates_path']) ? $GLOBALS['templates_path'] : "/var/www/html/ec3-ltos/command/templates");
+    $templates_path = (isset($GLOBALS['templates_path']) ? $GLOBALS['templates_path'] : "/var/www/html/ec3-atmosphere/command/templates");
     $path_to_new_file = $templates_path . '/system_'.$rand_str.'.radl';
     $file_name = 'system_'.$rand_str;
     
@@ -80,7 +80,7 @@ function generate_system_image_radl($cloud, $ami, $region, $ami_user, $ami_passw
 // Generates the system RADL file for the deployments that the user DOES NOT has indicated an AMI or VMI
 function generate_system_template_radl($cloud, $os, $instancetype_front, $instancetype_wn, $front_cpu, $front_mem, $wn_cpu, $wn_mem, $nodes, $user_id){
     $rand_str = random_string(4);
-    $templates_path = (isset($GLOBALS['templates_path']) ? $GLOBALS['templates_path'] : "/var/www/html/ec3/command/templates");
+    $templates_path = (isset($GLOBALS['templates_path']) ? $GLOBALS['templates_path'] : "/var/www/html/ec3-atmosphere/command/templates");
     $path_to_new_file = $templates_path . '/'.$os.'-'.$cloud.'_'.$rand_str.'.radl';
     $file_name = $os.'-'.$cloud.'_'.$rand_str;
     $path_to_template = '/etc/ec3/templates/'.$os.'-'.$cloud.".radl";
