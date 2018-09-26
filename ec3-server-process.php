@@ -25,7 +25,7 @@ function generate_auth_file_fogbow($endpoint, $token, $clustername) {
     //id = fogbow; type = FogBow; host = 150.165.85.52:8182; token = eyJsb2duaW4iOiJ1cHZ
     
     $gestor = fopen($auth, "w");
-    fwrite($gestor, "id = fogbow; type = FogBow; host = " . "$endpoint . "; token = " . $token . PHP_EOL);
+    fwrite($gestor, "id = fogbow; type = FogBow; host = " . $endpoint . "; token = " . $token . PHP_EOL);
     //Write needed credentials of IM and VMRC
     fwrite($gestor, "type = InfrastructureManager; username = " . random_string(8) . "; password = " . random_string(10). PHP_EOL);
     //fwrite($gestor, "type = VMRC; host = http://servproject.i3m.upv.es:8080/vmrc/vmrc; username = micafer; password = ttt25");
@@ -181,7 +181,7 @@ if($_POST){
         $sw = "clues2 ";
         if(strpos($lrms, 'kubernetes') !== false) {
             $sw = "jupyter ";
-        } else if (strpos($lrms, 'mesos') !== false)) {
+        } else if (strpos($lrms, 'mesos') !== false) {
             $sw = "lemonade docker-compose spark ";
         }
 
@@ -201,7 +201,7 @@ if($_POST){
         //$sw = strtolower($sw);
 
 
-        $auth_file = generate_auth_file_fogbow($endpoint, $token, $name);
+        $auth_file = generate_auth_file_fogbow($endpointName, $token, $name);
         //TODO: adaptarlo a fogbow, porque tendremos que tener predefinidos los OS que soporta y por tanto solo modificar las recetas
         $data = generate_system_template_radl($provider, translate_os($os), '', '', $front_cpu, $front_mem, $wn_cpu, $wn_mem, $nodes,$user_id);
         //$data = generate_system_image_radl($provider, $vmi, $endpointName, '', '', $front_type, $wn_type, '', '', '', '', $nodes);
