@@ -3,13 +3,15 @@ if ( !session_id() ) {
     session_start();
 }
 
-if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
-    include('auth_egi.php');
-    $user_name = "";
-} else {
-    $user_sub = $_SESSION["egi_user_sub"];
-    $user_name = $_SESSION["egi_user_name"];
-}
+    //if (!isset($_SESSION["unity_user_sub"]) or $_SESSION["unity_user_sub"] == "") {
+    //    include('auth.php');
+    //} else {
+    //    $unity_user_sub = $_SESSION["unity_user_sub"];
+    //    $unity_user_name = $_SESSION["unity_user_name"];
+    //}
+
+    $unity_user_sub = "user_sub";
+    $user_name = "Usuario 1";
 
 
 ?>
@@ -266,7 +268,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-6">
+                <div class="col-sm-4">
                     <div class="team-member">
                         <button id="open-wizard-deploy" class="btn btn-primary btn-fedcloud" onclick="ga('send','event','Providers','EGI FedCloud')"></button>
                         <h4 class="provider">Deploy your cluster</h4>
@@ -274,7 +276,14 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                         <a href="http://www.egi.eu/news-and-media/newsletters/Inspired_Issue_22/Custom_elastic_clusters_to_manage_Galaxy_environments.html" target="_blank">(See a case study here)</a>.
                     </div>
                 </div>
-                <div class="col-sm-6">
+                <div class="col-sm-4">
+                    <div class="team-member">
+                        <button id="open-wizard-helix" class="btn btn-primary btn-helix" onclick="ga('send','event','Providers','HelixNebula')"></button>
+                        <h4 class="provider">Deploy your cluster</h4>
+                        <p class="text-muted-contact">In the HelixNebula cloud, powered by <a href="https://www.t-systems.com/" target="_blank"> T-systems </a> and  <a href="https://www.exoscale.com/" target="_blank"> Exoscale. </a> </p>
+                    </div>
+                </div>
+                <div class="col-sm-4">
                     <div class="team-member">
                         <!--<button id="open-wizard-list" class="btn btn-primary btn-list"></button>-->
                         <button id="myBtn" class="btn btn-primary btn-list"></button>
@@ -493,7 +502,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                         <option>Torque</option>
                         <option>SGE</option>
                         <option>Mesos</option>
-                        <option>Kubernetes</option>
+                        <!--<option>Kubernetes</option>-->
                     </select>
                 </div>
             </div>
@@ -587,6 +596,285 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
         </div>
 
         <!-- End of wizard FedCloud section -->
+
+
+        
+        <!-- Wizard HelixNebula section -->
+        <div class="wizard" id="helix-wizard" name="helix-wizard" data-title="Configure your cluster">
+            
+            <!-- Step 0 - Provider -->
+            <div class="wizard-card wizard-card-overlay" data-cardname="cloud-helix">
+                <h3>Cloud Provider</h3>
+
+                <div class="wizard-input-section">
+                    <p>
+                        Please choose the cloud provider in which you'd like EC3 to
+                        deploy your cluster. 
+                    </p>
+
+                    </br>
+                    <div class="form-group" style="height:250px;">
+                        <div class="col-sm-6" style="width:350px; height:250px;" name="providerhelix" id="providerhelix">
+                            <select name="provider-helix" id="provider-helix" data-placeholder="--Select one--" style="width:350px; height:250px;" class="chzn-select form-control" data-validate="drop_down_validation">
+                               <option value=""></option>
+                               <option>Exoscale</option>
+                               <option>T-systems</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 1 Software packages -->
+            <div class="wizard-card wizard-card-overlay" data-cardname="swpkg-helix">
+                <h3>Software Packages</h3>
+
+                <div class="wizard-input-section">
+                    <p>
+                        Please choose the software packages you'd like EC3 to
+                        install in your cluster. They will be automatically installed and configured.
+                    </p>
+
+                    <div class="helix col-sm-12">
+                        <p style="margin-bottom:0px; margin-top:5px;">Cluster utilities:</p>
+                        <div class="row">
+                            <!--<div class="col-sm-4"><input type="checkbox" value="clues" name="clues" id="clues" title="Cluster Energy Saving System, necessary if you want an elastic cluster" checked=true/> CLUES </div>-->
+                            <div class="col-sm-4"><input type="checkbox" value="nfs" name="nfs" id="nfs" title="Configure a shared file system"/> NFS </div>
+                            <div class="col-sm-4"><input type="checkbox" value="docker" name="docker" id="docker" title="An open-source tool to deploy applications inside software containers"/> Docker </div>
+                            <div class="col-sm-4"><input type="checkbox" value="openvpn" name="openvpn" id="openvpn" title="Application that implements virtual private network (VPN) techniques"/> OpenVPN </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4"><input type="checkbox" value="marathon" name="marathon" id="marathon" title="A job scheduler for Mesos tasks (framework for Mesos)"/> Marathon </div>
+                            <div class="col-sm-4"><input type="checkbox" value="chronos" name="chronos" id="chronos" title="A batch job scheduler for Mesos tasks (framework for Mesos)"/> Chronos </div>
+                            <div class="col-sm-4"><input type="checkbox" value="maui" name="maui" id="maui" title="A job scheduler for use with Torque"/> Maui </div>
+                        </div>
+                        <!--<div class="row">
+                            <div class="col-sm-4"><input type="checkbox" value="ckptman" name="ckptman" id="ckptman" title="A tool to automate the checkpointing in spot instances"/> Ckptman </div>
+                            <div class="col-sm-4"><input type="checkbox" value="munge" name="munge" id="munge" title="An authentication service for creating and validating credentials"/> Munge </div>
+                            <div class="col-sm-4"><input type="checkbox" value="maui" name="maui" id="maui" title="A job scheduler for use with Torque"/> Maui </div>
+                        </div>-->
+                        <div class="row">
+                            <div class="col-sm-4"><input type="checkbox" value="hadoop" name="hadoop" id="hadoop" title="A framework that allows for the distributed processing of large data sets across clusters of computers using simple programming models"/> Hadoop </div>
+                            <div class="col-sm-4"><input type="checkbox" value="galaxy" name="galaxy" id="galaxy" title="Web-based platform for data intensive biomedical research. Recommended to install with Torque and NFS."/> Galaxy </div>
+                            <div class="col-sm-4"><input type="checkbox" value="extra_hd" name="extra_hd" id="extra_hd" title="Add a 100GB Extra HD to the cluster"/> 100GB Extra HD </div>
+                            <!--<div class="col-sm-4"><input type="checkbox" value="galaxy-tools" name="galaxy-tools" id="galaxy-tools" title="Web-based platform for data intensive biomedical research"/> Galaxy tools </div>-->
+                            <!--<div class="col-sm-4"><input type="checkbox" value="sshtunnels" name="sshtunnels" id="sshtun" title="Used to interconnect working nodes in an hybrid cloud scenario"/> SSH tunnels </div>-->
+                        </div>
+                        <p style="margin-bottom:0px; margin-top:10px;">Software utilities:</p>
+                        <div class="row">
+                            <div class="col-sm-4"><input type="checkbox" value="octave" name="octave" id="octave" title="A high-level programming language, primarily intended for numerical computations"/> Octave </div>
+                            <div class="col-sm-4"><input type="checkbox" value="gnuplot" name="gnuplot" id="gnuplot" title="A program to generate two- and three-dimensional plots"/> Gnuplot </div>
+                            <div class="col-sm-4"><input type="checkbox" value="tomcat" name="tomcat" id="tomcat" title="An open-source web server and servlet container"/> Tomcat </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4"><input type="checkbox" value="namd" name="namd" id="namd" title="A parallel, object-oriented molecular dynamics code designed for high-performance simulation of large biomolecular systems"/> Namd </div>
+                            <!--<div class="col-sm-4"><input type="checkbox" value="docker" name="docker" id="docker" title="An open-source tool to deploy applications inside software containers"/> Docker </div>
+                            <div class="col-sm-4"><input type="checkbox" value="latex" name="latex" id="latex" title="Word processor and document markup language"/> Latex </div>-->
+                        </div>
+                    </div>
+                </div>
+                <p style="padding-top:180px; padding-right:160px;">Is your favourite software not available? <a href="mailto:ec3@upv.es?Subject=[EC3]%20Unsupported%20Software" target="_top">Let us know!</a></p>
+            </div>
+
+
+            <!-- Step 2 Cloud provider credentials -->
+            <div class="wizard-card" data-cardname="endpointhelix">
+                <h3>Provider Account</h3>
+                <div class="wizard-input-section">
+                    <p>
+                        Compute API endpoint or OTC host:
+                    </p>
+                    <div class="form-group">
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="endpoint-helix" name="endpoint-helix" placeholder="endpoint" data-validate="validateValue">
+                        </div>
+                    </div>
+                </div>
+            <!-- TODO: pedir los datos del voucher/credenciales -->
+                <div class="wizard-input-section">
+                    <p>
+                        API key:
+                    </p>
+                    <div class="form-group">
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="apikey-helix" name="apikey-helix" placeholder="API key" data-validate="validateValue">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="wizard-input-section">
+                    <p>
+                        Secret Key:
+                    </p>
+                    <div class="form-group">
+                        <div class="col-sm-6">
+                            <input type="password" class="form-control" id="secretkey-helix" name="secretkey-helix" placeholder="secret key" data-validate="validateValue">
+                        </div>
+                    </div>
+                </div>
+             </div>
+            
+            <!-- Step 3 - Operating System -->
+            <div class="wizard-card wizard-card-overlay" data-cardname="os-helix">
+                <h3>Operating System</h3>
+
+                <div class="wizard-input-section">
+                    <p>
+                        What OS distribution do you like your cluster to have? 
+                    </p>
+                    </br>
+                    <div class="form-group" style="height:250px;">
+                        <div class="col-sm-6" style="width:350px; height:250px;" name="vmihelix" id="vmihelix">
+                            <!--<p> Loading options from the provider... </p>
+                            <select name="vmi-fedcloud" id="vmi-fedcloud" data-placeholder="--Select one--" style="width:350px; height:250px;" class="chzn-select form-control" data-validate="drop_down_validation">
+                            </select>-->
+                            <!-- TODO: utilizar el script de tsystems/exoscale para obtener la lista de imagenes disponible (diferentes scripts, hay que diferenciar segun la seleccion de provider) -->
+                            <input type="text" class="form-control" id="vmi-helix" name="vmi-helix" placeholder="VMI identifier" data-validate="validateValue">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 4 instance characteristics -->
+            <!-- TODO: se puede obteer esto de un API si hay instancias predeterminadas? o es como en ONE? -->
+            <div class="wizard-card" data-cardname="instance-details">
+                <h3>Instance details</h3>
+                <div class="wizard-input-section">
+                    <p>Front-end instance type:</p>
+                    <div class="form-group" style="height:30px;">
+                        <div class="col-sm-6" style="width:350px; height:30px;" name="fronthelix" id="fronthelix">
+                            <!--<p> Loading options from EGI AppDB... </p> -->
+                            <input type="text" class="form-control" id="front-helix" name="front-helix" placeholder="frontend instance type" data-validate="validateValue">
+                            <!--<select name="front-type" id="front-type" data-placeholder="--Select one--" style="width:350px; height:50px;" class="chzn-select form-control" data-validate="drop_down_validation">
+                                <option value=""></option>
+                            </select>-->
+                        </div>
+                    </div>
+                </div>
+                <div class="wizard-input-section">
+                    <p>
+                        Working nodes instance type:
+                    </p>
+                    <div class="form-group" style="height:100px;">
+                        <div class="col-sm-6" style="width:350px; height:100px;" name="wnhelix" id="wnhelix">
+                            <!--<p> Loading options from EGI AppDB... </p>-->
+                            <input type="text" class="form-control" id="wn-helix" name="wn-helix" placeholder="WN instance type" data-validate="validateValue">
+                            <!--<select name="wn-type" id="wn-type" data-placeholder="--Select one--" style="width:350px; height:50px;" class="chzn-select form-control" data-validate="drop_down_validation">
+                                <option value=""></option>
+                            </select>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 5 Local Resource Management System -->
+            <div class="wizard-card wizard-card-overlay" data-cardname="lrmshelix">
+                <h3>LRMS Selection</h3>
+
+                <div class="wizard-input-section">
+                    <p>
+                        Please choose the LRMS (Local Resource Management System) of your cluster
+                    </p>
+                    <select name="lrms-helix" id="lrms-helix" data-placeholder="--Select one--" style="width:350px;" class="chzn-select form-control" data-validate="drop_down_validation">
+                        <option value=""></option>
+                        <option>SLURM</option>
+                        <option>Torque</option>
+                        <option>SGE</option>
+                        <option>Mesos</option>
+                        <!--<option>Kubernetes</option>-->
+                    </select>
+                </div>
+            </div>
+
+            <!-- Step 6 Cluster's size -->
+            <div class="wizard-card wizard-card-overlay" data-cardname="size-helix">
+                <h3>Cluster's size & Name</h3>
+
+                <div class="wizard-input-section">
+                    <p>
+                        Introduce the maximum number of nodes of your cluster (without including the front-end node).
+                    </p>
+                    <p style="font-size:12px"> <em>
+                        Note that EC3 will initially provision only the front-end node and it will dynamically deploy additional working nodes as necessary. </em>
+                    </p>
+                    </br>
+                    <div class="form-group">
+                        <div class="col-sm-6">
+                            <select type="text" class="form-control" id="nodes-helix" name="nodes-helix" placeholder="number of nodes" data-validate="validateNumber">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                            </select>
+                        </div>
+                        
+                       <div class="col-sm-8">
+                            </br>
+                            <p> Cluster name (must be unique): </p>
+                            <input type="text" class="form-control" id="cluster-name-helix" name="cluster-name-helix" placeholder="Cluster name" data-validate="validateValue">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 7 Resume and launch -->
+            <div class="wizard-card" data-cardname="resume-helix" data-onSelected="showDetails_OCCI">
+                <h3>Resume and launch</h3>
+                <div>
+                    <p>These are the details of your cluster: </p>
+                </div>
+                <div class="wizard-resume-helix" > <!--onshow="checkSession()"> -->
+                </div>
+
+                <div class="wizard-error">
+                    <div class="alert alert-error">
+                        <strong>There was a problem</strong> with your submission.
+                        Please correct the errors and re-submit.
+                        </br>
+                        </br>
+                        <div class="wizard-ip"></div>
+                        </br>
+                        <a class="btn btn-default create-another-server">Try again</a>
+                        <a class="btn btn-primary im-done">Close the wizard</a>
+                    </div>
+                </div>
+
+                <div class="wizard-failure">
+                    <div class="alert alert-error">
+                        <strong>There was a problem</strong> submitting the form.
+                        Please try again in a minute.
+                        </br>
+                        <a class="btn btn-default create-another-server">Done</a>
+                    </div>
+                </div>
+
+                <div class="wizard-success">
+                    <div class="alert alert-success">
+                        <!--<span class="create-server-name"></span>-->
+                        Cluster Front-end deployed <strong>Successfully!</strong>
+                    </div>
+
+                    <p> You can now connect to the front-end via SSH using the provided IP. The data of your cluster is: </p>
+                    <div class="wizard-ip">
+                        <p><strong>aqui.va.la.IP</strong></p>
+                    </div>
+                    </br>
+                    <p> Notice that the cluster might still be configuring! <a href="http://ec3.readthedocs.org/en/devel/faq.html#ec3aas-webpage" target="_blank">More info.</a> </p>
+                    </br>
+                    <a class="btn btn-default create-another-server" onclick="reload()">Create another cluster</a>
+                    <span style="padding:0 10px">or</span>
+                    <a class="btn btn-success im-done" onclick="reload()">Done</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- End of wizard HelixNebula section -->
 
         <!-- Wizard Delete section -->
         <div class="wizard" id="delete-wizard" name="delete-wizard" data-title="Destroy your cluster">
@@ -982,6 +1270,295 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                 //Mostramos los datos recogidos al usuario
                 //$('.wizard-resume').append(retValue);
                 $('.wizard-resume').html(retValue);
+            };
+            
+            function reload() {
+                location.reload(true);
+            };
+
+        </script>
+
+        <!-- Wizard plugin HelixNebula (Tsystems and Exoscale)-->
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $.fn.wizard.logging = true;
+                var wizard = $('#helix-wizard').wizard({
+                    keyboard : false,
+                    contentHeight : 430,
+                    contentWidth : 700,
+                    backdrop: 'static',
+                    submitUrl: "ec3-server-process.php"
+                });
+
+                $(".chzn-select").chosen();
+
+                wizard.on('closed', function() {
+                    wizard.reset();
+                });
+
+                wizard.on("reset", function() {
+                    wizard.modal.find(':input').val('').removeAttr('disabled');
+                    wizard.modal.find('input:checkbox').val('').removeAttr('checked');
+                    wizard.modal.find('.form-group').removeClass('has-error').removeClass('has-succes');
+                    wizard.modal.find('.chzn-select').val('').trigger("liszt:updated");
+                });
+
+                //http://api.jquery.com/jquery.ajax/
+                //Para mostrar la respuesta: http://stackoverflow.com/questions/14918462/get-response-from-php-file-using-ajax
+                wizard.on("submit", function(wizard) {
+                    var nodes = parseInt($('#nodes-helix').val());
+                    //avisar de evento a analytics
+                    ga('send','event','Submit','HelixNebula');
+                    $.ajax({
+                            type: "POST",
+                            url: wizard.args.submitUrl,
+                            /*data: "cloud=fedcloud&" + wizard.serialize()+ "&nodes-fedcloud=" + nodes,*/
+                            data: "cloud=helixnebula&endpointName=" + $('#endpoint-helix option:selected').html() + "&" + wizard.serialize()+ "&nodes-helix=" + nodes,
+                            dataType: "json",
+                            success: function(response, status, data){
+                                    wizard.submitSuccess();         // displays the success card
+                                    //retValue = "<div> <b> " + JSON.stringify(response) + " </b></div> ";
+                                    var obj = jQuery.parseJSON(JSON.stringify(response));
+                                    var name = obj.name;
+                                    var index = obj.name.indexOf("__");
+                                    if (index > -1){
+                                        name = obj.name.substring(0, obj.name.indexOf("__"));
+                                    }
+                                    var retValue = "<div> Cluster name: <b> " + name + " </b></div> <div> Frontend IP: <b> " + obj.ip + " </b></div> <div> Username: <b> " + obj.username + " </b></div>";
+                                    retValue += "<div> Secret key: <textarea id='private_key_value' name='private_key_value' style='display:none;'>" + decodeURIComponent(obj.secretkey) + "</textarea>" +
+                                    "<a class='download' href='javascript:download(\"private_key_value\", \"key.pem\");'>Download</a> </div>";
+                                    $('.wizard-ip').html(retValue);
+                                    //$('.wizard-ip').append(retValue).hide().show();
+                                    wizard.hideButtons();           // hides the next and back buttons
+                                    wizard.updateProgressBar(0);    // sets the progress meter to 0
+                            },
+                            error: function(response, status, error){
+                                    var obj = jQuery.parseJSON(JSON.stringify(response));
+                                    var retValue = "<div> <b> " + obj.responseText + " </b></div> ";
+                                    //retValue = "<div> <b> " + JSON.stringify(response) + " </b></div> ";
+                                    //retValue += "<div> <b> " + JSON.stringify(status) + " </b></div> ";
+                                    //retValue += "<div> <b> " + JSON.stringify(error) + " </b></div> ";
+                                    $('.wizard-ip').html(retValue);
+                                    //$('.wizard-ip').append(retValue).hide().show();
+                                    wizard.submitError();           // display the error card
+                                    wizard.hideButtons();           // hides the next and back buttons
+                            }
+                    });
+                });
+
+                wizard.el.find(".wizard-success .im-done").click(function() {
+                    wizard.hide();
+                    setTimeout(function() {
+                        wizard.reset();
+                    }, 2);
+                });
+
+                wizard.el.find(".wizard-success .create-another-server").click(function() {
+                    wizard.reset();
+                });
+
+                wizard.el.find(".wizard-error .create-another-server").click(function() {
+                    wizard.reset();
+                });
+
+                wizard.el.find(".wizard-error .im-done").click(function() {
+                    wizard.hide();
+                    setTimeout(function() {
+                        wizard.reset();
+                    }, 2);
+
+                });
+
+                wizard.el.find(".wizard-failure .create-another-server").click(function() {
+                    wizard.hide();
+                    setTimeout(function() {
+                        wizard.reset();
+                    }, 250);
+                });
+
+                $(".wizard-group-list").click(function() {
+                    alert("Disabled for demo.");
+                });
+                
+                //TODO: update
+                $('#open-wizard-helix').click(function(e) {
+                    e.preventDefault();
+                    wizard.show();
+                    <!-- Send endpoint selected to the server to obtain instance types-->
+                    $.ajax({
+                        method: "POST",
+                        url: "print_select_endpoints.php",
+                        //data:{endpointfedcloud: $('#endpoint-fedcloud').val()},
+                        success : function(text)
+                        {  
+                            $('#endpoint_fedcloud_chzn').hide()
+                            $('#endpoint-fedcloud').prop('data-placeholder', "--Select one--");
+                            $('#endpoint-fedcloud').append(text).hide().show();
+                            //$('#endpoint-fedcloud').html(text);
+                        }
+                    });
+                });
+            });
+
+            function download(id, filename) {
+                var dataToDownload = document.getElementById(id).value;
+                var textFileAsBlob = new Blob([dataToDownload], {type:'text/plain'});
+                var link = document.createElement("a");
+                link.download = filename;
+                window.URL = window.URL || window.webkitURL;
+                link.href = window.URL.createObjectURL(textFileAsBlob);
+                link.style.display = "none";
+                document.body.appendChild(link);
+                link.click();
+            }
+
+            function validateValue(el) {
+                var name = el.val();
+                var retValue = {};
+
+                if (name == "") {
+                    retValue.status = false;
+                    retValue.msg = "Please enter a value";
+                } else {
+                    retValue.status = true;
+                }
+
+                return retValue;
+            };
+
+            function validateNumber(el) {
+                var number = el.val();
+                var retValue = {};
+
+                if (number == "" || !$.isNumeric(number)) {
+                    retValue.status = false;
+                    retValue.msg = "Please enter an integer value";
+                } else {
+                    retValue.status = true;
+                }
+
+                return retValue;
+            };
+            
+            //TODO: update
+            /*Tenemos que usar los scripts que ha hecho giuseppe para obtener estos datos automaticamente como con egi*/
+            $('select#endpoint-fedcloud.chzn-select.form-control').change(function() {
+                <!-- Send endpoint selected to the server to obtain OS-->
+                $.ajax({
+                    method: "POST",
+                    url: "print_select_os.php",
+                    /*data:{endpointfedcloud: $('#endpoint-fedcloud').val()},*/
+                    data: {endpointfedcloud: $('#endpoint-fedcloud option:selected').html()},
+                    success : function(text)
+                    {   
+                        $('#vmifedcloud').html(text);
+                        //$("select#vmi-fedcloud").html(text);
+                    }
+                });
+                <!-- Send endpoint selected to the server to obtain instance types-->
+                $.ajax({
+                    method: "POST",
+                    url: "print_select_instances.php",
+                    /*data:{endpointfedcloud: $('#endpoint-fedcloud').val()},*/
+                    data: {endpointfedcloud: $('#endpoint-fedcloud option:selected').html()},
+                    success : function(text)
+                    {   
+                        $('#frontfedcloud').html(text);
+                        $('#wnfedcloud').html(text.replace(/front-fedcloud/g, "wn-fedcloud"));
+                    }
+                });
+            });
+            
+
+            function drop_down_validation(el){
+                var name = el.val();
+                var retValue = {};
+                if (name == "") {
+                    retValue.status = false;
+                    retValue.msg = "Please select a value";
+                    //alert("Please select a value");
+                    //wizard.errorPopover(el, retValue.msg);
+                } else {
+                    retValue.status = true;
+                }
+                return retValue;
+            }
+
+            function showDetails_OCCI() {
+                var retValue = ' '
+                //obtener provider
+                var provider =  $('#provider-helix').val();
+                
+                //obtener endpoint
+                var endpoint = $('#endpoint-helix').val();
+                //var endpointName = $('#endpoint-fedcloud option:selected').html();
+                
+                //obtener las credenciales
+                var apikey = $('#apikey-helix').val();
+                var secretkey = $('#secretkey-helix').val();
+                secretkey = "******************";
+                
+                //obtener la vmi seleccionada
+                var vmi = $('#vmi-helix').val();
+
+                //obtener las caracteristicas de las VMs
+                var front_type = $('#front-helix').val();
+                var wn_type = $('#wn-helix').val();
+
+                //obtener el LRMS seleccionado
+                var lrms = $('#lrms-helix').val();
+
+                //obtener el SW
+                var sw = '';
+                //if( $('.helix.col-sm-12 #clues').prop('checked') ) sw += "CLUES ";
+                //if( $('.helix.col-sm-12 #blcr').prop('checked') ) sw += "BLCR ";
+                if( $('.helix.col-sm-12 #nfs').prop('checked') ) sw += "NFS ";
+                //if( $('.helix.col-sm-12 #ckptman').prop('checked') ) sw += "ckptman ";
+                //if( $('.helix.col-sm-12 #munge').prop('checked') ) sw += "Munge ";
+                if( $('.helix.col-sm-12 #maui').prop('checked') ) sw += "Maui ";
+                if( $('.helix.col-sm-12 #openvpn').prop('checked') ) sw += "OpenVPN ";
+                if( $('.helix.col-sm-12 #galaxy').prop('checked') ) sw += "Galaxy ";
+                if( $('.helix.col-sm-12 #extra_hd').prop('checked') ) sw += "100GB Extra HD ";
+                //if( $('.helix.col-sm-12 #galaxy-tools').prop('checked') ) sw += "Galaxy-tools";
+                //if( $('.helix.col-sm-12 #sshtun').prop('checked') ) sw += "SSH tunnels ";
+                if( $('.helix.col-sm-12 #octave').prop('checked') ) sw += "Octave ";
+                if( $('.helix.col-sm-12 #docker').prop('checked') ) sw += "Docker ";
+                if( $('.helix.col-sm-12 #gnuplot').prop('checked') ) sw += "Gnuplot ";
+                if( $('.helix.col-sm-12 #tomcat').prop('checked') ) sw += "Tomcat ";
+                if( $('.helix.col-sm-12 #marathon').prop('checked') ) sw += "Marathon ";
+                if( $('.helix.col-sm-12 #chronos').prop('checked') ) sw += "Chronos ";
+                if( $('.helix.col-sm-12 #hadoop').prop('checked') ) sw += "Hadoop ";
+                if( $('.helix.col-sm-12 #namd').prop('checked') ) sw += "Namd";
+
+                if (sw == ''){
+                    sw +="Nothing selected";
+                }
+
+                if (lrms == ''){
+                    lrms +="nothing selected";
+                }
+
+                //obtener el numero de nodos
+                var nodes = parseInt($('#nodes-helix').val());
+                
+                //obtener el nombre del cluster
+                var clustername = $('#cluster-name-helix').val();
+
+                retValue = "<div> <b>Provider: </b>" + provider + "</div>" + "<div><b>Endpoint: </b>" + endpoint + "</div>";
+
+                retValue +="<div> <b> Access Key: </b>" + apikey + "</div> <div><b>Secret Key: </b>" + secretkey + "</div>" +
+                           "<div> <b> VMI: </b>" + vmi + "</div>" +
+                           "<div> <b>Frontend instance type: </b>" + front_type + "</div>" +
+                           "<div> <b>Working nodes instance type: </b>" + wn_type + "</div>" +
+                           "<div> <b>Local Resource Management System: </b>" + lrms + "</div>" +
+                           "<div> <b>Software packages: </b>" + sw + "</div>" +
+                           "<div> <b>Maximum number of nodes: </b>" + nodes + "</div>" +
+                           "<div> <b>Cluster name: </b>" + clustername + "</div>";
+
+
+                //Mostramos los datos recogidos al usuario
+                //$('.wizard-resume').append(retValue);
+                $('.wizard-resume-helix').html(retValue);
             };
             
             function reload() {
