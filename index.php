@@ -3,15 +3,15 @@ if ( !session_id() ) {
     session_start();
 }
 
-    //if (!isset($_SESSION["unity_user_sub"]) or $_SESSION["unity_user_sub"] == "") {
-    //    include('auth.php');
-    //} else {
-    //    $unity_user_sub = $_SESSION["unity_user_sub"];
-    //    $unity_user_name = $_SESSION["unity_user_name"];
-    //}
+    if (!isset($_SESSION["unity_user_sub"]) or $_SESSION["unity_user_sub"] == "") {
+        include('auth.php');
+    } else {
+        $unity_user_sub = $_SESSION["unity_user_sub"];
+        $unity_user_name = $_SESSION["unity_user_name"];
+    }
 
-    $unity_user_sub = "user_sub";
-    $user_name = "Usuario 1";
+    //$unity_user_sub = "user_sub";
+    //$user_name = "Usuario 1";
 
 
 ?>
@@ -656,7 +656,7 @@ if ( !session_id() ) {
                         <div class="row">
                             <div class="col-sm-4"><input type="checkbox" value="hadoop" name="hadoop" id="hadoop" title="A framework that allows for the distributed processing of large data sets across clusters of computers using simple programming models"/> Hadoop </div>
                             <div class="col-sm-4"><input type="checkbox" value="galaxy" name="galaxy" id="galaxy" title="Web-based platform for data intensive biomedical research. Recommended to install with Torque and NFS."/> Galaxy </div>
-                            <div class="col-sm-4"><input type="checkbox" value="extra_hd" name="extra_hd" id="extra_hd" title="Add a 100GB Extra HD to the cluster"/> 100GB Extra HD </div>
+                            <!--<div class="col-sm-4"><input type="checkbox" value="extra_hd" name="extra_hd" id="extra_hd" title="Add a 100GB Extra HD to the cluster"/> 100GB Extra HD </div>-->
                             <!--<div class="col-sm-4"><input type="checkbox" value="galaxy-tools" name="galaxy-tools" id="galaxy-tools" title="Web-based platform for data intensive biomedical research"/> Galaxy tools </div>-->
                             <!--<div class="col-sm-4"><input type="checkbox" value="sshtunnels" name="sshtunnels" id="sshtun" title="Used to interconnect working nodes in an hybrid cloud scenario"/> SSH tunnels </div>-->
                         </div>
@@ -682,18 +682,7 @@ if ( !session_id() ) {
                 <h3>Provider Account</h3>
                 <div class="wizard-input-section">
                     <p>
-                        Compute API endpoint or OTC host:
-                    </p>
-                    <div class="form-group">
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control" id="endpoint-helix" name="endpoint-helix" placeholder="endpoint" data-validate="validateValue">
-                        </div>
-                    </div>
-                </div>
-            <!-- TODO: pedir los datos del voucher/credenciales -->
-                <div class="wizard-input-section">
-                    <p>
-                        API key:
+                        API key (Exoscale) or User Name (OTC):
                     </p>
                     <div class="form-group">
                         <div class="col-sm-6">
@@ -704,11 +693,31 @@ if ( !session_id() ) {
 
                 <div class="wizard-input-section">
                     <p>
-                        Secret Key:
+                        Secret Key (Exoscale) or Password (OTC):
                     </p>
                     <div class="form-group">
                         <div class="col-sm-6">
                             <input type="password" class="form-control" id="secretkey-helix" name="secretkey-helix" placeholder="secret key" data-validate="validateValue">
+                        </div>
+                    </div>
+                </div>
+                <div class="wizard-input-section">
+                    <p>
+                        Domain name (only in OTC deployments):
+                    </p>
+                    <div class="form-group">
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="domain-otc-helix" name="domain-otc-helix" placeholder="domain" data-validate="">
+                        </div>
+                    </div>
+                </div>
+                <div class="wizard-input-section">
+                    <p>
+                        Project ID (only in OTC deployments):
+                    </p>
+                    <div class="form-group">
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="project-otc-helix" name="project-otc-helix" placeholder="projectid" data-validate="">
                         </div>
                     </div>
                 </div>
@@ -1489,14 +1498,20 @@ if ( !session_id() ) {
                 //obtener provider
                 var provider =  $('#provider-helix').val();
                 
-                //obtener endpoint
-                var endpoint = $('#endpoint-helix').val();
-                //var endpointName = $('#endpoint-fedcloud option:selected').html();
-                
                 //obtener las credenciales
                 var apikey = $('#apikey-helix').val();
                 var secretkey = $('#secretkey-helix').val();
                 secretkey = "******************";
+                
+                //En caso de OTC, obtener tennat y projectID
+                var tennat = $('#domain-otc-helix').val();
+                if (tennat == ''){
+                    tennat = "Not set";
+                }
+                var projectID = $('#project-otc-helix').val();
+                if (projectID == ''){
+                    projectID = "Not set";
+                }
                 
                 //obtener la vmi seleccionada
                 var vmi = $('#vmi-helix').val();
@@ -1544,9 +1559,10 @@ if ( !session_id() ) {
                 //obtener el nombre del cluster
                 var clustername = $('#cluster-name-helix').val();
 
-                retValue = "<div> <b>Provider: </b>" + provider + "</div>" + "<div><b>Endpoint: </b>" + endpoint + "</div>";
+                retValue = "<div> <b>Provider: </b>" + provider + "</div>";
 
                 retValue +="<div> <b> Access Key: </b>" + apikey + "</div> <div><b>Secret Key: </b>" + secretkey + "</div>" +
+                           "<div> <b> Domain Name: </b>" + tennat + "</div> <div><b>Project ID: </b>" + projectID + "</div>" +
                            "<div> <b> VMI: </b>" + vmi + "</div>" +
                            "<div> <b>Frontend instance type: </b>" + front_type + "</div>" +
                            "<div> <b>Working nodes instance type: </b>" + wn_type + "</div>" +

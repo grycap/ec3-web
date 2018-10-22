@@ -82,8 +82,6 @@ function generate_auth_file_fedcloud($endpoint, $clustername) {
 
 
 // Generates the auth file for OTC Tsystems deployments
-// TODO: hay que determinar como sacar user y pass, si se le pide al usuario
-// Y el resto de parametros: tenant, domain, auth_version, service_name, service_region
 function generate_auth_file_otc($endpoint, $clustername, $username, $pass, $tenant, $domain, $auth_version, $service_name, $service_region) {
     $auth = "/tmp/auth_" . $clustername;
     chmod($auth, 0644);
@@ -154,13 +152,13 @@ function generate_system_image_radl($cloud, $ami, $region, $ami_user, $ami_passw
     } else if ($cloud == 'exoscale'){
         fwrite($new_file, "    disk.0.image.url = 'cst://api.exoscale.ch/" .$ami. " and".PHP_EOL);
     } else { //cloud=t-systems
-        $region = explode(':', $region);
+        /*$region = explode(':', $region);
         if(strpos($region[0], 'http') !== false){
             $region = $region[1];
         } else{
             $region = "//" . $region[0];
-        }
-        fwrite($new_file, "    disk.0.image.url = 'ost:".$region. "/" .$ami. "' and".PHP_EOL);
+        }*/
+        fwrite($new_file, "    disk.0.image.url = 'ost://iam.eu-de.otc.t-systems.com/" .$ami. "' and".PHP_EOL);
     }
     
     fwrite($new_file, "    instance_type='".$instancetype_front."' and".PHP_EOL);
@@ -181,13 +179,13 @@ function generate_system_image_radl($cloud, $ami, $region, $ami_user, $ami_passw
     } else if ($cloud == 'exoscale'){
         fwrite($new_file, "    disk.0.image.url = 'cst://api.exoscale.ch/" .$ami. " and".PHP_EOL);
     } else { //cloud=t-systems
-        $region = explode(':', $region);
+        /*$region = explode(':', $region);
         if(strpos($region[0], 'http') !== false){
             $region = $region[1];
         } else{
             $region = "//" . $region[0];
-        }
-        fwrite($new_file, "    disk.0.image.url = 'ost:".$region. "/" .$ami. "' and".PHP_EOL);
+        }*/
+        fwrite($new_file, "    disk.0.image.url = 'ost://iam.eu-de.otc.t-systems.com/" .$ami. "' and".PHP_EOL);
     }
     fwrite($new_file, "    instance_type='".$instancetype_wn."' and".PHP_EOL);
     fwrite($new_file, "    disk.0.os.credentials.username = '".$fcuser."'".PHP_EOL);
@@ -268,11 +266,25 @@ if($_POST){
         $cloud = (isset($_POST['provider-helix']) ? $_POST['provider-helix'] : "");
         $cloud = strtolower($cloud);
         
-        $endpointName = (isset($_POST['endpointName']) ? $_POST['endpointName'] : "");
-        $endpoint = (isset($_POST['endpoint-helix']) ? $_POST['endpoint-helix'] : "");
+        //Endpoint is now fixed 
+        //$endpointName = (isset($_POST['endpointName']) ? $_POST['endpointName'] : "");
+        //$endpoint = (isset($_POST['endpoint-helix']) ? $_POST['endpoint-helix'] : "");
+        if($cloud = 'exoscale')
+             $endpoint = "http://api.exoscale.ch/compute";          
+        else {
+            $endpoint = "https://iam.eu-de.otc.t-systems.com:443";
+        }
         
         $apikey = (isset($_POST['apikey-helix']) ? $_POST['apikey-helix'] : "");
         $secretkey = (isset($_POST['secretkey-helix']) ? $_POST['secretkey-helix'] : "");
+        
+        //obtener tennat y projectID. Si estan vacios y se ha seleccionado OTC, devolver directamente un error al usuario
+        $domain = (isset($_POST['domain-otc-helix']) ? $_POST['domain-otc-helix'] : "");
+        $projectID = (isset($_POST['project-otc-helix']) ? $_POST['project-otc-helix'] : "");
+        if ($cloud = 't-systems' && $domain == '' || $cloud = 't-systems' && $projectID == '' ){
+            echo 'Domain or project ID not provided in a OTC deployment. Impossible to launch a cluster without these data. Please, enter the required information and try again.';
+            exit(1);
+        }
         
         $vmi = (isset($_POST['vmi-helix']) ? $_POST['vmi-helix'] : "");
         if($vmi == ''){
@@ -309,10 +321,10 @@ if($_POST){
             $auth_file = generate_auth_file_exoscale($endpoint, $name, $apikey, $secretkey);
         } else {
             //TODO: hay que ver lo de las credenciales de usuario
-            $auth_file = generate_auth_file_otc($endpoint, $name, $username, $pass, $tenant, $domain, $auth_version, $service_name, $service_region);
+            $auth_file = generate_auth_file_otc($endpoint, $name, $username, $pass, 'eu-de', $domain, '3.x_password', 'None', 'eu-de');
         }
         
-        $data = generate_system_image_radl($cloud, $vmi, $endpointName, '', '', $front_type, $wn_type, '', '', '', '', $nodes);
+        $data = generate_system_image_radl($cloud, $vmi, $endpoint, '', '', $front_type, $wn_type, '', '', '', '', $nodes);
 
         $os = $data[0];
         $user = $data[1];
