@@ -269,8 +269,9 @@ if($_POST){
         //Endpoint is now fixed 
         //$endpointName = (isset($_POST['endpointName']) ? $_POST['endpointName'] : "");
         //$endpoint = (isset($_POST['endpoint-helix']) ? $_POST['endpoint-helix'] : "");
-        if($cloud = 'exoscale')
-             $endpoint = "http://api.exoscale.ch/compute";          
+        if($cloud = 'exoscale'){
+             $endpoint = "http://api.exoscale.ch/compute";
+        }
         else {
             $endpoint = "https://iam.eu-de.otc.t-systems.com:443";
         }
