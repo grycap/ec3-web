@@ -73,11 +73,47 @@ function generate_auth_file_fedcloud($endpoint, $clustername) {
     fwrite($gestor, "id = occi; type = OCCI; proxy = " . $proxy . "; host = " . $endpoint . PHP_EOL);
     //Write needed credentials of IM and VMRC
     fwrite($gestor, "type = InfrastructureManager; username = " . random_string(8) . "; password = " . random_string(10). PHP_EOL);
-    //fwrite($gestor, "type = VMRC; host = http://servproject.i3m.upv.es:8080/vmrc/vmrc; username = micafer; password = ttt25");
     fclose($gestor);
 
     //to delete an empty file that tempnam creates
     //unlink($auth);
+    return $auth;
+}
+
+
+// Generates the auth file for OTC Tsystems deployments
+function generate_auth_file_otc($endpoint, $clustername, $username, $pass, $tenant, $domain, $auth_version, $service_name, $service_region) {
+    $auth = "/tmp/auth_" . $clustername;
+    chmod($auth, 0644);
+
+    //Write user credentials in IM format, like: 
+    //id = otc; type = OpenStack; host = https://iam.eu-de.otc.t-systems.com:443 ; username = user; password = pass; tenant = tenant; domain = domain; auth_version = 3.x_password; service_name = None; service_region = eu-de
+    
+    $gestor = fopen($auth, "w");
+    fwrite($gestor, "id = otc; type = OpenStack; host = " . $endpoint . "; username = " . $username . "; password = " . $pass . "; tenant = " . $tenant . "; domain = " . $domain . "; auth_version = " . $auth_version . "; service_name = " . $service_name . "; service_region = " . $service_region . PHP_EOL);
+    //Write needed credentials of IM and VMRC
+    fwrite($gestor, "type = InfrastructureManager; username = " . random_string(8) . "; password = " . random_string(10). PHP_EOL);
+    fclose($gestor);
+
+    return $auth;
+}
+
+
+// Generates the auth file for Exoscale deployments
+//function generate_auth_file_fedcloud($proxy, $endpoint, $myproxyserver, $myproxyuser, $myproxypass) {
+function generate_auth_file_exoscale($endpoint, $clustername, $apikey, $secretkey) {
+    $auth = "/tmp/auth_" . $clustername;
+    chmod($auth, 0644);
+
+    //Write user credentials in IM format, like: 
+    //id = exoscale; type = CloudStack; username = apikey; password = secret; host = http://api.exoscale.ch/compute
+    
+    $gestor = fopen($auth, "w");
+    fwrite($gestor, "id = exoscale; type = CloudStack; username = " . $apikey . "; password = " . $secretkey ."; host = " . $endpoint . PHP_EOL);
+    //Write needed credentials of IM and VMRC
+    fwrite($gestor, "type = InfrastructureManager; username = " . random_string(8) . "; password = " . random_string(10). PHP_EOL);
+    fclose($gestor);
+
     return $auth;
 }
 
@@ -105,11 +141,26 @@ function generate_system_image_radl($cloud, $ami, $region, $ami_user, $ami_passw
     }
 
     $new_file = fopen($path_to_new_file, "w");
+    //SYSTEM FRONT
     fwrite($new_file, "system front (".PHP_EOL);
     fwrite($new_file, "    disk.0.os.name='linux' and".PHP_EOL);
 
     //fwrite($new_file, "    disk.0.image.url = '".$region. "/" .$ami. "' and".PHP_EOL);
-    fwrite($new_file, "    disk.0.image.url = 'appdb://".$region. "/" .$ami. "?vo.access.egi.eu' and".PHP_EOL);
+    //Depende del cloud el formato de URL cambia:
+    if ($cloud == 'fedcloud'){
+        fwrite($new_file, "    disk.0.image.url = 'appdb://".$region. "/" .$ami. "?vo.access.egi.eu' and".PHP_EOL);
+    } else if ($cloud == 'exoscale'){
+        fwrite($new_file, "    disk.0.image.url = 'cst://api.exoscale.ch/" .$ami. " and".PHP_EOL);
+    } else { //cloud=t-systems
+        /*$region = explode(':', $region);
+        if(strpos($region[0], 'http') !== false){
+            $region = $region[1];
+        } else{
+            $region = "//" . $region[0];
+        }*/
+        fwrite($new_file, "    disk.0.image.url = 'ost://iam.eu-de.otc.t-systems.com/" .$ami. "' and".PHP_EOL);
+    }
+    
     fwrite($new_file, "    instance_type='".$instancetype_front."' and".PHP_EOL);
     fwrite($new_file, "    disk.0.os.credentials.username = '".$fcuser."' and".PHP_EOL);
     fwrite($new_file, "    ec3aas.username = '".$user_sub."'".PHP_EOL);
@@ -117,12 +168,25 @@ function generate_system_image_radl($cloud, $ami, $region, $ami_user, $ami_passw
     fwrite($new_file, ")".PHP_EOL);
     fwrite($new_file, PHP_EOL);
 
+    // SYSTEM WN
     fwrite($new_file, "system wn (".PHP_EOL);
     fwrite($new_file, "    ec3_max_instances = ".$nodes." and".PHP_EOL);
     fwrite($new_file, "    disk.0.os.name='linux' and".PHP_EOL);
 
-    fwrite($new_file, "    disk.0.image.url = 'appdb://".$region. "/" .$ami. "?vo.access.egi.eu' and".PHP_EOL);
-    //fwrite($new_file, "    disk.0.image.url = '".$region. "/" .$ami. "' and".PHP_EOL);
+    //Depende del cloud el formato de URL cambia:
+    if ($cloud == 'fedcloud'){
+        fwrite($new_file, "    disk.0.image.url = 'appdb://".$region. "/" .$ami. "?vo.access.egi.eu' and".PHP_EOL);
+    } else if ($cloud == 'exoscale'){
+        fwrite($new_file, "    disk.0.image.url = 'cst://api.exoscale.ch/" .$ami. " and".PHP_EOL);
+    } else { //cloud=t-systems
+        /*$region = explode(':', $region);
+        if(strpos($region[0], 'http') !== false){
+            $region = $region[1];
+        } else{
+            $region = "//" . $region[0];
+        }*/
+        fwrite($new_file, "    disk.0.image.url = 'ost://iam.eu-de.otc.t-systems.com/" .$ami. "' and".PHP_EOL);
+    }
     fwrite($new_file, "    instance_type='".$instancetype_wn."' and".PHP_EOL);
     fwrite($new_file, "    disk.0.os.credentials.username = '".$fcuser."'".PHP_EOL);
 
@@ -198,6 +262,73 @@ if($_POST){
         $os = $data[0];
         $user = $data[1];
         $pass = $data[2];
+    } else if ($provider == 'helixnebula'){
+        $cloud = (isset($_POST['provider-helix']) ? $_POST['provider-helix'] : "");
+        $cloud = strtolower($cloud);
+        
+        //Endpoint is now fixed 
+        //$endpointName = (isset($_POST['endpointName']) ? $_POST['endpointName'] : "");
+        //$endpoint = (isset($_POST['endpoint-helix']) ? $_POST['endpoint-helix'] : "");
+        if($cloud == 'exoscale'){
+             $endpoint = "http://api.exoscale.ch/compute";
+        }
+        else {
+            $endpoint = "https://iam.eu-de.otc.t-systems.com:443";
+        }
+        
+        $apikey = (isset($_POST['apikey-helix']) ? $_POST['apikey-helix'] : "");
+        $secretkey = (isset($_POST['secretkey-helix']) ? $_POST['secretkey-helix'] : "");
+        
+        //obtener tennat y projectID. Si estan vacios y se ha seleccionado OTC, devolver directamente un error al usuario
+        $domain = (isset($_POST['domain-otc-helix']) ? $_POST['domain-otc-helix'] : "");
+        $projectID = (isset($_POST['project-otc-helix']) ? $_POST['project-otc-helix'] : "");
+        
+        $vmi = (isset($_POST['vmihelix']) ? $_POST['vmihelix'] : "");
+        if($vmi == ''){
+            echo 'Image ID not provided. Impossible to launch a cluster without these data. Please, enter the required information and try again.';
+            exit(1);
+        }
+
+        $front_type = (isset($_POST['fronthelix']) ? $_POST['fronthelix'] : "");
+        $wn_type = (isset($_POST['wnhelix']) ? $_POST['wnhelix'] : "");
+
+        $lrms = (isset($_POST['lrms-helix']) ? $_POST['lrms-helix'] : "");
+        
+        if($lrms == '' ){
+            echo 'LRMS not provided. Impossible to launch a cluster without this data. Please, enter the required information and try again.';
+            exit(1);
+        }
+        
+        $sw = "clues2 myproxy_ltos ";
+        foreach ($possible_sw as $item_sw) {
+            if (isset($_POST[$item_sw])) {
+                $sw .= $item_sw . " ";
+            }
+        }
+
+        $nodes = (isset($_POST['nodes-helix']) ? $_POST['nodes-helix'] : "1");
+        
+        $cluster_name = (isset($_POST['cluster-name-helix']) ? $_POST['cluster-name-helix'] : "");
+        
+        $name = $cluster_name . "__" . $apikey;
+        $lrms = strtolower($lrms);
+        $sw = strtolower($sw);
+
+        if ($cloud == 'exoscale') {
+            $auth_file = generate_auth_file_exoscale($endpoint, $name, $apikey, $secretkey);
+        } else {
+            if ($domain == '' || $projectID == '' ){
+                echo 'Domain or project ID not provided in a OTC deployment. Impossible to launch a cluster without these data. Please, enter the required information and try again.';
+                exit(1);
+            }
+            $auth_file = generate_auth_file_otc($endpoint, $name, $apikey, $secretkey, 'eu-de', $domain, '3.x_password', 'None', 'eu-de');
+        }
+        
+        $data = generate_system_image_radl($cloud, $vmi, $endpoint, '', '', $front_type, $wn_type, '', '', '', '', $nodes);
+
+        $os = $data[0];
+        $user = $data[1];
+        $pass = $data[2];
     } else {
         echo 'Unknown provider';
         exit(1);
@@ -211,7 +342,6 @@ if($_POST){
     $name = "cluster_" . $rand;
     
     */
-
 
     // Modificamos el numero maximo de nodos del cluster
     /*$path_to_file = '/var/www/html/ec3/command/templates/'.$os.".radl";
