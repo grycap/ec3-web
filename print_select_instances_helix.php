@@ -1,5 +1,4 @@
 <?php
-
     $return_string = "";
     $return_string .= "<select name=\"fronthelix\" id=\"fronthelix\" data-placeholder=\"--Select one--\" style=\"width:350px;\" class=\"chzn-select form-control\" data-validate=\"drop_down_validation\"><option value=\"\"></option>";
 
@@ -17,7 +16,11 @@
         if ($cloud == 'exoscale'){
             exec('python EGI_HNSci.py ' . $cloud . ' flavors ' . $apikey . ' ' . $secretkey, $instances);
         } else{
-            exec('python EGI_HNSci.py ' . $cloud . ' flavors ' . $apikey . ' ' . $secretkey . ' ' . $domain . ' ' . $projectID, $instances);
+            if ($domain == '' || $projectID == '' ){
+                echo 'Domain or project ID not provided in a OTC deployment. Impossible to launch a cluster without these data. Please, enter the required information and try again.';
+                exit(1);
+            }
+            exec('python EGI_HNSci.py ' . $cloud . ' images ' . $apikey . ' ' . $secretkey . ' ' . $domain . ' ' . $projectID, $oss);
         }
 
 		foreach ($instances as $instance) {

@@ -16,6 +16,10 @@
         if ($cloud == 'exoscale'){
             exec('python EGI_HNSci.py ' . $cloud . ' images ' . $apikey . ' ' . $secretkey, $oss);
         } else{
+            if ($domain == '' || $projectID == '' ){
+                echo 'Domain or project ID not provided in a OTC deployment. Impossible to launch a cluster without these data. Please, enter the required information and try again.';
+                exit(1);
+            }
             exec('python EGI_HNSci.py ' . $cloud . ' images ' . $apikey . ' ' . $secretkey . ' ' . $domain . ' ' . $projectID, $oss);
         }
 
