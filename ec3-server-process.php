@@ -109,7 +109,7 @@ function generate_auth_file_exoscale($endpoint, $clustername, $apikey, $secretke
     //id = exoscale; type = CloudStack; username = apikey; password = secret; host = http://api.exoscale.ch/compute
     
     $gestor = fopen($auth, "w");
-    fwrite($gestor, "id = exoscale; type = CloudStack; username = " . $apikey . "password = " . $secretkey ."; host = " . $endpoint . PHP_EOL);
+    fwrite($gestor, "id = exoscale; type = CloudStack; username = " . $apikey . "; password = " . $secretkey ."; host = " . $endpoint . PHP_EOL);
     //Write needed credentials of IM and VMRC
     fwrite($gestor, "type = InfrastructureManager; username = " . random_string(8) . "; password = " . random_string(10). PHP_EOL);
     fclose($gestor);
@@ -269,7 +269,7 @@ if($_POST){
         //Endpoint is now fixed 
         //$endpointName = (isset($_POST['endpointName']) ? $_POST['endpointName'] : "");
         //$endpoint = (isset($_POST['endpoint-helix']) ? $_POST['endpoint-helix'] : "");
-        if($cloud = 'exoscale'){
+        if($cloud == 'exoscale'){
              $endpoint = "http://api.exoscale.ch/compute";
         }
         else {
@@ -282,10 +282,6 @@ if($_POST){
         //obtener tennat y projectID. Si estan vacios y se ha seleccionado OTC, devolver directamente un error al usuario
         $domain = (isset($_POST['domain-otc-helix']) ? $_POST['domain-otc-helix'] : "");
         $projectID = (isset($_POST['project-otc-helix']) ? $_POST['project-otc-helix'] : "");
-        if ($cloud = 't-systems' && $domain == '' || $cloud = 't-systems' && $projectID == '' ){
-            echo 'Domain or project ID not provided in a OTC deployment. Impossible to launch a cluster without these data. Please, enter the required information and try again.';
-            exit(1);
-        }
         
         $vmi = (isset($_POST['vmihelix']) ? $_POST['vmihelix'] : "");
         if($vmi == ''){
@@ -321,8 +317,11 @@ if($_POST){
         if ($cloud == 'exoscale') {
             $auth_file = generate_auth_file_exoscale($endpoint, $name, $apikey, $secretkey);
         } else {
-            //TODO: hay que ver lo de las credenciales de usuario
-            $auth_file = generate_auth_file_otc($endpoint, $name, $username, $pass, 'eu-de', $domain, '3.x_password', 'None', 'eu-de');
+            if ($domain == '' || $projectID == '' ){
+                echo 'Domain or project ID not provided in a OTC deployment. Impossible to launch a cluster without these data. Please, enter the required information and try again.';
+                exit(1);
+            }
+            $auth_file = generate_auth_file_otc($endpoint, $name, $apikey, $secretkey, 'eu-de', $domain, '3.x_password', 'None', 'eu-de');
         }
         
         $data = generate_system_image_radl($cloud, $vmi, $endpoint, '', '', $front_type, $wn_type, '', '', '', '', $nodes);
