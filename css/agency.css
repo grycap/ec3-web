@@ -127,6 +127,33 @@ h6 {
     background-repeat: no-repeat;
 }
 
+.btn-helix {
+    /*width: 280px;
+    height: 180px;*/
+    width: 350px;
+    height: 225px;
+    background-image: url(../img/provider/helix_beta.png);
+    background-repeat: no-repeat;
+}
+
+.btn-exoscale {
+    /*width: 280px;
+    height: 180px;*/
+    width: 350px;
+    height: 225px;
+    background-image: url(../img/provider/exoscale.png);
+    background-repeat: no-repeat;
+}
+
+.btn-tsystems {
+    /*width: 280px;
+    height: 180px;*/
+    width: 350px;
+    height: 225px;
+    background-image: url(../img/provider/tsystems.png);
+    background-repeat: no-repeat;
+}
+
 .btn-delete{
     width: 280px;
     height: 180px;
