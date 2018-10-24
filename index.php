@@ -821,7 +821,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
             </div>
 
             <!-- Step 7 Resume and launch -->
-            <div class="wizard-card" data-cardname="resume-helix" data-onSelected="showDetails_OCCI">
+            <div class="wizard-card" data-cardname="resume-helix" data-onSelected="showDetails_helix">
                 <h3>Resume and launch</h3>
                 <div>
                     <p>These are the details of your cluster: </p>
@@ -1498,7 +1498,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                 return retValue;
             }
 
-            function showDetails_OCCI() {
+            function showDetails_helix() {
                 var retValue = ' '
                 //obtener provider
                 var provider =  $('#provider-helix').val();
