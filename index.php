@@ -1437,13 +1437,6 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
             };
             
             // We call the HNSci script to obtain the list of images and flavours of each provider
-            //TODO: tengo que pasar en el caso de OTC las variables: apikey-helix, secretkey-helix, domain-otc-helix y project-otc-helix
-            //Y en el caso de exoscale pasar: apikey-helix y secretkey-helix
-            
-            //AHORA NO ESTA CLARO CUANDO SE TIENE QUE HACER ESTA LLAMADA; PORQUE NECESITAMOS TRAS LA SELECCION DE PROVIDER QUE EL USUARIO META LOS DATOS DE AUTENTICACION
-            //$('select#os-helix.chzn-select.form-control').change(function() {
-            //$('#vmi-helix').is(':visible')
-            //$('#vmi-helix').is(':visible', function() {
             $.each(["show", "toggle", "toggleClass", "addClass", "removeClass"], function(){
                 var _oldFn = $.fn[this];
                 $.fn[this] = function(){
