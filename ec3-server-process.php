@@ -150,7 +150,7 @@ function generate_system_image_radl($cloud, $ami, $region, $ami_user, $ami_passw
     if ($cloud == 'fedcloud'){
         fwrite($new_file, "    disk.0.image.url = 'appdb://".$region. "/" .$ami. "?vo.access.egi.eu' and".PHP_EOL);
     } else if ($cloud == 'exoscale'){
-        fwrite($new_file, "    disk.0.image.url = 'cst://api.exoscale.ch/" .$ami. " and".PHP_EOL);
+        fwrite($new_file, "    disk.0.image.url = 'cst://api.exoscale.ch/" .$ami. "' and".PHP_EOL);
     } else { //cloud=t-systems
         /*$region = explode(':', $region);
         if(strpos($region[0], 'http') !== false){
@@ -177,7 +177,7 @@ function generate_system_image_radl($cloud, $ami, $region, $ami_user, $ami_passw
     if ($cloud == 'fedcloud'){
         fwrite($new_file, "    disk.0.image.url = 'appdb://".$region. "/" .$ami. "?vo.access.egi.eu' and".PHP_EOL);
     } else if ($cloud == 'exoscale'){
-        fwrite($new_file, "    disk.0.image.url = 'cst://api.exoscale.ch/" .$ami. " and".PHP_EOL);
+        fwrite($new_file, "    disk.0.image.url = 'cst://api.exoscale.ch/" .$ami. "' and".PHP_EOL);
     } else { //cloud=t-systems
         /*$region = explode(':', $region);
         if(strpos($region[0], 'http') !== false){

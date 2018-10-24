@@ -31,7 +31,8 @@ class Exoscale():
             # Get flavors
             sizes = exo.list_sizes()
             for size in sizes:
-                res.append((size.id, str(size.extra['cpu']) + " vCPUs, " + str(size.ram) + "GB of RAM"))
+                #res.append((size.id, str(size.extra['cpu']) + " vCPUs, " + str(size.ram) + "GB of RAM"))
+                res.append((size.name, str(size.extra['cpu']) + " vCPUs, " + str(size.ram) + "GB of RAM"))
         return res
 
 
