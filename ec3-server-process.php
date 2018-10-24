@@ -287,14 +287,14 @@ if($_POST){
             exit(1);
         }
         
-        $vmi = (isset($_POST['vmi-helix']) ? $_POST['vmi-helix'] : "");
+        $vmi = (isset($_POST['vmihelix']) ? $_POST['vmihelix'] : "");
         if($vmi == ''){
             echo 'Image ID not provided. Impossible to launch a cluster without these data. Please, enter the required information and try again.';
             exit(1);
         }
 
-        $front_type = (isset($_POST['front-helix']) ? $_POST['front-helix'] : "");
-        $wn_type = (isset($_POST['wn-helix']) ? $_POST['wn-helix'] : "");
+        $front_type = (isset($_POST['fronthelix']) ? $_POST['fronthelix'] : "");
+        $wn_type = (isset($_POST['wnhelix']) ? $_POST['wnhelix'] : "");
 
         $lrms = (isset($_POST['lrms-helix']) ? $_POST['lrms-helix'] : "");
         

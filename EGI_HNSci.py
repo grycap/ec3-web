@@ -81,14 +81,14 @@ class OTC():
 
 
 if __name__ == "__main__":
-    provider = "otc"
+    provider = "t-systems"
     param = "images"
     if len(sys.argv) > 1:
         provider = sys.argv[1]
     if len(sys.argv) > 2:
         param = sys.argv[2]
 
-    if provider == "otc":
+    if provider == "t-systems":
         if len(sys.argv) > 6:
             username = sys.argv[3]
             password = sys.argv[4]

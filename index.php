@@ -2,19 +2,15 @@
 if ( !session_id() ) {
     session_start();
 }
-
-    if (!isset($_SESSION["unity_user_sub"]) or $_SESSION["unity_user_sub"] == "") {
-        include('auth.php');
-    } else {
-        $unity_user_sub = $_SESSION["unity_user_sub"];
-        $unity_user_name = $_SESSION["unity_user_name"];
-    }
-
-    //$unity_user_sub = "user_sub";
-    //$user_name = "Usuario 1";
-
-
+if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
+    include('auth_egi.php');
+    $user_name = "";
+} else {
+    $user_sub = $_SESSION["egi_user_sub"];
+    $user_name = $_SESSION["egi_user_name"];
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -502,7 +498,7 @@ if ( !session_id() ) {
                         <option>Torque</option>
                         <option>SGE</option>
                         <option>Mesos</option>
-                        <!--<option>Kubernetes</option>-->
+                        <option>Kubernetes</option>
                     </select>
                 </div>
             </div>
@@ -733,12 +729,10 @@ if ( !session_id() ) {
                     </p>
                     </br>
                     <div class="form-group" style="height:250px;">
-                        <div class="col-sm-6" style="width:350px; height:250px;" name="vmihelix" id="vmihelix">
-                            <!--<p> Loading options from the provider... </p>
-                            <select name="vmi-fedcloud" id="vmi-fedcloud" data-placeholder="--Select one--" style="width:350px; height:250px;" class="chzn-select form-control" data-validate="drop_down_validation">
-                            </select>-->
+                        <div class="col-sm-6" style="width:350px; height:250px;" name="vmi-helix" id="vmi-helix">
+                            <p> Loading options from the provider... </p>                                                      
                             <!-- TODO: utilizar el script de tsystems/exoscale para obtener la lista de imagenes disponible (diferentes scripts, hay que diferenciar segun la seleccion de provider) -->
-                            <input type="text" class="form-control" id="vmi-helix" name="vmi-helix" placeholder="VMI identifier" data-validate="validateValue">
+                            <!--<input type="text" class="form-control" id="vmi-helix" name="vmi-helix" placeholder="VMI identifier" data-validate="validateValue">-->
                         </div>
                     </div>
                 </div>
@@ -751,12 +745,9 @@ if ( !session_id() ) {
                 <div class="wizard-input-section">
                     <p>Front-end instance type:</p>
                     <div class="form-group" style="height:30px;">
-                        <div class="col-sm-6" style="width:350px; height:30px;" name="fronthelix" id="fronthelix">
+                        <div class="col-sm-6" style="width:350px; height:30px;" name="front-helix" id="front-helix">
                             <!--<p> Loading options from EGI AppDB... </p> -->
-                            <input type="text" class="form-control" id="front-helix" name="front-helix" placeholder="frontend instance type" data-validate="validateValue">
-                            <!--<select name="front-type" id="front-type" data-placeholder="--Select one--" style="width:350px; height:50px;" class="chzn-select form-control" data-validate="drop_down_validation">
-                                <option value=""></option>
-                            </select>-->
+                            <!--<input type="text" class="form-control" id="front-helix" name="front-helix" placeholder="frontend instance type" data-validate="validateValue">-->
                         </div>
                     </div>
                 </div>
@@ -765,12 +756,9 @@ if ( !session_id() ) {
                         Working nodes instance type:
                     </p>
                     <div class="form-group" style="height:100px;">
-                        <div class="col-sm-6" style="width:350px; height:100px;" name="wnhelix" id="wnhelix">
-                            <!--<p> Loading options from EGI AppDB... </p>-->
-                            <input type="text" class="form-control" id="wn-helix" name="wn-helix" placeholder="WN instance type" data-validate="validateValue">
-                            <!--<select name="wn-type" id="wn-type" data-placeholder="--Select one--" style="width:350px; height:50px;" class="chzn-select form-control" data-validate="drop_down_validation">
-                                <option value=""></option>
-                            </select>-->
+                        <div class="col-sm-6" style="width:350px; height:100px;" name="wn-helix" id="wn-helix">
+                            <p> Loading options from EGI AppDB... </p>
+                            <!--<input type="text" class="form-control" id="wn-helix" name="wn-helix" placeholder="WN instance type" data-validate="validateValue">-->
                         </div>
                     </div>
                 </div>
@@ -790,7 +778,7 @@ if ( !session_id() ) {
                         <option>Torque</option>
                         <option>SGE</option>
                         <option>Mesos</option>
-                        <!--<option>Kubernetes</option>-->
+                        <option>Kubernetes</option>
                     </select>
                 </div>
             </div>
@@ -1109,7 +1097,7 @@ if ( !session_id() ) {
                 $('#open-wizard-deploy').click(function(e) {
                     e.preventDefault();
                     wizard.show();
-                    <!-- Send endpoint selected to the server to obtain instance types-->
+                    //Send endpoint selected to the server to obtain instance types
                     $.ajax({
                         method: "POST",
                         url: "print_select_endpoints.php",
@@ -1166,7 +1154,7 @@ if ( !session_id() ) {
             };
 
             $('select#endpoint-fedcloud.chzn-select.form-control').change(function() {
-                <!-- Send endpoint selected to the server to obtain OS-->
+                //Send endpoint selected to the server to obtain OS
                 $.ajax({
                     method: "POST",
                     url: "print_select_os.php",
@@ -1178,7 +1166,7 @@ if ( !session_id() ) {
                         //$("select#vmi-fedcloud").html(text);
                     }
                 });
-                <!-- Send endpoint selected to the server to obtain instance types-->
+                //Send endpoint selected to the server to obtain instance types
                 $.ajax({
                     method: "POST",
                     url: "print_select_instances.php",
@@ -1393,19 +1381,18 @@ if ( !session_id() ) {
                 $('#open-wizard-helix').click(function(e) {
                     e.preventDefault();
                     wizard.show();
-                    <!-- Send endpoint selected to the server to obtain instance types-->
+                    /*<!-- Send endpoint selected to the server to obtain instance types-->
                     $.ajax({
                         method: "POST",
                         url: "print_select_endpoints.php",
                         //data:{endpointfedcloud: $('#endpoint-fedcloud').val()},
                         success : function(text)
                         {  
-                            $('#endpoint_fedcloud_chzn').hide()
-                            $('#endpoint-fedcloud').prop('data-placeholder', "--Select one--");
-                            $('#endpoint-fedcloud').append(text).hide().show();
-                            //$('#endpoint-fedcloud').html(text);
+                            $('#vmi-helix').hide()
+                            $('#vmi-helix').prop('data-placeholder', "--Select one--");
+                            $('#vmi-helix').append(text).hide().show();
                         }
-                    });
+                    });*/
                 });
             });
 
@@ -1449,31 +1436,56 @@ if ( !session_id() ) {
                 return retValue;
             };
             
-            //TODO: update
-            /*Tenemos que usar los scripts que ha hecho giuseppe para obtener estos datos automaticamente como con egi*/
-            $('select#endpoint-fedcloud.chzn-select.form-control').change(function() {
-                <!-- Send endpoint selected to the server to obtain OS-->
+            // We call the HNSci script to obtain the list of images and flavours of each provider
+            //TODO: tengo que pasar en el caso de OTC las variables: apikey-helix, secretkey-helix, domain-otc-helix y project-otc-helix
+            //Y en el caso de exoscale pasar: apikey-helix y secretkey-helix
+            
+            //AHORA NO ESTA CLARO CUANDO SE TIENE QUE HACER ESTA LLAMADA; PORQUE NECESITAMOS TRAS LA SELECCION DE PROVIDER QUE EL USUARIO META LOS DATOS DE AUTENTICACION
+            //$('select#os-helix.chzn-select.form-control').change(function() {
+            //$('#vmi-helix').is(':visible')
+            //$('#vmi-helix').is(':visible', function() {
+            $.each(["show", "toggle", "toggleClass", "addClass", "removeClass"], function(){
+                var _oldFn = $.fn[this];
+                $.fn[this] = function(){
+                    var hidden = this.find(":hidden").add(this.filter(":hidden"));
+                    var result = _oldFn.apply(this, arguments);
+                    hidden.filter(":visible").each(function(){
+                        $(this).triggerHandler("show"); //No bubbling
+                    });
+                    return result;
+                }
+            });
+            
+            $('#vmi-helix').bind("show", function() {
+                var provider = $('#provider-helix option:selected').html();
+                var post_data = "providerhelix=" + provider;
+                if(provider == 'Exoscale'){
+                    post_data += "&user=" + $('#apikey-helix').val() + "&pass=" + $('#secretkey-helix').val();
+                } else { //provider == "T-Systems"
+                    post_data += "&user=" + $('#apikey-helix').val() + "&pass=" + $('#secretkey-helix').val() + "&domain=" + $('#domain-otc-helix').val() + "&project=" + $('#project-otc-helix').val();
+                }
+                
+                //Send cloud provider selected to the server to obtain OS
                 $.ajax({
                     method: "POST",
-                    url: "print_select_os.php",
-                    /*data:{endpointfedcloud: $('#endpoint-fedcloud').val()},*/
-                    data: {endpointfedcloud: $('#endpoint-fedcloud option:selected').html()},
+                    url: "print_select_os_helix.php",                    
+                    //data: {providerhelix: $('#provider-helix option:selected').html()},
+                    data: post_data,
                     success : function(text)
                     {   
-                        $('#vmifedcloud').html(text);
-                        //$("select#vmi-fedcloud").html(text);
+                        $('#vmi-helix').html(text);
                     }
                 });
-                <!-- Send endpoint selected to the server to obtain instance types-->
+                //Send endpoint selected to the server to obtain instance types
                 $.ajax({
                     method: "POST",
-                    url: "print_select_instances.php",
-                    /*data:{endpointfedcloud: $('#endpoint-fedcloud').val()},*/
-                    data: {endpointfedcloud: $('#endpoint-fedcloud option:selected').html()},
+                    url: "print_select_instances_helix.php",
+                    //data: {providerhelix: $('#provider-helix option:selected').html()},
+                    data: post_data,
                     success : function(text)
                     {   
-                        $('#frontfedcloud').html(text);
-                        $('#wnfedcloud').html(text.replace(/front-fedcloud/g, "wn-fedcloud"));
+                        $('#front-helix').html(text);
+                        $('#wn-helix').html(text.replace(/fronthelix/g, "wnhelix"));
                     }
                 });
             });
@@ -1514,11 +1526,14 @@ if ( !session_id() ) {
                 }
                 
                 //obtener la vmi seleccionada
-                var vmi = $('#vmi-helix').val();
+                //var vmi = $('#vmi-helix').val();
+                var vmi = $('#vmihelix option:selected').html();
 
                 //obtener las caracteristicas de las VMs
-                var front_type = $('#front-helix').val();
-                var wn_type = $('#wn-helix').val();
+                //var front_type = $('#front-helix').val();
+                //var wn_type = $('#wn-helix').val();
+                var front_type = $('#fronthelix option:selected').html();
+                var wn_type = $('#wnhelix option:selected').html();
 
                 //obtener el LRMS seleccionado
                 var lrms = $('#lrms-helix').val();
