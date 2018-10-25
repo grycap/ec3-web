@@ -40,8 +40,18 @@ if($_POST){
     if (isset($_POST['clustername'])) {
         $clustername = $_POST['clustername'];
     } else {
-        exit("No clustername parameter specified.");
+        exit("ERROR: No clustername parameter specified.");
     }
+    
+    if (isset($_POST['provider'])) {
+        $provider = $_POST['provider'];
+        $provider = strtolower($provider);
+    } else {
+        exit("ERROR: No provider parameter specified.");
+    }
+    
+    //$auth_file = "/tmp/auth_" .substr($clustername, 8);
+    $auth_file = "/tmp/auth_" .$clustername;
 
     if(!isset($_SESSION)) session_start();
 
@@ -53,69 +63,67 @@ if($_POST){
         $user_sub = $_SESSION["egi_user_sub"];
     }
 
-    $proxy = getSSLPage("https://etokenserver.ct.infn.it:8443/eTokenServer/eToken/08b435574d4f19c734f19514828ad0ab?voms=vo.access.egi.eu:/vo.access.egi.eu&proxy-renewal=true&disable-voms-proxy=false&rfc-proxy=true&cn-label=eToken:" . $user_sub);
-    $proxy = str_replace("\n", "\\n", $proxy);
+    if ($provider == 'fedcloud'){
+        $proxy = getSSLPage("https://etokenserver.ct.infn.it:8443/eTokenServer/eToken/08b435574d4f19c734f19514828ad0ab?voms=vo.access.egi.eu:/vo.access.egi.eu&proxy-renewal=true&disable-voms-proxy=false&rfc-proxy=true&cn-label=eToken:" . $user_sub);
+        $proxy = str_replace("\n", "\\n", $proxy);
+        if($proxy!=""){
+            //ahora recuperamos la linea de credenciales del IM
+            $im_line="";
 
-    if($proxy!=""){
-        //$auth_file = "/tmp/auth_" .substr($clustername, 8);
-        $auth_file = "/tmp/auth_" .$clustername;
-        
-        //ahora recuperamos la linea de credenciales del IM
-        $im_line="";
-
-        if (file_exists($auth_file)){
-            //leemos el antiguo fichero de credenciales
-            $file = fopen($auth_file, "r") or exit("Unable to find the old auth file:" . $auth_file . ". Is the cluster name correct?");
-            while(!feof($file)){
-                $line = fgets($file);
-                if(strstr($line, "proxy")){
-                    $proxy_line = $line;
-                    $endpoint = substr($line, strpos($line, "host = ")+7);
-                }
-                if(strstr($line, "InfrastructureManager")){
-                    $im_line=$line;
-                }
-            }
-            fclose($file);
-        } else {
-            //si no existe el $auth_file, la info del IM se puede sacar de "/var/www/html/.ec3/clusters/" . $clustername
-            //en el system front/auth buscar la linea de "type": "InfrastructureManager" y esa es la que tenemos que guardar en $im_line
-             $im_username = "";
-             $im_pass = "";
-             $endpoint = "";
-             $file = fopen("/var/www/.ec3/clusters/" . $clustername, "r") or exit("Unable to find the cluster data for cluster:" . $clustername . ". Is the cluster name correct?");
-             $logs = fopen("/tmp/amcaar_logs.txt", "w");
-             while(!feof($file)){
-                $line = fgets($file);
-                if(strstr($line, "auth")){
-                    //coger los datos necesarios del IM, la linea de auth tiene formato JSON
-                    $auth_data_json = substr($line, strpos($line, "auth = ")+8, strpos($line, "' and") - (strpos($line, "auth = ")+8));
-                    $json_decoded = json_decode($auth_data_json);
-                    fwrite($logs, $auth_data_json);
-                    //acceder a username y password de im y guardarlo en dos variables
-                    for ($i = 0; $i < count($json_decoded); $i++) {
-                        if ($json_decoded[$i]->{'type'} == "InfrastructureManager") {
-                            $im_username = $json_decoded[$i]->{'username'};
-                            $im_pass = $json_decoded[$i]->{'password'};
-                        }
-                        if ($json_decoded[$i]->{'type'} == "OCCI") {
-                            $endpoint = $json_decoded[$i]->{'host'};
-                        }
+            if (file_exists($auth_file)){
+                //leemos el antiguo fichero de credenciales
+                $file = fopen($auth_file, "r") or exit("Unable to find the old auth file:" . $auth_file . ". Is the cluster name correct?");
+                while(!feof($file)){
+                    $line = fgets($file);
+                    if(strstr($line, "proxy")){
+                        $proxy_line = $line;
+                        $endpoint = substr($line, strpos($line, "host = ")+7);
                     }
-                    $im_line="type = InfrastructureManager; username = " . $im_username . "; password = " . $im_pass;
+                    if(strstr($line, "InfrastructureManager")){
+                        $im_line=$line;
+                    }
                 }
-	     }
-             fclose($file);
-             fclose($logs);
-         }
+                fclose($file);
+            } else {
+                //si no existe el $auth_file, la info del IM se puede sacar de "/var/www/html/.ec3/clusters/" . $clustername
+                //en el system front/auth buscar la linea de "type": "InfrastructureManager" y esa es la que tenemos que guardar en $im_line
+                 $im_username = "";
+                 $im_pass = "";
+                 $endpoint = "";
+                 $file = fopen("/var/www/.ec3/clusters/" . $clustername, "r") or exit("Unable to find the cluster data for cluster:" . $clustername . ". Is the cluster name correct?");
+                 $logs = fopen("/tmp/amcaar_logs.txt", "w");
+                 while(!feof($file)){
+                    $line = fgets($file);
+                    if(strstr($line, "auth")){
+                        //coger los datos necesarios del IM, la linea de auth tiene formato JSON
+                        $auth_data_json = substr($line, strpos($line, "auth = ")+8, strpos($line, "' and") - (strpos($line, "auth = ")+8));
+                        $json_decoded = json_decode($auth_data_json);
+                        fwrite($logs, $auth_data_json);
+                        //acceder a username y password de im y guardarlo en dos variables
+                        for ($i = 0; $i < count($json_decoded); $i++) {
+                            if ($json_decoded[$i]->{'type'} == "InfrastructureManager") {
+                                $im_username = $json_decoded[$i]->{'username'};
+                                $im_pass = $json_decoded[$i]->{'password'};
+                            }
+                            if ($json_decoded[$i]->{'type'} == "OCCI") {
+                                $endpoint = $json_decoded[$i]->{'host'};
+                            }
+                        }
+                        $im_line="type = InfrastructureManager; username = " . $im_username . "; password = " . $im_pass;
+                    }
+             }
+                 fclose($file);
+                 fclose($logs);
+             }
 
-        //Y escribimos el nuevo fichero auth
-        $gestor = fopen($auth_file, "w");
-        fwrite($gestor, "id = occi; type = OCCI; proxy = " . $proxy . "; host = " . $endpoint . PHP_EOL);
-        fwrite($gestor, $im_line. PHP_EOL);
-        fclose($gestor);
-    } else {
-        exit("Error contacting eToken server.");
+            //Y escribimos el nuevo fichero auth
+            $gestor = fopen($auth_file, "w");
+            fwrite($gestor, "id = occi; type = OCCI; proxy = " . $proxy . "; host = " . $endpoint . PHP_EOL);
+            fwrite($gestor, $im_line. PHP_EOL);
+            fclose($gestor);
+        } else {
+            exit("Error contacting eToken server.");
+        }
     }
 
     // llamamos a EC3 para eliminar el cluster
