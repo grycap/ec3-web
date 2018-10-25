@@ -1646,7 +1646,15 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                                 retValue += "<td> " + obj[i].state + " </th> ";
                                 retValue += "<td> " + obj[i].IP + " </th> ";
                                 retValue += "<td> " + obj[i].nodes + " </th> ";
-                                retValue += "<td> " + obj[i].provider + " </th> ";
+                                var provider = obj[i].provider;
+                                if (provider == "OCCI"){
+                                    provider = "EGI Fedcloud";
+                                } else if (provider =="OpenStack"){
+                                    provider = "T-Systems";
+                                } else{
+                                    provider = "Exoscale";
+                                }
+                                retValue += "<td> " + provider + " </th> ";
                                 retValue += "<td><a class=\"btn btn-ssh\" id=\"ssh_"+ obj[i].name + "\" href=\"ec3-ssh-key.php?clustername=" + obj[i].name + "\">Download</a></td>";
                                 retValue += "<td><button class=\"btn btn-deleting\" id=\"delete_"+ obj[i].name + "\" onclick=\"deleteCluster('"+ obj[i].name + "', '" + obj[i].provider + "')\">Delete</button></td>";
                                 retValue += "</tr>";
