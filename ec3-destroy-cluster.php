@@ -63,7 +63,7 @@ if($_POST){
         $user_sub = $_SESSION["egi_user_sub"];
     }
 
-    if ($provider == 'fedcloud'){
+    if ($provider == 'occi'){
         $proxy = getSSLPage("https://etokenserver.ct.infn.it:8443/eTokenServer/eToken/08b435574d4f19c734f19514828ad0ab?voms=vo.access.egi.eu:/vo.access.egi.eu&proxy-renewal=true&disable-voms-proxy=false&rfc-proxy=true&cn-label=eToken:" . $user_sub);
         $proxy = str_replace("\n", "\\n", $proxy);
         if($proxy!=""){
