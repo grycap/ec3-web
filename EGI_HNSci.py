@@ -30,8 +30,9 @@ class Exoscale():
         elif param == "flavors":
             # Get flavors
             sizes = exo.list_sizes()
+            sizes.sort(key=lambda x: x.ram)
             for size in sizes:
-                res.append((size.name, str(size.extra['cpu']) + " vCPUs, " + str(size.ram) + "GB of RAM"))
+                res.append((size.name, str(size.extra['cpu']) + " vCPUs, " + str(size.ram) + "MB of RAM"))
         return res
 
 
@@ -62,9 +63,11 @@ class OTC():
             response = requests.get(url, headers=header)
             flavors_json = response.json()
 
-            for flavor in flavors_json['flavors']:
-                res.append((flavor.get('name'), flavor.get('vcpus') + " vCPUs, "
-                            + str(flavor.get('ram')) + "GB of RAM"))
+            flavors = sorted(flavors_json['flavors'], key=lambda x: x.get('ram'))
+            print(flavors)
+            for flavor in flavors:
+                res.append((flavor.get('name'), flavor.get('name') + ": " + flavor.get('vcpus') + " vCPUs, "
+                            + str(flavor.get('ram')) + "MB of RAM"))
 
         return res
 
