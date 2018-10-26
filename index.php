@@ -276,7 +276,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                     <div class="team-member">
                         <button id="open-wizard-helix" class="btn btn-primary btn-helix" onclick="ga('send','event','Providers','HelixNebula')"></button>
                         <h4 class="provider">Deploy your cluster</h4>
-                        <p class="text-muted-contact">In the HelixNebula cloud, powered by <a href="https://www.t-systems.com/" target="_blank"> T-systems </a> and  <a href="https://www.exoscale.com/" target="_blank"> Exoscale. </a> </p>
+                        <p class="text-muted-contact">In the HelixNebula cloud, powered by <a href="https://www.t-systems.com/" target="_blank"> T-Systems </a> and  <a href="https://www.exoscale.com/" target="_blank"> Exoscale. </a> </p>
                     </div>
                 </div>
                 <div class="col-sm-4">
@@ -614,7 +614,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                             <select name="provider-helix" id="provider-helix" data-placeholder="--Select one--" style="width:350px; height:250px;" class="chzn-select form-control" data-validate="drop_down_validation">
                                <option value=""></option>
                                <option>Exoscale</option>
-                               <option>T-systems</option>
+                               <option>T-Systems</option>
                             </select>
                         </div>
                     </div>
