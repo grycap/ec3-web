@@ -200,8 +200,8 @@ function generate_system_image_radl($cloud, $ami, $region, $ami_user, $ami_passw
 
 if($_POST){
     //echo "recibo algo POST";
-    //echo "{}";
-    $possible_sw = array("nfs", "maui", "openvpn", "octave", "docker", "gnuplot", "tomcat", "galaxy", "marathon", "chronos", "hadoop", "namd", "extra_hd");    
+    //echo "{}"
+    $possible_sw = array("nfs", "openvpn", "octave", "docker", "gnuplot", "tomcat", "galaxy", "marathon", "chronos", "hadoop", "namd", "extra_hd");    
 
     // El string recibido tiene este aspecto: cloud=ec2&accesskey=ffffff&secretkey=hhhhhhhhh&os-ec2=Ubuntu+12.04&lrms-ec2=SLURM&clues=clues&nodes-ec2=5
     // Pero tenemos que devolver un JSON si todo ha ido bien
