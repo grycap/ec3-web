@@ -780,7 +780,7 @@
                         <div class="row">
                             <div class="col-sm-4"><input type="checkbox" value="marathon" name="marathon" id="marathon" title="A job scheduler for Mesos tasks (framework for Mesos)"/> Marathon </div>
                             <div class="col-sm-4"><input type="checkbox" value="chronos" name="chronos" id="chronos" title="A batch job scheduler for Mesos tasks (framework for Mesos)"/> Chronos </div>
-                            <div class="col-sm-4"><input type="checkbox" value="maui" name="maui" id="maui" title="A job scheduler for use with Torque"/> Maui </div>
+                            <div class="col-sm-4"><input type="checkbox" value="hadoop" name="hadoop" id="hadoop" title="A framework that allows for the distributed processing of large data sets across clusters of computers using simple programming models"/> Hadoop </div>
                         </div>
                         <!--<div class="row">
                             <div class="col-sm-4"><input type="checkbox" value="ckptman" name="ckptman" id="ckptman" title="A tool to automate the checkpointing in spot instances"/> Ckptman </div>
@@ -788,7 +788,6 @@
                             <div class="col-sm-4"><input type="checkbox" value="maui" name="maui" id="maui" title="A job scheduler for use with Torque"/> Maui </div>
                         </div>-->
                         <div class="row">
-                            <div class="col-sm-4"><input type="checkbox" value="hadoop" name="hadoop" id="hadoop" title="A framework that allows for the distributed processing of large data sets across clusters of computers using simple programming models"/> Hadoop </div>
                             <div class="col-sm-4"><input type="checkbox" value="galaxy" name="galaxy" id="galaxy" title="Web-based platform for data intensive biomedical research. Recommended to install with Torque and NFS."/> Galaxy </div>
                             <div class="col-sm-4"><input type="checkbox" value="extra_hd" name="extra_hd" id="extra_hd" title="Add a 100GB Extra HD to the cluster"/> 100GB HD </div>
                             <!--<div class="col-sm-4"><input type="checkbox" value="galaxy-tools" name="galaxy-tools" id="galaxy-tools" title="Web-based platform for data intensive biomedical research"/> Galaxy tools </div>-->
@@ -1039,7 +1038,7 @@
                         <div class="row">
                             <div class="col-sm-4"><input type="checkbox" value="marathon" name="marathon" id="marathon" title="A job scheduler for Mesos tasks (framework for Mesos)"/> Marathon </div>
                             <div class="col-sm-4"><input type="checkbox" value="chronos" name="chronos" id="chronos" title="A batch job scheduler for Mesos tasks (framework for Mesos)"/> Chronos </div>
-                            <div class="col-sm-4"><input type="checkbox" value="maui" name="maui" id="maui" title="A job scheduler for use with Torque"/> Maui </div>
+                            <div class="col-sm-4"><input type="checkbox" value="hadoop" name="hadoop" id="hadoop" title="A framework that allows for the distributed processing of large data sets across clusters of computers using simple programming models"/> Hadoop </div>
                         </div>
                         <!--<div class="row">
                             <div class="col-sm-4"><input type="checkbox" value="ckptman" name="ckptman" id="ckptman" title="A tool to automate the checkpointing in spot instances"/> Ckptman </div>
@@ -1047,7 +1046,6 @@
                             <div class="col-sm-4"><input type="checkbox" value="maui" name="maui" id="maui" title="A job scheduler for use with Torque"/> Maui </div>
                         </div>-->
                         <div class="row">
-                            <div class="col-sm-4"><input type="checkbox" value="hadoop" name="hadoop" id="hadoop" title="A framework that allows for the distributed processing of large data sets across clusters of computers using simple programming models"/> Hadoop </div>
                             <div class="col-sm-4"><input type="checkbox" value="galaxy" name="galaxy" id="galaxy" title="Web-based platform for data intensive biomedical research. Recommended to install with Torque and NFS."/> Galaxy </div>
                             <div class="col-sm-4"><input type="checkbox" value="extra_hd" name="extra_hd" id="extra_hd" title="Add a 100GB Extra HD to the cluster"/> 100GB HD </div>
                             <!--<div class="col-sm-4"><input type="checkbox" value="galaxy-tools" name="galaxy-tools" id="galaxy-tools" title="Web-based platform for data intensive biomedical research"/> Galaxy tools </div>-->
@@ -1299,7 +1297,7 @@
                         <div class="row">
                             <div class="col-sm-4"><input type="checkbox" value="marathon" name="marathon" id="marathon" title="A job scheduler for Mesos tasks (framework for Mesos)"/> Marathon </div>
                             <div class="col-sm-4"><input type="checkbox" value="chronos" name="chronos" id="chronos" title="A batch job scheduler for Mesos tasks (framework for Mesos)"/> Chronos </div>
-                            <div class="col-sm-4"><input type="checkbox" value="maui" name="maui" id="maui" title="A job scheduler for use with Torque"/> Maui </div>
+                            <div class="col-sm-4"><input type="checkbox" value="hadoop" name="hadoop" id="hadoop" title="A framework that allows for the distributed processing of large data sets across clusters of computers using simple programming models"/> Hadoop </div>
                         </div>
                         <!--<div class="row">
                             <div class="col-sm-4"><input type="checkbox" value="ckptman" name="ckptman" id="ckptman" title="A tool to automate the checkpointing in spot instances"/> Ckptman </div>
@@ -1307,7 +1305,6 @@
                             <div class="col-sm-4"><input type="checkbox" value="maui" name="maui" id="maui" title="A job scheduler for use with Torque"/> Maui </div>
                         </div>-->
                         <div class="row">
-                            <div class="col-sm-4"><input type="checkbox" value="hadoop" name="hadoop" id="hadoop" title="A framework that allows for the distributed processing of large data sets across clusters of computers using simple programming models"/> Hadoop </div>
                             <div class="col-sm-4"><input type="checkbox" value="galaxy" name="galaxy" id="galaxy" title="Web-based platform for data intensive biomedical research. Recommended to install with Torque and NFS."/> Galaxy </div>
                             <div class="col-sm-4"><input type="checkbox" value="extra_hd" name="extra_hd" id="extra_hd" title="Add a 100GB Extra HD to the cluster"/> 100GB HD </div>
                             <!--<div class="col-sm-4"><input type="checkbox" value="galaxy-tools" name="galaxy-tools" id="galaxy-tools" title="Web-based platform for data intensive biomedical research"/> Galaxy tools </div>-->
@@ -1585,7 +1582,7 @@
                         <div class="row">
                             <div class="col-sm-4"><input type="checkbox" value="marathon" name="marathon" id="marathon" title="A job scheduler for Mesos tasks (framework for Mesos)"/> Marathon </div>
                             <div class="col-sm-4"><input type="checkbox" value="chronos" name="chronos" id="chronos" title="A batch job scheduler for Mesos tasks (framework for Mesos)"/> Chronos </div>
-                            <div class="col-sm-4"><input type="checkbox" value="maui" name="maui" id="maui" title="A job scheduler for use with Torque"/> Maui </div>
+                            <div class="col-sm-4"><input type="checkbox" value="hadoop" name="hadoop" id="hadoop" title="A framework that allows for the distributed processing of large data sets across clusters of computers using simple programming models"/> Hadoop </div>
                         </div>
                         <!--<div class="row">
                             <div class="col-sm-4"><input type="checkbox" value="ckptman" name="ckptman" id="ckptman" title="A tool to automate the checkpointing in spot instances"/> Ckptman </div>
@@ -1593,7 +1590,6 @@
                             <div class="col-sm-4"><input type="checkbox" value="maui" name="maui" id="maui" title="A job scheduler for use with Torque"/> Maui </div>
                         </div>-->
                         <div class="row">
-                            <div class="col-sm-4"><input type="checkbox" value="hadoop" name="hadoop" id="hadoop" title="A framework that allows for the distributed processing of large data sets across clusters of computers using simple programming models"/> Hadoop </div>
                             <div class="col-sm-4"><input type="checkbox" value="galaxy" name="galaxy" id="galaxy" title="Web-based platform for data intensive biomedical research. Recommended to install with Torque and NFS."/> Galaxy </div>
                             <div class="col-sm-4"><input type="checkbox" value="extra_hd" name="extra_hd" id="extra_hd" title="Add a 100GB Extra HD to the cluster"/> 100GB HD </div>
                             <!--<div class="col-sm-4"><input type="checkbox" value="galaxy-tools" name="galaxy-tools" id="galaxy-tools" title="Web-based platform for data intensive biomedical research"/> Galaxy tools </div>-->
@@ -2039,7 +2035,7 @@
                 if( $('.ec2.col-sm-12 #nfs').prop('checked') ) sw += "NFS ";
                 //if( $('.ec2.col-sm-12 #ckptman').prop('checked') ) sw += "ckptman ";
                 //if( $('.ec2.col-sm-12 #munge').prop('checked') ) sw += "Munge ";
-                if( $('.ec2.col-sm-12 #maui').prop('checked') ) sw += "Maui ";
+                //if( $('.ec2.col-sm-12 #maui').prop('checked') ) sw += "Maui ";
                 if( $('.ec2.col-sm-12 #openvpn').prop('checked') ) sw += "OpenVPN ";
                 if( $('.ec2.col-sm-12 #galaxy').prop('checked') ) sw += "Galaxy ";
                 if( $('.ec2.col-sm-12 #extra_hd').prop('checked') ) sw += "100GB Extra HD ";
@@ -2277,7 +2273,7 @@
                 if( $('.one.col-sm-12 #nfs').prop('checked') ) sw += "NFS ";
                 //if( $('.one.col-sm-12 #ckptman').prop('checked') ) sw += "ckptman ";
                 //if( $('.one.col-sm-12 #munge').prop('checked') ) sw += "Munge ";
-                if( $('.one.col-sm-12 #maui').prop('checked') ) sw += "Maui ";
+                //if( $('.one.col-sm-12 #maui').prop('checked') ) sw += "Maui ";
                 if( $('.one.col-sm-12 #openvpn').prop('checked') ) sw += "OpenVPN ";
                 if( $('.one.col-sm-12 #galaxy').prop('checked') ) sw += "Galaxy ";
                 if( $('.one.col-sm-12 #extra_hd').prop('checked') ) sw += "100GB Extra HD ";
@@ -2500,7 +2496,7 @@
                 if( $('.openstack.col-sm-12 #nfs').prop('checked') ) sw += "NFS ";
                 //if( $('.openstack.col-sm-12 #ckptman').prop('checked') ) sw += "ckptman ";
                 //if( $('.openstack.col-sm-12 #munge').prop('checked') ) sw += "Munge ";
-                if( $('.openstack.col-sm-12 #maui').prop('checked') ) sw += "Maui ";
+                //if( $('.openstack.col-sm-12 #maui').prop('checked') ) sw += "Maui ";
                 if( $('.openstack.col-sm-12 #openvpn').prop('checked') ) sw += "OpenVPN ";
                 if( $('.openstack.col-sm-12 #galaxy').prop('checked') ) sw += "Galaxy ";
                 if( $('.openstack.col-sm-12 #extra_hd').prop('checked') ) sw += "100GB Extra HD ";
@@ -2814,7 +2810,7 @@
                 if( $('.fedcloud.col-sm-12 #nfs').prop('checked') ) sw += "NFS ";
                 //if( $('.fedcloud.col-sm-12 #ckptman').prop('checked') ) sw += "ckptman ";
                 //if( $('.fedcloud.col-sm-12 #munge').prop('checked') ) sw += "Munge ";
-                if( $('.fedcloud.col-sm-12 #maui').prop('checked') ) sw += "Maui ";
+                //if( $('.fedcloud.col-sm-12 #maui').prop('checked') ) sw += "Maui ";
                 if( $('.fedcloud.col-sm-12 #openvpn').prop('checked') ) sw += "OpenVPN ";
                 if( $('.fedcloud.col-sm-12 #galaxy').prop('checked') ) sw += "Galaxy ";
                 if( $('.fedcloud.col-sm-12 #extra_hd').prop('checked') ) sw += "100GB Extra HD ";
