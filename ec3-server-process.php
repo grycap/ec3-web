@@ -310,7 +310,8 @@ if($_POST){
         
         $cluster_name = (isset($_POST['cluster-name-helix']) ? $_POST['cluster-name-helix'] : "");
         
-        $name = $cluster_name . "__" . $apikey;
+        $clean_apikey = preg_replace('/\s+/', '_', $apikey);
+        $name = $cluster_name . "__" . $clean_apikey;
         $lrms = strtolower($lrms);
         $sw = strtolower($sw);
 
@@ -407,7 +408,7 @@ if($_POST){
     }
 
     //Devolvemos los datos del front-end desplegado
-    echo "{\"ip\":\"$ip\",\"name\":\"$name\",\"username\":\"$user\",\"secretkey\":\"$secret_key\"}";
+    echo "{\"ip\":\"$ip\",\"name\":\"$cluster_name\",\"username\":\"$user\",\"secretkey\":\"$secret_key\"}";
 }else {
     echo "Found errors receiving POST data";
 }
