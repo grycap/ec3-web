@@ -57,14 +57,13 @@ class OTC():
             for image in images_json['images']:
                 # Check whether the image is public ?
                 if image.get('__imagetype') == 'gold':
-                    res.append((image.get('__os_version'), image.get('id')))
+                    res.append((image.get('__os_version') + ": " + image.get('id'), image.get('id')))
         elif param == "flavors":
             url = 'https://ecs.eu-de.otc.t-systems.com/v1/%s/cloudservers/flavors' % self.project_id
             response = requests.get(url, headers=header)
             flavors_json = response.json()
 
             flavors = sorted(flavors_json['flavors'], key=lambda x: x.get('ram'))
-            print(flavors)
             for flavor in flavors:
                 res.append((flavor.get('name'), flavor.get('name') + ": " + flavor.get('vcpus') + " vCPUs, "
                             + str(flavor.get('ram')) + "MB of RAM"))
