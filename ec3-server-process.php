@@ -109,7 +109,7 @@ function generate_auth_file_exoscale($endpoint, $clustername, $apikey, $secretke
     //id = exoscale; type = CloudStack; username = apikey; password = secret; host = http://api.exoscale.ch/compute
     
     $gestor = fopen($auth, "w");
-    fwrite($gestor, "id = exoscale; type = CloudStack; username = " . $apikey . "; password = " . $secretkey ."; host = " . $endpoint . PHP_EOL);
+    fwrite($gestor, "id = exoscale; type = CloudStack; username = '" . $apikey . "'; password = '" . $secretkey ."'; host = " . $endpoint . PHP_EOL);
     //Write needed credentials of IM and VMRC
     fwrite($gestor, "type = InfrastructureManager; username = " . random_string(8) . "; password = " . random_string(10). PHP_EOL);
     fclose($gestor);

@@ -679,7 +679,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                         API key (Exoscale) or User Name (OTC):
                     </p>
                     <div class="form-group">
-                        <div class="col-sm-10">
+                        <div class="col-sm-8">
                             <input type="text" class="form-control" id="apikey-helix" name="apikey-helix" placeholder="API key" data-validate="validateValue">
                         </div>
                     </div>
@@ -690,7 +690,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                         Secret Key (Exoscale) or Password (OTC):
                     </p>
                     <div class="form-group">
-                        <div class="col-sm-10">
+                        <div class="col-sm-8">
                             <input type="password" class="form-control" id="secretkey-helix" name="secretkey-helix" placeholder="secret key" data-validate="validateValue">
                         </div>
                     </div>
@@ -700,7 +700,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                         Domain name (only in OTC deployments):
                     </p>
                     <div class="form-group">
-                        <div class="col-sm-10">
+                        <div class="col-sm-8">
                             <input type="text" class="form-control" id="domain-otc-helix" name="domain-otc-helix" placeholder="domain" data-validate="">
                         </div>
                     </div>
@@ -710,7 +710,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                         Project ID (only in OTC deployments):
                     </p>
                     <div class="form-group">
-                        <div class="col-sm-10">
+                        <div class="col-sm-8">
                             <input type="text" class="form-control" id="project-otc-helix" name="project-otc-helix" placeholder="projectid" data-validate="">
                         </div>
                     </div>
