@@ -90,7 +90,7 @@ function generate_auth_file_otc($endpoint, $clustername, $username, $pass, $tena
     //id = otc; type = OpenStack; host = https://iam.eu-de.otc.t-systems.com:443 ; username = user; password = pass; tenant = tenant; domain = domain; auth_version = 3.x_password; service_name = None; service_region = eu-de
     
     $gestor = fopen($auth, "w");
-    fwrite($gestor, "id = otc; type = OpenStack; host = " . $endpoint . "; username = " . $username . "; password = " . $pass . "; tenant = " . $tenant . "; domain = " . $domain . "; auth_version = " . $auth_version . "; service_name = " . $service_name . "; service_region = " . $service_region . PHP_EOL);
+    fwrite($gestor, "id = otc; type = OpenStack; host = " . $endpoint . "; username = '" . $username . "'; password = '" . $pass . "'; tenant = " . $tenant . "; domain = " . $domain . "; auth_version = " . $auth_version . "; service_name = " . $service_name . "; service_region = " . $service_region . PHP_EOL);
     //Write needed credentials of IM and VMRC
     fwrite($gestor, "type = InfrastructureManager; username = " . random_string(8) . "; password = " . random_string(10). PHP_EOL);
     fclose($gestor);
