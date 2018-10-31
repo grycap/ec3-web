@@ -402,25 +402,46 @@
                 <h3>Provider Account</h3>
                 <div class="wizard-input-section">
                     <p>
-                        Fogbow endpoint:
+                        Username:
                     </p>
                     <div class="form-group">
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="endpoint-fogbow" name="endpoint-fogbow" placeholder="endpoint" data-validate="validateValue">
+                            <input type="text" class="form-control" id="user-fogbow" name="user-fogbow" placeholder="API key" data-validate="validateValue">
                         </div>
                     </div>
                 </div>
-                 <div class="wizard-input-section">
+
+                <div class="wizard-input-section">
                     <p>
-                        Fogbow token:
+                        Password:
                     </p>
                     <div class="form-group">
-                        <div class="col-sm-11">
-                            <textarea rows="4" class="form-control" id="token-fogbow" name="token-fogbow" placeholder="You will need to contact with people in UFCG to obtain a Fogbow user and the private key file to generate the token." data-validate="validateValue"></textarea>
+                        <div class="col-sm-8">
+                            <input type="password" class="form-control" id="pass-fogbow" name="pass-fogbow" placeholder="secret key" data-validate="validateValue">
                         </div>
                     </div>
                 </div>
-            </div>
+                <div class="wizard-input-section">
+                    <p>
+                        Domain ID:
+                    </p>
+                    <div class="form-group">
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="domain-fogbow" name="domain-fogbow" placeholder="domain" data-validate="validateValue">
+                        </div>
+                    </div>
+                </div>
+                <div class="wizard-input-section">
+                    <p>
+                        Project name:
+                    </p>
+                    <div class="form-group">
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="project-fogbow" name="project-fogbow" placeholder="projectid" data-validate="validateValue">
+                        </div>
+                    </div>
+                </div>
+             </div>
             
             <!-- Step 3 - Operating System -->
             <div class="wizard-card wizard-card-overlay" data-cardname="os-fogbow">
@@ -433,16 +454,7 @@
                     </br>
                     <div class="form-group" style="height:250px;">
                         <div class="col-sm-6" style="width:350px; height:250px;" name="vmifogbow" id="vmifogbow">
-                            <select name="os-fogbow" id="os-fogbow" data-placeholder="--Select one--" style="width:350px;" class="chzn-select form-control" data-validate="">
-                                <option value=""></option>
-                                <optgroup label="Linux">
-                                    <!--TODO: ask fubica which images fogbow has avaliable and their IDs -->
-                                    <!--<option>CentOS 6.5</option>-->
-                                    <!--<option>CentOS 7</option>-->
-                                    <!--<option>Ubuntu 14.04</option>-->
-                                    <option>Ubuntu 16.04</option>
-                                </optgroup>
-                            </select>
+                            <p> Loading options from the provider... </p>  
                         </div>
                     </div>
                 </div>
@@ -695,7 +707,7 @@
                 $.fn.wizard.logging = true;
                 var wizard = $('#fogbow-wizard').wizard({
                     keyboard : false,
-                    contentHeight : 430,
+                    contentHeight : 520,
                     contentWidth : 700,
                     backdrop: 'static',
                     submitUrl: "ec3-server-process.php"
@@ -788,19 +800,6 @@
                 $('#open-wizard-deploy').click(function(e) {
                     e.preventDefault();
                     wizard.show();
-                    <!-- Send endpoint selected to the server to obtain instance types-->
-                    $.ajax({
-                        method: "POST",
-                        url: "print_select_endpoints.php",
-                        //data:{endpointfedcloud: $('#endpoint-fedcloud').val()},
-                        success : function(text)
-                        {  
-                            $('#endpoint_fedcloud_chzn').hide()
-                            $('#endpoint-fedcloud').prop('data-placeholder', "--Select one--");
-                            $('#endpoint-fedcloud').append(text).hide().show();
-                            //$('#endpoint-fedcloud').html(text);
-                        }
-                    });
                 });
             });
 
@@ -844,34 +843,34 @@
                 return retValue;
             };
 
-            $('select#endpoint-fedcloud.chzn-select.form-control').change(function() {
-                <!-- Send endpoint selected to the server to obtain OS-->
+            // We call the Fogbow API script to obtain the list of images 
+            $.each(["show", "toggle", "toggleClass", "addClass", "removeClass"], function(){
+                var _oldFn = $.fn[this];
+                $.fn[this] = function(){
+                    var hidden = this.find(":hidden").add(this.filter(":hidden"));
+                    var result = _oldFn.apply(this, arguments);
+                    hidden.filter(":visible").each(function(){
+                        $(this).triggerHandler("show"); //No bubbling
+                    });
+                    return result;
+                }
+            });
+            
+            $('#vmifogbow').bind("show", function() {
+                var post_data = "&user=" + $('#user-fogbow').val() + "&pass=" + $('#pass-fogbow').val() + "&domain=" + $('#domain-fogbow').val() + "&project=" + $('#project-fogbow').val();
+                //Send cloud provider selected to the server to obtain OS
                 $.ajax({
                     method: "POST",
-                    url: "print_select_os.php",
-                    /*data:{endpointfedcloud: $('#endpoint-fedcloud').val()},*/
-                    data: {endpointfedcloud: $('#endpoint-fedcloud option:selected').html()},
+                    url: "print_select_os.php",                    
+                    data: post_data,
                     success : function(text)
                     {   
-                        $('#vmifedcloud').html(text);
-                        //$("select#vmi-fedcloud").html(text);
-                    }
-                });
-                <!-- Send endpoint selected to the server to obtain instance types-->
-                $.ajax({
-                    method: "POST",
-                    url: "print_select_instances.php",
-                    /*data:{endpointfedcloud: $('#endpoint-fedcloud').val()},*/
-                    data: {endpointfedcloud: $('#endpoint-fedcloud option:selected').html()},
-                    success : function(text)
-                    {   
-                        $('#frontfedcloud').html(text);
-                        $('#wnfedcloud').html(text.replace(/front-fedcloud/g, "wn-fedcloud"));
+                        $('#vmifogbow').html(text);
                     }
                 });
             });
             
-
+            
             function drop_down_validation(el){
                 var name = el.val();
                 var retValue = {};
@@ -889,14 +888,29 @@
             function showDetails_Fogbow() {
                 var retValue = ' '
 
-                //obtener endpoint
-                var endpoint = $('#endpoint-fogbow').val();
+                //obtener endpoint - Fijo y conocido
+                //var endpoint = $('#endpoint-fogbow').val();
                 
-                var token = $('#token-fogbow').val();
-                token = "*********";
+                //var token = $('#token-fogbow').val();
+                //token = "*********";
+                
+                //obtener las credenciales
+                var user = $('#user-fogbow').val();
+                var pass = $('#pass-fogbow').val();
+                pass = "******************";
+                
+                //Obtener tennat y projectID
+                var tennat = $('#domain-fogbow').val();
+                if (tennat == ''){
+                    tennat = "Not set";
+                }
+                var projectID = $('#project-fogbow').val();
+                if (projectID == ''){
+                    projectID = "Not set";
+                }
 
                 //obtener la vmi seleccionada
-                var os = $('#os-fogbow').val();
+                var os = $('#vmi-fogbow option:selected').html();
 
                 //obtener las caracteristicas de las VMs
                 var front_cpu = $('#front-cpu-fogbow').val();
@@ -951,15 +965,18 @@
                 //obtener el nombre del cluster
                 var clustername = $('#cluster-name').val();
 
-                retValue = "<div><b>Endpoint: </b>" + endpoint + "</div> <div><b>Token: </b>" + token + "</div>";
+                //retValue = "<div><b>Endpoint: </b>" + endpoint + "</div> <div><b>Token: </b>" + token + "</div>";
 
+                retValue = "<div> <b>Cluster type: </b>" + clustertype + "</div>";
+                
                 if(os != ''){
                     retValue += "<div> <b>OS VMI: </b>" + os + "</div>";
                 } else {
                     retValue += "<div> <b>OS VMI: </b> nothing indicated</div>";
                 }
-
-                retValue +="<div> <b>Cluster type: </b>" + clustertype + "</div>" +
+                
+                retValue += "<div> <b> Username: </b>" + user + "</div> <div><b>Password: </b>" + pass + "</div>" +
+                           "<div> <b> Domain Name: </b>" + tennat + "</div> <div><b>Project ID: </b>" + projectID + "</div>" +
                            "<div> <b>Frontend CPU: </b>" + front_cpu + "<b></div> <div>Frontend RAM memory: </b>" + front_mem + " </div>" +
                            "<div> <b>Working nodes CPU: </b>" + wn_cpu + "<b></div> <div> Working nodes RAM memory: </b>" + wn_mem + " </div>" +
                            //"<div> <b>Local Resource Management System: </b>" + lrms + "</div>" +

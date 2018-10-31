@@ -14,6 +14,15 @@ function random_string($length) {
     return $key;
 }
 
+function obtain_token($username, $password, $domain, $projectID){
+    $res = ' ';
+    exec('python Fogbow_API.py token "' . $username . '" "' . $password . '" ' . $domain . ' ' . $projectID, $token);
+    if (count($token) > 0){
+        $res = $token[0];
+    }
+    return $res;
+}
+
 // Generates the auth file for Fogbow deployments
 function generate_auth_file_fogbow($endpoint, $token, $clustername) {
     //$auth = '';
@@ -22,7 +31,7 @@ function generate_auth_file_fogbow($endpoint, $token, $clustername) {
     chmod($auth, 0644);
 
     //Write user credentials in IM format, like: 
-    //id = fogbow; type = FogBow; host = 150.165.85.52:8182; token = eyJsb2duaW4iOiJ1cHZ
+    //id = fogbow; type = FogBow; host = https://fns-atm-prod-cloud.lsd.ufcg.edu.br; token = <el token>
     
     $gestor = fopen($auth, "w");
     fwrite($gestor, "id = fogbow; type = FogBow; host = " . $endpoint . "; token = " . $token . PHP_EOL);
@@ -45,17 +54,17 @@ function generate_system_image_radl($cloud, $ami, $region, $ami_user, $ami_passw
     $file_name = 'system_'.$rand_str;
     
     // Obtenemos user y pass random
-    $fcuser = 'cloudadm';
-    $pass = random_string(3).'#'. random_string(3).'5A';
+    //$fbuser = 'cloudadm';
+    //$pass = random_string(3).'#'. random_string(3).'5A';
 
     $new_file = fopen($path_to_new_file, "w");
     fwrite($new_file, "system front (".PHP_EOL);
+    fwrite($new_file, "    cpu.count>=". $front_cpu ."and".PHP_EOL);
+    fwrite($new_file, "    memory.size>=". $front_mem ."and".PHP_EOL);
     fwrite($new_file, "    disk.0.os.name='linux' and".PHP_EOL);
-
-    //fwrite($new_file, "    disk.0.image.url = '".$region. "/" .$ami. "' and".PHP_EOL);
-    fwrite($new_file, "    disk.0.image.url = 'appdb://".$region. "/" .$ami. "?vo.access.egi.eu' and".PHP_EOL);
-    fwrite($new_file, "    instance_type='".$instancetype_front."' and".PHP_EOL);
-    fwrite($new_file, "    disk.0.os.credentials.username = '".$fcuser."' and".PHP_EOL);
+    fwrite($new_file, "    disk.0.image.url = 'fbw://fns-atm-prod-cloud.lsd.ufcg.edu.br/" .$ami. "'".PHP_EOL);
+    //fwrite($new_file, "    instance_type='".$instancetype_front."' and".PHP_EOL);
+    //fwrite($new_file, "    disk.0.os.credentials.username = '".$fbuser."' and".PHP_EOL);
     //fwrite($new_file, "    ec3aas.username = '".$user_sub."'".PHP_EOL);
     
     fwrite($new_file, ")".PHP_EOL);
@@ -63,11 +72,11 @@ function generate_system_image_radl($cloud, $ami, $region, $ami_user, $ami_passw
 
     fwrite($new_file, "system wn (".PHP_EOL);
     fwrite($new_file, "    ec3_max_instances = ".$nodes." and".PHP_EOL);
+    fwrite($new_file, "    cpu.count>=". $wn_cpu ."and".PHP_EOL);
+    fwrite($new_file, "    memory.size>=". $wn_mem ."and".PHP_EOL);
     fwrite($new_file, "    disk.0.os.name='linux' and".PHP_EOL);
-
-    fwrite($new_file, "    disk.0.image.url = 'appdb://".$region. "/" .$ami. "?vo.access.egi.eu' and".PHP_EOL);
-    //fwrite($new_file, "    disk.0.image.url = '".$region. "/" .$ami. "' and".PHP_EOL);
-    fwrite($new_file, "    instance_type='".$instancetype_wn."' and".PHP_EOL);
+    fwrite($new_file, "    disk.0.image.url = 'fbw://fns-atm-prod-cloud.lsd.ufcg.edu.br/" .$ami. "'".PHP_EOL);
+    //fwrite($new_file, "    instance_type='".$instancetype_wn."' and".PHP_EOL);
     fwrite($new_file, "    disk.0.os.credentials.username = '".$fcuser."'".PHP_EOL);
 
     fwrite($new_file, ")".PHP_EOL);
@@ -148,10 +157,23 @@ if($_POST){
     $provider = (isset($_POST['cloud']) ? $_POST['cloud'] : "unknown");
     
     if ($provider == 'fogbow'){
-        $endpointName = (isset($_POST['endpoint-fogbow']) ? $_POST['endpoint-fogbow'] : "");
-        $token = (isset($_POST['token-fogbow']) ? $_POST['token-fogbow'] : "");
+        //Endpoint is well-konown
+        $endpointName = 'https://fns-atm-prod-cloud.lsd.ufcg.edu.br';
+        
+        $user = (isset($_POST['user-fogbow']) ? $_POST['user-fogbow'] : "");
+        $pass = (isset($_POST['pass-fogbow']) ? $_POST['pass-fogbow'] : "");
+        $domain = (isset($_POST['domain-fogbow']) ? $_POST['domain-fogbow'] : "");
+        $projectID = (isset($_POST['project-fogbow']) ? $_POST['project-fogbow'] : "");
+
+        //obtener el token llamando al script "Fogbow_API"
+        $token = obtain_token($user, $pass, $domain, $projectID);
+        if ($token == ' '){
+            echo 'Found problems trying to obtain a valid token from the server.';
+            exit(1);
+        }
+        
         $user_id = hash('md5', $token);
-        $os = (isset($_POST['os-fogbow']) ? $_POST['os-fogbow'] : "");
+        $os = (isset($_POST['vmi-fogbow']) ? $_POST['vmi-fogbow'] : "");
 
         if($os == ''){
             echo 'Image SO not provided. Impossible to launch a cluster without these data. Please, enter the required information and try again.';
@@ -202,9 +224,9 @@ if($_POST){
 
 
         $auth_file = generate_auth_file_fogbow($endpointName, $token, $name);
-        //TODO: adaptarlo a fogbow, porque tendremos que tener predefinidos los OS que soporta y por tanto solo modificar las recetas
-        $data = generate_system_template_radl($provider, translate_os($os), '', '', $front_cpu, $front_mem, $wn_cpu, $wn_mem, $nodes,$user_id);
-        //$data = generate_system_image_radl($provider, $vmi, $endpointName, '', '', $front_type, $wn_type, '', '', '', '', $nodes);
+        //TODO: update
+        //$data = generate_system_template_radl($provider, translate_os($os), '', '', $front_cpu, $front_mem, $wn_cpu, $wn_mem, $nodes,$user_id);
+        $data = generate_system_image_radl($provider, $os, $endpointName, '', '', '', '', $front_cpu, $front_mem, $wn_cpu, $wn_mem, $nodes);
         $os = $data[0];
         $user = "fogbow";
         
