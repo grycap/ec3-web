@@ -276,7 +276,8 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                     <div class="team-member">
                         <button id="open-wizard-helix" class="btn btn-primary btn-helix" onclick="ga('send','event','Providers','HelixNebula')"></button>
                         <h4 class="provider">Deploy your cluster</h4>
-                        <p class="text-muted-contact">In the HelixNebula cloud, powered by <a href="https://www.t-systems.com/" target="_blank"> T-Systems </a> and  <a href="https://www.exoscale.com/" target="_blank"> Exoscale. </a> </p>
+                        <!--<p class="text-muted-contact">In the HelixNebula cloud, powered by <a href="https://www.t-systems.com/" target="_blank"> T-Systems </a> and  <a href="https://www.exoscale.com/" target="_blank"> Exoscale. </a> </p>-->
+                        <p class="text-muted-contact">In the HelixNebula cloud, powered by <a href="https://www.exoscale.com/" target="_blank"> Exoscale. </a> </p>
                     </div>
                 </div>
                 <div class="col-sm-4">
@@ -598,7 +599,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
         <div class="wizard" id="helix-wizard" name="helix-wizard" data-title="Configure your cluster">
             
             <!-- Step 0 - Provider -->
-            <div class="wizard-card wizard-card-overlay" data-cardname="cloud-helix">
+            <!--<div class="wizard-card wizard-card-overlay" data-cardname="cloud-helix">
                 <h3>Cloud Provider</h3>
 
                 <div class="wizard-input-section">
@@ -618,7 +619,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>-->
 
             <!-- Step 1 Software packages -->
             <div class="wizard-card wizard-card-overlay" data-cardname="swpkg-helix">
@@ -676,7 +677,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                 <h3>Provider Account</h3>
                 <div class="wizard-input-section">
                     <p>
-                        API key (Exoscale) or User Name (OTC):
+                        API key (Exoscale) <!--or User Name (OTC):-->
                     </p>
                     <div class="form-group">
                         <div class="col-sm-8">
@@ -687,7 +688,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
 
                 <div class="wizard-input-section">
                     <p>
-                        Secret Key (Exoscale) or Password (OTC):
+                        Secret Key (Exoscale) <!--or Password (OTC):-->
                     </p>
                     <div class="form-group">
                         <div class="col-sm-8">
@@ -695,7 +696,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                         </div>
                     </div>
                 </div>
-                <div class="wizard-input-section">
+                <!--<div class="wizard-input-section">
                     <p>
                         Domain name (only in OTC deployments):
                     </p>
@@ -704,8 +705,8 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                             <input type="text" class="form-control" id="domain-otc-helix" name="domain-otc-helix" placeholder="domain" data-validate="">
                         </div>
                     </div>
-                </div>
-                <div class="wizard-input-section">
+                </div>-->
+                <!--<div class="wizard-input-section">
                     <p>
                         Project ID (only in OTC deployments):
                     </p>
@@ -714,7 +715,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                             <input type="text" class="form-control" id="project-otc-helix" name="project-otc-helix" placeholder="projectid" data-validate="">
                         </div>
                     </div>
-                </div>
+                </div>-->
              </div>
             
             <!-- Step 3 - Operating System -->
@@ -1448,7 +1449,8 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
             });
             
             $('#vmi-helix').bind("show", function() {
-                var provider = $('#provider-helix option:selected').html();
+                //var provider = $('#provider-helix option:selected').html();
+                var provider = 'Exoscale';
                 var post_data = "providerhelix=" + provider;
                 if(provider == 'Exoscale'){
                     post_data += "&user=" + $('#apikey-helix').val() + "&pass=" + $('#secretkey-helix').val();
@@ -1499,7 +1501,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
             function showDetails_helix() {
                 var retValue = ' '
                 //obtener provider
-                var provider =  $('#provider-helix').val();
+                //var provider =  $('#provider-helix').val();
                 
                 //obtener las credenciales
                 var apikey = $('#apikey-helix').val();
@@ -1507,14 +1509,14 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                 secretkey = "******************";
                 
                 //En caso de OTC, obtener tennat y projectID
-                var tennat = $('#domain-otc-helix').val();
+                /*var tennat = $('#domain-otc-helix').val();
                 if (tennat == ''){
                     tennat = "Not set";
                 }
                 var projectID = $('#project-otc-helix').val();
                 if (projectID == ''){
                     projectID = "Not set";
-                }
+                }*/
                 
                 //obtener la vmi seleccionada
                 //var vmi = $('#vmi-helix').val();
@@ -1565,10 +1567,10 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                 //obtener el nombre del cluster
                 var clustername = $('#cluster-name-helix').val();
 
-                retValue = "<div> <b>Provider: </b>" + provider + "</div>";
+                //retValue = "<div> <b>Provider: </b>" + provider + "</div>";
 
                 retValue +="<div> <b> Access Key: </b>" + apikey + "</div> <div><b>Secret Key: </b>" + secretkey + "</div>" +
-                           "<div> <b> Domain Name: </b>" + tennat + "</div> <div><b>Project ID: </b>" + projectID + "</div>" +
+                           //"<div> <b> Domain Name: </b>" + tennat + "</div> <div><b>Project ID: </b>" + projectID + "</div>" +
                            "<div> <b> VMI: </b>" + vmi + "</div>" +
                            "<div> <b>Frontend instance type: </b>" + front_type + "</div>" +
                            "<div> <b>Working nodes instance type: </b>" + wn_type + "</div>" +
