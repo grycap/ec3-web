@@ -610,7 +610,7 @@
                 <div class="wizard-input-section">
                     <p> Please, introduce the unique name of the cluster provided in the deployment process and the user credentials used: </p>
                     <div class="form-group">
-                        <div class="col-sm-8">
+                        <div class="col-sm-9">
                             <input type="text" class="form-control" id="clustername-delete" name="clustername-delete" placeholder="Cluster name" data-validate="validateValue">
                         </div>
                     </div>
@@ -621,7 +621,7 @@
                         Username:
                     </p>
                     <div class="form-group">
-                        <div class="col-sm-8">
+                        <div class="col-sm-9">
                             <input type="text" class="form-control" id="user-fogbow-delete" name="user-fogbow-delete" placeholder="API key" data-validate="validateValue">
                         </div>
                     </div>
@@ -631,7 +631,7 @@
                         Password:
                     </p>
                     <div class="form-group">
-                        <div class="col-sm-8">
+                        <div class="col-sm-9">
                             <input type="password" class="form-control" id="pass-fogbow-delete" name="pass-fogbow-delete" placeholder="secret key" data-validate="validateValue">
                         </div>
                     </div>
@@ -641,7 +641,7 @@
                         Domain ID:
                     </p>
                     <div class="form-group">
-                        <div class="col-sm-8">
+                        <div class="col-sm-9">
                             <input type="text" class="form-control" id="domain-fogbow-delete" name="domain-fogbow-delete" placeholder="domain" data-validate="validateValue">
                         </div>
                     </div>
@@ -651,7 +651,7 @@
                         Project name:
                     </p>
                     <div class="form-group">
-                        <div class="col-sm-8">
+                        <div class="col-sm-9">
                             <input type="text" class="form-control" id="project-fogbow-delete" name="project-fogbow-delete" placeholder="projectid" data-validate="validateValue">
                         </div>
                     </div>
