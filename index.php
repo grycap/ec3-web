@@ -608,20 +608,51 @@
             <div class="wizard-card" data-cardname="cluster-id" data-onValidated="setClusterName">
                 <h3>Destroy the cluster</h3>
                 <div class="wizard-input-section">
-                    <p> Please, introduce the unique name of the cluster provided in the deployment process: </p>
+                    <p> Please, introduce the unique name of the cluster provided in the deployment process and the user credentials used: </p>
                     <div class="form-group">
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control" id="clustername" name="clustername" placeholder="Cluster name" data-validate="validateValue">
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="clustername-delete" name="clustername-delete" placeholder="Cluster name" data-validate="validateValue">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="wizard-input-section">
+                    <p>
+                        Username:
+                    </p>
+                    <div class="form-group">
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="user-fogbow-delete" name="user-fogbow-delete" placeholder="API key" data-validate="validateValue">
                         </div>
                     </div>
                 </div>
                 <div class="wizard-input-section">
                     <p>
-                        Fogbow token:
+                        Password:
                     </p>
                     <div class="form-group">
-                        <div class="col-sm-11">
-                            <textarea rows="4" class="form-control" id="token-delete" name="token-delete" placeholder="The token used in the creation process of the cluster." data-validate="validateValue"></textarea>
+                        <div class="col-sm-8">
+                            <input type="password" class="form-control" id="pass-fogbow-delete" name="pass-fogbow-delete" placeholder="secret key" data-validate="validateValue">
+                        </div>
+                    </div>
+                </div>
+                <div class="wizard-input-section">
+                    <p>
+                        Domain ID:
+                    </p>
+                    <div class="form-group">
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="domain-fogbow-delete" name="domain-fogbow-delete" placeholder="domain" data-validate="validateValue">
+                        </div>
+                    </div>
+                </div>
+                <div class="wizard-input-section">
+                    <p>
+                        Project name:
+                    </p>
+                    <div class="form-group">
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="project-fogbow-delete" name="project-fogbow-delete" placeholder="projectid" data-validate="validateValue">
                         </div>
                     </div>
                 </div>
@@ -1000,8 +1031,8 @@
                 $.fn.wizard.logging = true;
                 var wizard = $('#delete-wizard').wizard({
                     keyboard : false,
-                    contentHeight : 400,
-                    contentWidth : 700,
+                    contentHeight : 600,
+                    contentWidth : 720,
                     backdrop: 'static',
                     submitUrl: "ec3-destroy-cluster.php"
                 });

@@ -14,6 +14,7 @@ function random_string($length) {
     return $key;
 }
 
+//Generates a token calling the Fogbow API
 function obtain_token($username, $password, $domain, $projectID){
     $res = ' ';
     exec('python Fogbow_API.py token "' . $username . '" "' . $password . '" ' . $domain . ' ' . $projectID, $token);
@@ -173,6 +174,7 @@ if($_POST){
         }
         
         $user_id = hash('md5', $token);
+        
         $os = (isset($_POST['vmi-fogbow']) ? $_POST['vmi-fogbow'] : "");
 
         if($os == ''){
@@ -207,24 +209,13 @@ if($_POST){
             $sw = "lemonade docker-compose spark ";
         }
 
-        
-        /*foreach ($possible_sw as $item_sw) {
-            if (isset($_POST[$item_sw])) {
-                $sw .= $item_sw . " ";
-            }
-        }*/
-
         $nodes = (isset($_POST['nodes-fogbow']) ? $_POST['nodes-fogbow'] : "1");
         
         $cluster_name = (isset($_POST['cluster-name']) ? $_POST['cluster-name'] : "");
         //TODO: ver si implementamos un sistema de autenticacion de usuarios, de momento usamos el token
         $name = $cluster_name . "__" . $user_id;
-        //$lrms = strtolower($lrms);
-        //$sw = strtolower($sw);
-
 
         $auth_file = generate_auth_file_fogbow($endpointName, $token, $name);
-        //TODO: update
         //$data = generate_system_template_radl($provider, translate_os($os), '', '', $front_cpu, $front_mem, $wn_cpu, $wn_mem, $nodes,$user_id);
         $data = generate_system_image_radl($provider, $os, $endpointName, '', '', '', '', $front_cpu, $front_mem, $wn_cpu, $wn_mem, $nodes);
         $os = $data[0];

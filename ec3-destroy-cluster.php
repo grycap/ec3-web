@@ -1,7 +1,5 @@
 <?php
 
-//la clase Process habra que sacarla a un fichero ya que es comun
-
 include_once('process.php');
 
 // Generates a random string for the name of the cluster
@@ -16,24 +14,58 @@ function random_string($length) {
     return $key;
 }
 
+//Generates a token calling the Fogbow API
+function obtain_token($username, $password, $domain, $projectID){
+    $res = ' ';
+    exec('python Fogbow_API.py token "' . $username . '" "' . $password . '" ' . $domain . ' ' . $projectID, $token);
+    if (count($token) > 0){
+        $res = $token[0];
+    }
+    return $res;
+}
 
 if($_POST){
    
-    if (isset($_POST['clustername'])) {
-        $clustername = $_POST['clustername'];
+    if (isset($_POST['clustername-delete'])) {
+        $clustername = $_POST['clustername-delete'];
     } else {
         exit("No clustername parameter specified.");
     }
     
-    if (isset($_POST['token-delete'])) {
-        $token = $_POST['token-delete'];
+    if (isset($_POST['user-fogbow-delete'])) {
+        $username = $_POST['user-fogbow-delete'];
     } else {
-        exit("No token parameter specified.");
+        exit("No user parameter specified.");
     }
     
-    $clustername = $clustername . "__" . hash('md5', $token);
+    if (isset($_POST['pass-fogbow-delete'])) {
+        $password = $_POST['pass-fogbow-delete'];
+    } else {
+        exit("No password parameter specified.");
+    }
+    
+    if (isset($_POST['domain-fogbow-delete'])) {
+        $domain = $_POST['domain-fogbow-delete'];
+    } else {
+        exit("No domain parameter specified.");
+    }
+    
+    if (isset($_POST['project-fogbow-delete'])) {
+        $projectID = $_POST['project-fogbow-delete'];
+    } else {
+        exit("No project ID parameter specified.");
+    }
+    
+    //Obtain the token calling the "Fogbow_API" script
+    $token = obtain_token($user, $pass, $domain, $projectID);
+    if ($token == ' '){
+        echo 'Found problems trying to obtain a valid token from the server.';
+        exit(1);
+    }
+    
+    //$clustername = $clustername . "__" . hash('md5', $token);
 
-    if($proxy!=""){
+    if($token!=""){
         //$auth_file = "/tmp/auth_" .substr($clustername, 8);
         $auth_file = "/tmp/auth_" .$clustername;
         
@@ -45,8 +77,8 @@ if($_POST){
             $file = fopen($auth_file, "r") or exit("Unable to find the old auth file:" . $auth_file . ". Is the cluster name correct?");
             while(!feof($file)){
                 $line = fgets($file);
-                if(strstr($line, "proxy")){
-                    $proxy_line = $line;
+                if(strstr($line, "token")){
+                    $token_line = $line;
                     $endpoint = substr($line, strpos($line, "host = ")+7);
                 }
                 if(strstr($line, "InfrastructureManager")){
@@ -61,7 +93,7 @@ if($_POST){
              $im_pass = "";
              $endpoint = "";
              $file = fopen("/var/www/.ec3/clusters/" . $clustername, "r") or exit("Unable to find the cluster data for cluster:" . $clustername . ". Is the cluster name correct?");
-             $logs = fopen("/tmp/amcaar_logs.txt", "w");
+             $logs = fopen("/tmp/temporal_logs.txt", "w");
              while(!feof($file)){
                 $line = fgets($file);
                 if(strstr($line, "auth")){
@@ -88,7 +120,7 @@ if($_POST){
 
         //Y escribimos el nuevo fichero auth
         $gestor = fopen($auth_file, "w");
-        fwrite($gestor, "id = occi; type = OCCI; proxy = " . $proxy . "; host = " . $endpoint . PHP_EOL);
+        fwrite($gestor, "id = fogbow; type = FogBow; host = " . $endpoint . "; token = " . $token . PHP_EOL);
         fwrite($gestor, $im_line. PHP_EOL);
         fclose($gestor);
     } else {
@@ -96,7 +128,6 @@ if($_POST){
     }
 
     // llamamos a EC3 para eliminar el cluster
-    //$ec3_log_file = "/tmp/ec3_del_".random_string(5);
     $ec3_log_file = "/tmp/ec3_del_". $clustername;
     if($auth_file != ""){
         $process_2 = new Process("./command/ec3 destroy --yes --force -a " . $auth_file. " " . $clustername, $ec3_log_file);
