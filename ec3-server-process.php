@@ -60,9 +60,9 @@ function generate_system_image_radl($cloud, $ami, $region, $ami_user, $ami_passw
 
     $new_file = fopen($path_to_new_file, "w");
     fwrite($new_file, "system front (".PHP_EOL);
-    fwrite($new_file, "    cpu.count>=". $front_cpu ."and".PHP_EOL);
-    fwrite($new_file, "    memory.size>=". $front_mem ."and".PHP_EOL);
-    fwrite($new_file, "    disk.0.os.name='linux' and".PHP_EOL);
+    fwrite($new_file, "    cpu.count>=". $front_cpu ." and".PHP_EOL);
+    fwrite($new_file, "    memory.size>=". $front_mem ." and".PHP_EOL);
+    fwrite($new_file, "    disk.0.os.name = 'linux' and".PHP_EOL);
     fwrite($new_file, "    disk.0.image.url = 'fbw://fns-atm-prod-cloud.lsd.ufcg.edu.br/" .$ami. "'".PHP_EOL);
     //fwrite($new_file, "    instance_type='".$instancetype_front."' and".PHP_EOL);
     //fwrite($new_file, "    disk.0.os.credentials.username = '".$fbuser."' and".PHP_EOL);
@@ -73,12 +73,12 @@ function generate_system_image_radl($cloud, $ami, $region, $ami_user, $ami_passw
 
     fwrite($new_file, "system wn (".PHP_EOL);
     fwrite($new_file, "    ec3_max_instances = ".$nodes." and".PHP_EOL);
-    fwrite($new_file, "    cpu.count>=". $wn_cpu ."and".PHP_EOL);
-    fwrite($new_file, "    memory.size>=". $wn_mem ."and".PHP_EOL);
-    fwrite($new_file, "    disk.0.os.name='linux' and".PHP_EOL);
+    fwrite($new_file, "    cpu.count>=". $wn_cpu ." and".PHP_EOL);
+    fwrite($new_file, "    memory.size>=". $wn_mem ." and".PHP_EOL);
+    fwrite($new_file, "    disk.0.os.name = 'linux' and".PHP_EOL);
     fwrite($new_file, "    disk.0.image.url = 'fbw://fns-atm-prod-cloud.lsd.ufcg.edu.br/" .$ami. "'".PHP_EOL);
     //fwrite($new_file, "    instance_type='".$instancetype_wn."' and".PHP_EOL);
-    fwrite($new_file, "    disk.0.os.credentials.username = '".$fcuser."'".PHP_EOL);
+    //fwrite($new_file, "    disk.0.os.credentials.username = '".$fcuser."'".PHP_EOL);
 
     fwrite($new_file, ")".PHP_EOL);
     
