@@ -350,7 +350,7 @@
                 </br>
                 <div class="form-group" style="height:250px;">
                     <div class="col-sm-6" style="width:350px; height:250px;" name="clusterfogbow" id="clusterfogbow">
-                        <select name="cluster-fogbow" id="cluster-fogbow" data-placeholder="--Select one--" style="width:350px;" class="chzn-select form-control" data-validate="">
+                        <select name="cluster-fogbow" id="cluster-fogbow" data-placeholder="--Select one--" style="width:350px;" class="chzn-select form-control" data-validate="drop_down_validation">
                             <option value=""></option>
                             <option value="kubernetes">Kubernetes + Jupyter notebook</option>
                             <option value="mesos">Mesos + Spark + LEMONADE</option>
