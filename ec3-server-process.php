@@ -244,6 +244,9 @@ if($_POST){
                     echo 'GitHub repo provided but value for the folder not found. Impossible to launch a cluster without this data. Please, enter the required information and try again.';
                     exit(1);
                 }
+                if($gitbranch == ""){
+                    $gitbranch = "master";
+                }
                 $lrms = generate_kubernetes_recipe($gitrepo, $gitbranch, $gitfolder, $name); 
             }
             
