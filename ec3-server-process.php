@@ -240,8 +240,13 @@ if($_POST){
             $gitbranch = (isset($_POST['branch-fogbow']) ? $_POST['branch-fogbow'] : "master");
             $gitfolder = (isset($_POST['folder-fogbow']) ? $_POST['folder-fogbow'] : "");
             if ($gitrepo != ""){
+                if($gitfolder == ""){
+                    echo 'GitHub repo provided but value for the folder not found. Impossible to launch a cluster without this data. Please, enter the required information and try again.';
+                    exit(1);
+                }
                 $lrms = generate_kubernetes_recipe($gitrepo, $gitbranch, $gitfolder, $name); 
             }
+            
         } else if (strpos($lrms, 'mesos') !== false) {
             //TODO: consider to add HDFS
             $sw = "lemonade docker-compose spark ";
