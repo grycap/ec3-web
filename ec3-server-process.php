@@ -117,7 +117,34 @@ function generate_system_template_radl($cloud, $os, $instancetype_front, $instan
 
     return array($file_name);
 }
-           
+
+//Customizes kubernetes recipe to add user YAML deployments
+function generate_kubernetes_recipe($gitrepo, $gitbranch, $gitfolder, $clustername){
+    $templates_path = (isset($GLOBALS['templates_path']) ? $GLOBALS['templates_path'] : "/var/www/html/ec3-atmosphere/command/templates");
+    $kubefile = $templates_path . '/kubernetes_' . $clustername . '.radl';
+    $file_name = 'kubernetes_' . $clustername . '.radl';
+    //TODO: add to the kubernetes.radl recipe of servproject the line of 'kube_apply_repos' en el front
+    $path_to_template = '/etc/ec3/templates/kubernetes.radl';
+    
+    $new_file = fopen($kubefile, "w");
+    $template_file = fopen($path_to_template, "r");
+    if($template_file != False){
+        while(!feof($template_file)) {
+            $line = fgets($template_file);
+            fwrite($new_file, $line);
+        }
+    }
+    fclose($template_file);
+    fclose($new_file);
+    
+    //kube_apply_repos: [{repo: "https://github.com/kubernetes-incubator/metrics-server", version: "master", path: "deploy/1.8+/"}]
+    $repos_line = 'kube_apply_repos: [{repo: "' . $gitrepo . '", version: "' . $gitbranch . '", path: "' . $gitfolder . '/"}]';
+    $file_contents = file_get_contents($kubefile);
+    $file_contents = str_replace("kube_apply_repos",$repos_line,$file_contents);
+    file_put_contents($kubefile,$file_contents);
+    
+    return $file_name;    
+}
 
 // Translates the OS name to the name of the EC3 recipe
 function translate_os($os) {
@@ -201,19 +228,26 @@ if($_POST){
             exit(1);
         }
         
+        $cluster_name = (isset($_POST['cluster-name']) ? $_POST['cluster-name'] : "");
+        //TODO: ver si implementamos un sistema de autenticacion de usuarios, de momento usamos el token
+        $name = $cluster_name . "__" . $user_id;
+        
         $lrms = strtolower($clustertype);
         $sw = "clues2 ";
         if(strpos($lrms, 'kubernetes') !== false) {
             $sw = "jupyter ";
+            $gitrepo = (isset($_POST['github-fogbow']) ? $_POST['github-fogbow'] : "");
+            $gitbranch = (isset($_POST['branch-fogbow']) ? $_POST['branch-fogbow'] : "master");
+            $gitfolder = (isset($_POST['folder-fogbow']) ? $_POST['folder-fogbow'] : "");
+            if ($gitrepo != ""){
+                $lrms = generate_kubernetes_recipe($gitrepo, $gitbranch, $gitfolder, $name); 
+            }
         } else if (strpos($lrms, 'mesos') !== false) {
+            //TODO: consider to add HDFS
             $sw = "lemonade docker-compose spark ";
         }
 
         $nodes = (isset($_POST['nodes-fogbow']) ? $_POST['nodes-fogbow'] : "1");
-        
-        $cluster_name = (isset($_POST['cluster-name']) ? $_POST['cluster-name'] : "");
-        //TODO: ver si implementamos un sistema de autenticacion de usuarios, de momento usamos el token
-        $name = $cluster_name . "__" . $user_id;
 
         $auth_file = generate_auth_file_fogbow($endpointName, $token, $name);
         //$data = generate_system_template_radl($provider, translate_os($os), '', '', $front_cpu, $front_mem, $wn_cpu, $wn_mem, $nodes,$user_id);

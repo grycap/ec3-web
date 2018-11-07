@@ -348,8 +348,8 @@
                     What type of cluster do you want to deploy? 
                 </p>
                 </br>
-                <div class="form-group" style="height:250px;">
-                    <div class="col-sm-6" style="width:350px; height:250px;" name="clusterfogbow" id="clusterfogbow">
+                <div class="form-group" style="height:120px;">
+                    <div class="col-sm-8" style="width:350px; height:120px;" name="clusterfogbow" id="clusterfogbow">
                         <select name="cluster-fogbow" id="cluster-fogbow" data-placeholder="--Select one--" style="width:350px;" class="chzn-select form-control" data-validate="drop_down_validation">
                             <option value=""></option>
                             <option value="kubernetes">Kubernetes + Jupyter notebook</option>
@@ -357,6 +357,27 @@
                         </select>
                     </div>
                 </div>
+                <div class="wizard-input-section">
+                    <p>
+                        Optionally you can provide an URL to your YAML files to be deployed in Kubernetes:
+                    </p>
+                    <div class="form-group" style="height:40px;">
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="github-fogbow" name="github-fogbow" placeholder="Github URL of the repository">
+                        </div>
+                    </div>
+                </div>
+                <div class="wizard-input-section">
+                    <div class="form-group">
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" id="folder-fogbow" name="folder-fogbow" placeholder="Folder" data-validate="">
+                        </div>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" id="branch-fogbow" name="branch-fogbow" placeholder="Branch/version" data-validate="">
+                        </div>
+                    </div>
+                </div>
+                    
 
                 <!--<div class="wizard-input-section">
                     <p>
@@ -989,6 +1010,11 @@
                 } else if (clustertype == 'mesos'){
                     clustertype = "Mesos + Spark + LEMONADE";
                 }
+                
+                //Obtener, si es el caso, los datos de github
+                var gitrepo = $('#github-fogbow').val();
+                var gitbranch = $('#branch-fogbow').val();
+                var gitfolder = $('#folder-fogbow').val();
 
                 //obtener el numero de nodos
                 var nodes = parseInt($('#nodes-fogbow').val());
@@ -999,6 +1025,18 @@
                 //retValue = "<div><b>Endpoint: </b>" + endpoint + "</div> <div><b>Token: </b>" + token + "</div>";
 
                 retValue = "<div> <b>Cluster type: </b>" + clustertype + "</div>";
+                
+                if(gitrepo != ''){
+                    retValue += "<div> <b>Github repo: </b>" + gitrepo + "</div>";
+                }
+                
+                if(gitrepo != '' && gitbranch != ''){
+                    retValue += "<div> <b>Github branch: </b>" + gitbranch + "</div>";
+                }
+                
+                if(gitrepo != '' && gitfolder != ''){
+                    retValue += "<div> <b>Github folder: </b>" + gitfolder + "</div>";
+                }
                 
                 if(os != ''){
                     retValue += "<div> <b>OS VMI: </b>" + os + "</div>";
@@ -1031,7 +1069,7 @@
                 $.fn.wizard.logging = true;
                 var wizard = $('#delete-wizard').wizard({
                     keyboard : false,
-                    contentHeight : 600,
+                    contentHeight : 650,
                     contentWidth : 720,
                     backdrop: 'static',
                     submitUrl: "ec3-destroy-cluster.php"
