@@ -122,7 +122,7 @@ function generate_system_template_radl($cloud, $os, $instancetype_front, $instan
 function generate_kubernetes_recipe($gitrepo, $gitbranch, $gitfolder, $clustername){
     $templates_path = (isset($GLOBALS['templates_path']) ? $GLOBALS['templates_path'] : "/var/www/html/ec3-atmosphere/command/templates");
     $kubefile = $templates_path . '/kubernetes_' . $clustername . '.radl';
-    $file_name = 'kubernetes_' . $clustername . '.radl';
+    $file_name = 'kubernetes_' . $clustername;
     //TODO: add to the kubernetes.radl recipe of servproject the line of 'kube_apply_repos' en el front
     $path_to_template = '/etc/ec3/templates/kubernetes.radl';
     
@@ -140,7 +140,7 @@ function generate_kubernetes_recipe($gitrepo, $gitbranch, $gitfolder, $clusterna
     //kube_apply_repos: [{repo: "https://github.com/kubernetes-incubator/metrics-server", version: "master", path: "deploy/1.8+/"}]
     $repos_line = 'kube_apply_repos: [{repo: "' . $gitrepo . '", version: "' . $gitbranch . '", path: "' . $gitfolder . '/"}]';
     $file_contents = file_get_contents($kubefile);
-    $file_contents = str_replace("kube_apply_repos",$repos_line,$file_contents);
+    $file_contents = str_replace("kube_apply_repos: []",$repos_line,$file_contents);
     file_put_contents($kubefile,$file_contents);
     
     return $file_name;    
