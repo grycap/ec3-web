@@ -65,7 +65,8 @@
 
 <body id="page-top" class="index">
     
-<!--add analytics tracking  < ? php include_once("analyticstracking.php") ?>-->
+<!--add analytics tracking-->  
+<?php include_once("analyticstracking.php") ?>
 
     <!-- Navigation -->
     <nav class="navbar navbar-default navbar-fixed-top">
