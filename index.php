@@ -790,10 +790,11 @@
                                     wizard.submitSuccess();         // displays the success card
                                     var obj = jQuery.parseJSON(JSON.stringify(response));
                                     var name = obj.name;
-                                    var index = obj.name.indexOf("__");
+                                    //De momento devolvemos el nombre completo, cuando tengamos gestion de usuarios se puede omitir el ID
+                                    /*var index = obj.name.indexOf("__");
                                     if (index > -1){
                                         name = obj.name.substring(0, obj.name.indexOf("__"));
-                                    }
+                                    }*/
                                     var retValue = "<div> Cluster name: <b> " + name + " </b></div> <div> Frontend IP: <b> " + obj.ip + " </b></div> <div> Username: <b> " + obj.username + " </b></div>";
                                     retValue += "<div> Secret key: <textarea id='private_key_value' name='private_key_value' style='display:none;'>" + decodeURIComponent(obj.secretkey) + "</textarea>" +
                                     "<a class='download' href='javascript:download(\"private_key_value\", \"key.pem\");'>Download</a> </div>";
