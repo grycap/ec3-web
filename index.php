@@ -248,8 +248,7 @@
                 <div class="col-sm-6">
                     <div class="team-member">
                         <!--avisar a analytics -->
-                        <!--onclick="ga('send','event','Providers','Fogbow')"-->
-                        <button id="open-wizard-deploy" class="btn btn-primary btn-fogbow" ></button>
+                        <button id="open-wizard-deploy" class="btn btn-primary btn-fogbow" onclick="ga('send','event','Providers','Fogbow')"></button>
                         <h4 class="provider">Deploy your cluster</h4>
                         <p class="text-muted-contact">In the Fogbow Cloud provided by ATMOSPHERE</p>
                     </div>
@@ -780,7 +779,7 @@
 
                 wizard.on("submit", function(wizard) {
                     //avisar de evento a analytics
-                    //ga('send','event','Submit','Fogbow');
+                    ga('send','event','Submit','Fogbow');
                     $.ajax({
                             type: "POST",
                             url: wizard.args.submitUrl,
