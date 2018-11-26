@@ -200,8 +200,7 @@
                 <div class="col-md-4">
                     <span class="fa-stack fa-4x">
                         <!--<a href="doc/index.html">-->
-                        <!--<a href="http://ec3.readthedocs.org/en/latest/" target="_blank">-->
-                        <a href="http://ec3.readthedocs.org/en/devel/" target="_blank">
+                        <a href="https://ec3.readthedocs.io/en/atmosphere/" target="_blank">
                             <i class="fa fa-circle fa-stack-2x text-primary"></i>
                             <i class="fa fa-book fa-stack-1x fa-inverse"></i>
                         </a>
