@@ -119,8 +119,8 @@
             <div class="intro-text">
                   <div class="intro-lead-in">Elastic Clusters as a Service</div>
                 <div class="intro-heading">Deploy Virtual Elastic Clusters on the Cloud</div>
-                <a href="#try" class="page-scroll btn btn-xl">Deploy your cluster!</a>
-                <a href="#services" class="page-scroll btn btn-xl">Learn more</a>
+                <a href="#try" class="page-scroll btn btn-xl">Deploy your cluster in Fogbow!</a>
+                <a href="#services" class="page-scroll btn btn-xl">Learn more about EC3</a>
             </div>
         </div>
     </header>
@@ -276,12 +276,12 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-4 col-sm-6">
-                    <a href="http://www.grycap.upv.es/">
+                    <a href="https://ec.europa.eu/">
                         <img src="img/logos/EU.jpg" class="img-responsive img-centered" alt="">
                     </a>
                 </div>
                 <div class="col-md-4 col-sm-6">
-                    <a href="http://www.i3m.upv.es/">
+                    <a href="http://www.brasil.gov.br/">
                         <img src="img/logos/br.png" class="img-responsive img-centered" alt="">
                     </a>
                 </div>

@@ -18,7 +18,7 @@ body {
 }
 
 .text-primary {
-    color: #fed136;
+    color: #f39a15;
 }
 
 p {
@@ -39,7 +39,7 @@ a.active {
 }
 
 a {
-    color: #fed136;
+    color: #f39a15;
 }
 
 a:hover,
@@ -69,21 +69,22 @@ h6 {
 }
 
 .bg-darkest-gray {
-    background-color: #222;
+    /*background-color: #222;*/
+    background-color: #262548;
 }
 
 .bg-orange {
-    background-color: #fed136;
+    background-color: #f39a15;
 }
 
 
 .btn-primary {
-    border-color: #fed136;
+    border-color: #f39a15;
     text-transform: uppercase;
     font-family: Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif;
     font-weight: 700;
     color: #fff;
-    background-color: #fed136;
+    background-color: #f39a15;
 }
 
 .btn-deleting {
@@ -193,7 +194,7 @@ fieldset[disabled] .btn-primary.active {
 .btn-xl {
 	margin-right: 10px;
     padding: 20px 40px;
-    border-color: #fed136;
+    border-color: #f39a15;
     border-radius: 3px;
     text-transform: uppercase;
     font-family: Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif;
@@ -201,7 +202,7 @@ fieldset[disabled] .btn-primary.active {
     font-weight: 700;
 	color: #000;
     /*color: #fff;*/
-    background-color: #E6B800;
+    background-color: #f39a15;
 }
 
 .btn-xl:hover,
@@ -247,7 +248,8 @@ fieldset[disabled] .btn-xl.active {
 
 .navbar-default {
     border-color: transparent;
-    background-color: #222;
+    /*background-color: #222;*/
+    background-color: #262548;
 }
 
 .navbar-welcome {
@@ -260,14 +262,16 @@ fieldset[disabled] .btn-xl.active {
 .navbar-default .navbar-brand {
     /*font-family: "Kaushan Script","Helvetica Neue",Helvetica,Arial,cursive;*/
 	font-family: Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif;
-    color: #fed136;
+    /*color: #fed136;*/
+    color: #f39a15;
 }
 
 .navbar-default .navbar-brand:hover,
 .navbar-default .navbar-brand:focus,
 .navbar-default .navbar-brand:active,
 .navbar-default .navbar-brand.active {
-    color: #fec503;
+    /*color: #fec503;*/
+    color: #f39a15;
 }
 
 .navbar-default .navbar-collapse {
@@ -306,14 +310,14 @@ fieldset[disabled] .btn-xl.active {
     border-radius: 0;
     /*color: #fff;*/
 	color: #000;
-    background-color: #fed136;
+    background-color: #f39a15;
 }
 
 .navbar-default .navbar-nav>.active>a:hover,
 .navbar-default .navbar-nav>.active>a:focus {
     /*color: #fff;*/
 	color: #000;
-    background-color: #fec503;
+    background-color: #f39a15;
 }
 
 @media(min-width:768px) {
@@ -339,7 +343,8 @@ fieldset[disabled] .btn-xl.active {
 
     .navbar-default.navbar-shrink {
         padding: 10px 0;
-        background-color: #222;
+        background-color: #262548;
+        /*background-color: #222;*/
     }
 
     .navbar-default.navbar-shrink .navbar-brand {
@@ -351,7 +356,7 @@ header {
     text-align: center;
     color: #fff;
     background-attachment: scroll;
-    background-image: url(../img/header-bg.jpg);
+    background-image: url(../img/header-bg-9.jpg);
     background-position: center center;
     background-repeat: none;
     -webkit-background-size: cover;
@@ -385,7 +390,7 @@ header .intro-text .intro-heading {
 @media(min-width:768px) {
     header .intro-text {
         padding-top: 200px;
-        padding-bottom: 300px;
+        padding-bottom: 350px;
     }
 
     header .intro-text .intro-lead-in {
@@ -437,7 +442,8 @@ section h3.section-subheading-contact {
 }
 
 section h4.provider {
-    color: #fed136;
+    /*color: #fed136;*/
+    color: #f39a15;
 }
 
 @media(min-width:768px) {
@@ -594,7 +600,8 @@ section h4.provider {
     border-radius: 100%;
     text-align: center;
     color: #fff;
-    background-color: #fed136;
+    /*background-color: #fed136;*/
+    background-color: #f39a15;
 }
 
 .timeline>li .timeline-image h4 {
@@ -753,7 +760,8 @@ aside.clients img {
 }
 
 section#contact {
-    background-color: #222;
+    /*background-color: #222;*/
+    background-color: #262548;
     background-image: url(../img/map-image.png);
     background-position: center;
     background-repeat: no-repeat;
@@ -789,7 +797,7 @@ section#contact .form-group textarea.form-control {
 }
 
 section#contact .form-control:focus {
-    border-color: #fed136;
+    border-color: #f39a15;
     box-shadow: none;
 }
 
@@ -828,7 +836,8 @@ section#contact .text-danger {
 footer {
     padding: 25px 0;
     text-align: center;
-	background-color: #222;
+	/*background-color: #222;*/
+    background-color: #262548;
 	color: white
 }
 
@@ -869,7 +878,7 @@ ul.social-buttons li a {
 ul.social-buttons li a:hover,
 ul.social-buttons li a:focus,
 ul.social-buttons li a:active {
-    background-color: #fed136;
+    background-color: #f39a15;
 }
 
 .btn:focus,
@@ -974,7 +983,7 @@ img::-moz-selection {
 }
 
 body {
-    webkit-tap-highlight-color: #fed136;
+    webkit-tap-highlight-color: #f39a15;
 }
 
 /*estilo para una tabla responsive*/
