@@ -154,19 +154,18 @@
                     <span class="fa-stack fa-4x">
                         <i class="fa fa-sellsy fa-stack-1x fa-inverse"></i>
                     </span>
-                    <h4 class="service-heading text-muted-contact">Hybrid clusters</h4>
-                    <p class="text-muted">Deploy clusters that span multiple Clouds with automatic VPN / SSH tunnels management.</p>
+                    <h4 class="service-heading text-muted-contact">Heterogeneous clusters</h4>
+                    <p class="text-muted">Deploy clusters that are composed by different types of working nodes.</p>
                 </div>
             </div>
 
             <div class="row text-center">
                 <div class="col-md-4">
                     <span class="fa-stack fa-4x">
-                        <!--<i class="fa fa-money fa-stack-1x fa-inverse"></i>-->
-                        <i class="icon-aws" style="color:white"></i>
+                        <i class="fa fa-lock fa-stack-1x fa-inverse"></i>
                     </span>
-                    <h4 class="service-heading text-muted-contact">Cost-Aware</h4>
-                    <p class="text-muted">Leverage <a href="http://aws.amazon.com/en/ec2/purchasing-options/spot-instances/" target="_blank">Spot Instances</a> to cut down costs, featuring automatic checkpointing/restart of applications.</p>
+                    <h4 class="service-heading text-muted-contact">Trust-Aware</h4>
+                    <p class="text-muted">Ensure that your data is safe in the infrastructure, thanks to the developments in the <a href="https://www.atmosphere-eubrazil.eu/" target="_blank">ATMOSPHERE</a> project.</p>
                 </div>
                 <div class="col-md-4">
                     <span class="fa-stack fa-4x">
@@ -238,7 +237,7 @@
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <h2 class="section-heading">Deploy and Manage your virtual clusters with EC3</h2>
-                    <h3 class="section-subheading text-muted-contact">You will need to provide valid credentials for the Cloud provider. Not sure if this is safe? <a <a href="http://ec3.readthedocs.org/en/devel/ec3.html#authorization-file">Check the docs.</a>
+                    <h3 class="section-subheading text-muted-contact">You will need to provide valid credentials for the Fogbow Cloud provider. Not sure if this is safe? <a <a href="http://ec3.readthedocs.org/en/devel/ec3.html#authorization-file">Check the docs.</a>
                       <br>
                       <!--Wanted to deploy a hybrid cluster? You can do it with the <a href="https://github.com/grycap/ec3">CLI</a>.-->
                     </h3>
@@ -319,7 +318,7 @@
 					<a href="terms.html">Terms of Service</a>
                 </div>	
                 <div class="col-md-12">
-                    <span class="copyright"> EC3 is a service provided by <a href="http://www.grycap.upv.es">GRyCAP-I3M-UPV</a>. This portal is maintained by the <a href="https://www.atmosphere-eubrazil.eu/">ATMOSPHERE</a> project. Copyright &copy; 2015, <a href="http://www.upv.es">Universitat Politècnica de València.</a> 
+                    <span class="copyright"> EC3 is a service provided by <a href="http://www.grycap.upv.es">GRyCAP-I3M-UPV</a>. This portal is maintained by the <a href="https://www.atmosphere-eubrazil.eu/">ATMOSPHERE</a> project. Copyright &copy; 2018, <a href="http://www.upv.es">Universitat Politècnica de València.</a> 
                       <br>
 
                     </span>
