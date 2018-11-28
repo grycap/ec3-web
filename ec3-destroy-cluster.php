@@ -57,7 +57,7 @@ if($_POST){
     }
     
     //Obtain the token calling the "Fogbow_API" script
-    $token = obtain_token($user, $pass, $domain, $projectID);
+    $token = obtain_token($username, $password, $domain, $projectID);
     if ($token == ' '){
         echo 'Found problems trying to obtain a valid token from the server.';
         exit(1);

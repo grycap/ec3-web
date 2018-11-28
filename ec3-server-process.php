@@ -84,7 +84,7 @@ function generate_system_image_radl($cloud, $ami, $region, $ami_user, $ami_passw
     
     fclose($new_file);
     
-    return array($file_name, $fcuser, $pass);
+    return array($file_name, 'fogbow', $pass);
 }
 
 // Generates the system RADL file for the deployments that the user DOES NOT has indicated an AMI or VMI
