@@ -252,7 +252,7 @@ if($_POST){
             
         } else if (strpos($lrms, 'mesos') !== false) {
             //TODO: consider to add HDFS
-            $sw = "lemonade docker-compose spark ";
+            $sw = "docker-compose spark lemonade ";
         }
 
         $nodes = (isset($_POST['nodes-fogbow']) ? $_POST['nodes-fogbow'] : "1");
