@@ -57,6 +57,7 @@ function generate_system_image_radl($cloud, $ami, $region, $ami_user, $ami_passw
     // Obtenemos user y pass random
     //$fbuser = 'cloudadm';
     //$pass = random_string(3).'#'. random_string(3).'5A';
+    $pass = "";
 
     $new_file = fopen($path_to_new_file, "w");
     fwrite($new_file, "system front (".PHP_EOL);
