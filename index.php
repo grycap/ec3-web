@@ -729,6 +729,7 @@
                         <option>Torque</option>
                         <option>SGE</option>
                         <option>Mesos</option>
+                        <option>Kubernetes</option>
                     </select>
                 </div>
             </div>
@@ -941,6 +942,7 @@
                             <option>CentOS 7</option>
                             <!--<option>Ubuntu 12.04</option>-->
                             <option>Ubuntu 14.04</option>
+                            <option>Ubuntu 16.04</option>
                             <option>Scientific Linux 6.6</option>
                         </optgroup>
                     </select>
@@ -1013,6 +1015,8 @@
                         <option>Torque</option>
                         <option>SGE</option>
                         <option>Mesos</option>
+                        <option>Kubernetes</option>
+                        <option>OSCAR</option>
                     </select>
                 </div>
             </div>
@@ -1272,6 +1276,7 @@
                         <option>Torque</option>
                         <option>SGE</option>
                         <option>Mesos</option>
+                        <option>Kubernetes</option>
                     </select>
                 </div>
             </div>
@@ -1557,6 +1562,7 @@
                         <option>Torque</option>
                         <option>SGE</option>
                         <option>Mesos</option>
+                        <option>Kubernetes</option>
                     </select>
                 </div>
             </div>

@@ -304,6 +304,9 @@ function translate_os($os) {
         case "Ubuntu 14.04":
             $os = "ubuntu14";
             break;
+        case "Ubuntu 16.04":
+            $os = "ubuntu16";
+            break;
         case "CentOS 7":
             $os = "centos7";
             break;
@@ -351,6 +354,10 @@ function get_vmi_credentials($os){
         case "ubuntu14":
             $user = "ubuntu";
             $pass = random_string(3).'&'. random_string(3).'0Z';;
+            break;
+        case "ubuntu16":
+            $user = "ubuntu";
+            $pass = random_string(3).'*'. random_string(3).'4D';;
             break;
         case "centos":
             $user = "root";
