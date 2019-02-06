@@ -1563,6 +1563,7 @@
                         <option>SGE</option>
                         <option>Mesos</option>
                         <option>Kubernetes</option>
+                        <option>OSCAR</option>
                     </select>
                 </div>
             </div>
