@@ -264,9 +264,9 @@ if($_POST){
         $user = $data[1];
         $pass = $data[2];
     } else if ($provider == 'helixnebula'){
-        $cloud = (isset($_POST['provider-helix']) ? $_POST['provider-helix'] : "");
-        $cloud = strtolower($cloud);
-        
+        #$cloud = (isset($_POST['provider-helix']) ? $_POST['provider-helix'] : "");
+        #$cloud = strtolower($cloud);
+        $cloud = 'exoscale';
         //Endpoint is now fixed 
         //$endpointName = (isset($_POST['endpointName']) ? $_POST['endpointName'] : "");
         //$endpoint = (isset($_POST['endpoint-helix']) ? $_POST['endpoint-helix'] : "");
