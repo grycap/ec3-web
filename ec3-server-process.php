@@ -388,7 +388,7 @@ function validateAMIValue($ami) {
 
 if($_POST){
 
-    $possible_sw = array("nfs", "openvpn", "octave", "docker", "gnuplot", "tomcat", "galaxy", "chronos", "marathon", "hadoop", "namd", "extra_hd");
+    $possible_sw = array("nfs", "openvpn", "octave", "docker", "gnuplot", "tomcat", "galaxy", "chronos", "marathon", "hadoop", "namd", "extra_hd", "jupyter");
 
     $provider = (isset($_POST['cloud']) ? $_POST['cloud'] : "unknown");
     // El string recibido tiene este aspecto: cloud=ec2&accesskey=ffffff&secretkey=hhhhhhhhh&os-ec2=Ubuntu+12.04&lrms-ec2=SLURM&clues=clues&nodes-ec2=5

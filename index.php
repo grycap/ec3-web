@@ -802,8 +802,8 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-4"><input type="checkbox" value="namd" name="namd" id="namd" title="A parallel, object-oriented molecular dynamics code designed for high-performance simulation of large biomolecular systems"/> Namd </div>
-                           <!-- <div class="col-sm-4"><input type="checkbox" value="docker" name="docker" id="docker" title="An open-source tool to deploy applications inside software containers"/> Docker </div>
-                            <div class="col-sm-4"><input type="checkbox" value="latex" name="latex" id="latex" title="Word processor and document markup language"/> Latex </div>-->
+                            <div class="col-sm-4"><input type="checkbox" value="jupyter" name="jupyter" id="jupyter" title="An open-source web application that allows you to create and share documents that contain live code, equations, visualizations and narrative text."/> Jupyter Notebook </div>
+                            <!--<div class="col-sm-4"><input type="checkbox" value="latex" name="latex" id="latex" title="Word processor and document markup language"/> Latex </div>-->
                         </div>
                     </div>
                 </div>
@@ -1062,7 +1062,8 @@
                             <div class="col-sm-4"><input type="checkbox" value="tomcat" name="tomcat" id="tomcat" title="An open-source web server and servlet container"/> Tomcat </div>
                         </div>
                         <div class="row">
-                             <div class="col-sm-4"><input type="checkbox" value="namd" name="namd" id="namd" title="A parallel, object-oriented molecular dynamics code designed for high-performance simulation of large biomolecular systems"/> Namd </div>
+                            <div class="col-sm-4"><input type="checkbox" value="namd" name="namd" id="namd" title="A parallel, object-oriented molecular dynamics code designed for high-performance simulation of large biomolecular systems"/> Namd </div>
+                            <div class="col-sm-4"><input type="checkbox" value="jupyter" name="jupyter" id="jupyter" title="An open-source web application that allows you to create and share documents that contain live code, equations, visualizations and narrative text."/> Jupyter Notebook </div>
                             <!--<div class="col-sm-4"><input type="checkbox" value="docker" name="docker" id="docker" title="An open-source tool to deploy applications inside software containers"/> Docker </div>
                             <div class="col-sm-4"><input type="checkbox" value="latex" name="latex" id="latex" title="Word processor and document markup language"/> Latex </div>-->
                         </div>
@@ -1323,6 +1324,7 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-4"><input type="checkbox" value="namd" name="namd" id="namd" title="A parallel, object-oriented molecular dynamics code designed for high-performance simulation of large biomolecular systems"/> Namd </div>
+                            <div class="col-sm-4"><input type="checkbox" value="jupyter" name="jupyter" id="jupyter" title="An open-source web application that allows you to create and share documents that contain live code, equations, visualizations and narrative text."/> Jupyter Notebook </div>
                             <!--<div class="col-sm-4"><input type="checkbox" value="docker" name="docker" id="docker" title="An open-source tool to deploy applications inside software containers"/> Docker </div>
                             <div class="col-sm-4"><input type="checkbox" value="latex" name="latex" id="latex" title="Word processor and document markup language"/> Latex </div>-->
                         </div>
@@ -1610,6 +1612,7 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-4"><input type="checkbox" value="namd" name="namd" id="namd" title="A parallel, object-oriented molecular dynamics code designed for high-performance simulation of large biomolecular systems"/> Namd </div>
+                            <div class="col-sm-4"><input type="checkbox" value="jupyter" name="jupyter" id="jupyter" title="An open-source web application that allows you to create and share documents that contain live code, equations, visualizations and narrative text."/> Jupyter Notebook </div>
                             <!--<div class="col-sm-4"><input type="checkbox" value="docker" name="docker" id="docker" title="An open-source tool to deploy applications inside software containers"/> Docker </div>
                             <div class="col-sm-4"><input type="checkbox" value="latex" name="latex" id="latex" title="Word processor and document markup language"/> Latex </div>-->
                         </div>
@@ -2054,7 +2057,8 @@
                 if( $('.ec2.col-sm-12 #tomcat').prop('checked') ) sw += "Tomcat ";
                 if( $('.ec2.col-sm-12 #marathon').prop('checked') ) sw += "Marathon ";
                 if( $('.ec2.col-sm-12 #chronos').prop('checked') ) sw += "Chronos ";
-                if( $('.ec2.col-sm-12 #hadoop').prop('checked') ) sw += "Hadoop";
+                if( $('.ec2.col-sm-12 #hadoop').prop('checked') ) sw += "Hadoop ";
+                if( $('.ec2.col-sm-12 #jupyter').prop('checked') ) sw += "Jupyter Notebook ";
 
                 if (sw == ''){
                     sw +="nothing selected"
@@ -2292,7 +2296,8 @@
                 if( $('.one.col-sm-12 #tomcat').prop('checked') ) sw += "Tomcat ";
                 if( $('.one.col-sm-12 #marathon').prop('checked') ) sw += "Marathon ";
                 if( $('.one.col-sm-12 #chronos').prop('checked') ) sw += "Chronos ";
-                if( $('.one.col-sm-12 #hadoop').prop('checked') ) sw += "Hadoop";
+                if( $('.one.col-sm-12 #hadoop').prop('checked') ) sw += "Hadoop ";
+                if( $('.one.col-sm-12 #jupyter').prop('checked') ) sw += "Jupyter Notebook ";
 
                 if (sw == ''){
                     sw +="Nothing selected"
@@ -2516,6 +2521,7 @@
                 if( $('.openstack.col-sm-12 #marathon').prop('checked') ) sw += "Marathon ";
                 if( $('.openstack.col-sm-12 #chronos').prop('checked') ) sw += "Chronos ";
                 if( $('.openstack.col-sm-12 #hadoop').prop('checked') ) sw += "Hadoop";
+                if( $('.openstack.col-sm-12 #jupyter').prop('checked') ) sw += "Jupyter Notebook ";
 
                 if (sw == ''){
                     sw +="Nothing selected"
@@ -2830,6 +2836,7 @@
                 if( $('.fedcloud.col-sm-12 #marathon').prop('checked') ) sw += "Marathon ";
                 if( $('.fedcloud.col-sm-12 #chronos').prop('checked') ) sw += "Chronos ";
                 if( $('.fedcloud.col-sm-12 #hadoop').prop('checked') ) sw += "Hadoop";
+                if( $('.fedcloud.col-sm-12 #jupyter').prop('checked') ) sw += "Jupyter Notebook ";
 
                 if (sw == ''){
                     sw +="Nothing selected"
