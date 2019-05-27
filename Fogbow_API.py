@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 import sys
-from libcloud.compute.providers import get_driver
 import json
 import requests
 
@@ -12,30 +11,44 @@ class Fogbow():
 		self.password = password
 		self.tenant_id = tenant_id
 		self.project_id = project_id
+		self.site = 'atm-test-site1.lsd.ufcg.edu.br'
+		self.cloud = 'cloud4'
+		self.endpoint = 'services-atm-test-site1.lsd.ufcg.edu.br'
 
 	def get_images(self, param):
+		# Get the Token
 		header = {'Accept': 'application/json',
-				  'federationTokenValue': self.get_token()}
+				  'Fogbow-User-Token': self.get_token()}
 
+		# And get the images
 		res = []
-		url = 'https://fns-atm-prod-cloud.lsd.ufcg.edu.br/images'
+		url = 'https://%s/fns/images/%s/%s' % (self.endpoint, self.site, self.cloud)
 		response = requests.get(url, headers=header)
-		images_json = response.json()
-
-		for image in images_json:
-			res.append((images_json.get(image), image))
-		return res
+		response.raise_for_status()
+		return response.json()
 
 	def get_token(self):
-		url = 'https://fns-atm-prod-cloud.lsd.ufcg.edu.br/tokens'
+		# First get the publicKey of the FNS
+		url = 'https://%s/fns/publicKey' % self.endpoint
+		response = requests.get(url)
+		public_key = response.json()['publicKey']
+
+		url = 'https://%s/as/tokens' % self.endpoint
 		header = {'Accept': 'application/json',
 				  'Content-Type': 'application/json'}
-		data = {"username": self.username,
-				"password": self.password,
-				"domain": self.tenant_id,
-				"projectname": self.project_id}
+		data = {
+					"publicKey": public_key,
+					"credentials":
+					{
+						"username": self.username,
+						"password": self.password,
+						"domain": self.tenant_id,
+						"projectname": self.project_id
+					}
+		}
 		response = requests.post(url, headers=header, data=json.dumps(data))
-		return response.text
+		response.raise_for_status()
+		return response.json()['token']
 
 
 if __name__ == "__main__":
@@ -54,8 +67,8 @@ if __name__ == "__main__":
  
 	if param == "images":
 		for elem in cli.get_images(param):
-			print(elem[0] + ";" + elem[1])
+			print(elem['name'] + ";" + elem['id'])
 	elif param == "token":
-		print cli.get_token()
+		print(cli.get_token())
 	else:
 		sys.exit(2)
