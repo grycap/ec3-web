@@ -64,7 +64,7 @@ function generate_system_image_radl($cloud, $ami, $region, $ami_user, $ami_passw
     fwrite($new_file, "    cpu.count>=". $front_cpu ." and".PHP_EOL);
     fwrite($new_file, "    memory.size>=". $front_mem ."m and".PHP_EOL);
     fwrite($new_file, "    disk.0.os.name = 'linux' and".PHP_EOL);
-    fwrite($new_file, "    disk.0.image.url = 'fbw://fns-atm-prod-cloud.lsd.ufcg.edu.br/" .$ami. "'".PHP_EOL);
+    fwrite($new_file, "    disk.0.image.url = 'fbw://services-atm-test-site1.lsd.ufcg.edu.br/" .$ami. "'".PHP_EOL);
     //fwrite($new_file, "    instance_type='".$instancetype_front."' and".PHP_EOL);
     //fwrite($new_file, "    disk.0.os.credentials.username = '".$fbuser."' and".PHP_EOL);
     //fwrite($new_file, "    ec3aas.username = '".$user_sub."'".PHP_EOL);
@@ -77,7 +77,7 @@ function generate_system_image_radl($cloud, $ami, $region, $ami_user, $ami_passw
     fwrite($new_file, "    cpu.count>=". $wn_cpu ." and".PHP_EOL);
     fwrite($new_file, "    memory.size>=". $wn_mem ."m and".PHP_EOL);
     fwrite($new_file, "    disk.0.os.name = 'linux' and".PHP_EOL);
-    fwrite($new_file, "    disk.0.image.url = 'fbw://fns-atm-prod-cloud.lsd.ufcg.edu.br/" .$ami. "'".PHP_EOL);
+    fwrite($new_file, "    disk.0.image.url = 'fbw://services-atm-test-site1.lsd.ufcg.edu.br/" .$ami. "'".PHP_EOL);
     //fwrite($new_file, "    instance_type='".$instancetype_wn."' and".PHP_EOL);
     //fwrite($new_file, "    disk.0.os.credentials.username = '".$fcuser."'".PHP_EOL);
 
@@ -187,7 +187,7 @@ if($_POST){
     
     if ($provider == 'fogbow'){
         //Endpoint is well-konown
-        $endpointName = 'https://fns-atm-prod-cloud.lsd.ufcg.edu.br';
+        $endpointName = 'https://services-atm-test-site1.lsd.ufcg.edu.br/fns';
         
         $user = (isset($_POST['user-fogbow']) ? $_POST['user-fogbow'] : "");
         $pass = (isset($_POST['pass-fogbow']) ? $_POST['pass-fogbow'] : "");
