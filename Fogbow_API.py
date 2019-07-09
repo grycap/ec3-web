@@ -11,9 +11,12 @@ class Fogbow():
 		self.password = password
 		self.tenant_id = tenant_id
 		self.project_id = project_id
-		self.site = 'atm-test-site1.lsd.ufcg.edu.br'
-		self.cloud = 'cloud4'
-		self.endpoint = 'services-atm-test-site1.lsd.ufcg.edu.br'
+		#self.site = 'atm-test-site1.lsd.ufcg.edu.br'
+		#self.cloud = 'cloud4'
+		#self.endpoint = 'services-atm-test-site1.lsd.ufcg.edu.br'
+		self.site = 'atm-prod.lsd.ufcg.edu.br'
+		self.cloud = 'prod'
+		self.endpoint = 'services-atm-prod.lsd.ufcg.edu.br'
 
 	def get_images(self, param):
 		# Get the Token
