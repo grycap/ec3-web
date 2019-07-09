@@ -351,7 +351,7 @@
                         <select name="cluster-fogbow" id="cluster-fogbow" data-placeholder="--Select one--" style="width:350px;" class="chzn-select form-control" data-validate="drop_down_validation">
                             <option value=""></option>
                             <option value="kubernetes">Kubernetes + Jupyter notebook</option>
-                            <option value="mesos">Mesos + Spark + LEMONADE</option>
+                            <option value="lemonade">Kubernetes + LEMONADE</option>
                         </select>
                     </div>
                 </div>
@@ -440,7 +440,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="wizard-input-section">
+                <!--<div class="wizard-input-section">
                     <p>
                         Domain ID:
                     </p>
@@ -449,8 +449,8 @@
                             <input type="text" class="form-control" id="domain-fogbow" name="domain-fogbow" placeholder="domain" data-validate="validateValue">
                         </div>
                     </div>
-                </div>
-                <div class="wizard-input-section">
+                </div>-->
+                <!--<div class="wizard-input-section">
                     <p>
                         Project name:
                     </p>
@@ -459,7 +459,7 @@
                             <input type="text" class="form-control" id="project-fogbow" name="project-fogbow" placeholder="projectid" data-validate="validateValue">
                         </div>
                     </div>
-                </div>
+                </div>-->
              </div>
             
             <!-- Step 3 - Operating System -->
@@ -655,7 +655,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="wizard-input-section">
+                <!--<div class="wizard-input-section">
                     <p>
                         Domain ID:
                     </p>
@@ -664,8 +664,8 @@
                             <input type="text" class="form-control" id="domain-fogbow-delete" name="domain-fogbow-delete" placeholder="domain" data-validate="validateValue">
                         </div>
                     </div>
-                </div>
-                <div class="wizard-input-section">
+                </div>-->
+                <!--<div class="wizard-input-section">
                     <p>
                         Project name:
                     </p>
@@ -674,7 +674,7 @@
                             <input type="text" class="form-control" id="project-fogbow-delete" name="project-fogbow-delete" placeholder="projectid" data-validate="validateValue">
                         </div>
                     </div>
-                </div>
+                </div>-->
 
                 <div class="wizard-error">
                     <div class="alert alert-error">
@@ -908,7 +908,8 @@
             });
             
             $('#vmifogbow').bind("show", function() {
-                var post_data = "&user=" + $('#user-fogbow').val() + "&pass=" + $('#pass-fogbow').val() + "&domain=" + $('#domain-fogbow').val() + "&project=" + $('#project-fogbow').val();
+                //var post_data = "&user=" + $('#user-fogbow').val() + "&pass=" + $('#pass-fogbow').val() + "&domain=" + $('#domain-fogbow').val() + "&project=" + $('#project-fogbow').val();
+                var post_data = "&user=" + $('#user-fogbow').val() + "&pass=" + $('#pass-fogbow').val() + "&domain=d" + "&project=p";
                 //Send cloud provider selected to the server to obtain OS
                 $.ajax({
                     method: "POST",
@@ -951,14 +952,14 @@
                 pass = "******************";
                 
                 //Obtener tennat y projectID
-                var tennat = $('#domain-fogbow').val();
+                /*var tennat = $('#domain-fogbow').val();
                 if (tennat == ''){
                     tennat = "Not set";
                 }
                 var projectID = $('#project-fogbow').val();
                 if (projectID == ''){
                     projectID = "Not set";
-                }
+                }*/
 
                 //obtener la vmi seleccionada
                 var os = $('#vmi-fogbow option:selected').html();
@@ -1006,8 +1007,8 @@
                 var clustertype = $('#cluster-fogbow').val();
                 if (clustertype == 'kubernetes'){
                     clustertype = "Kubernetes + Jupyter notebook";
-                } else if (clustertype == 'mesos'){
-                    clustertype = "Mesos + Spark + LEMONADE";
+                } else if (clustertype == 'lemonade'){
+                    clustertype = "Kubernetes + LEMONADE";
                 }
                 
                 //Obtener, si es el caso, los datos de github
@@ -1044,7 +1045,7 @@
                 }
                 
                 retValue += "<div> <b> Username: </b>" + user + "</div> <div><b>Password: </b>" + pass + "</div>" +
-                           "<div> <b> Domain Name: </b>" + tennat + "</div> <div><b>Project ID: </b>" + projectID + "</div>" +
+                           //"<div> <b> Domain Name: </b>" + tennat + "</div> <div><b>Project ID: </b>" + projectID + "</div>" +
                            "<div> <b>Frontend CPU: </b>" + front_cpu + "<b></div> <div>Frontend RAM memory: </b>" + front_mem + " </div>" +
                            "<div> <b>Working nodes CPU: </b>" + wn_cpu + "<b></div> <div> Working nodes RAM memory: </b>" + wn_mem + " </div>" +
                            //"<div> <b>Local Resource Management System: </b>" + lrms + "</div>" +

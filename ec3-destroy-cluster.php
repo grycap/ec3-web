@@ -44,17 +44,19 @@ if($_POST){
         exit("No password parameter specified.");
     }
     
-    if (isset($_POST['domain-fogbow-delete'])) {
+    /*if (isset($_POST['domain-fogbow-delete'])) {
         $domain = $_POST['domain-fogbow-delete'];
     } else {
         exit("No domain parameter specified.");
-    }
+    }*/
+    $domain = "d";
     
-    if (isset($_POST['project-fogbow-delete'])) {
+    /*if (isset($_POST['project-fogbow-delete'])) {
         $projectID = $_POST['project-fogbow-delete'];
     } else {
         exit("No project ID parameter specified.");
-    }
+    }*/
+    $projectID = "p";
     
     //Obtain the token calling the "Fogbow_API" script
     $token = obtain_token($username, $password, $domain, $projectID);

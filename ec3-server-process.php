@@ -191,8 +191,8 @@ if($_POST){
         
         $user = (isset($_POST['user-fogbow']) ? $_POST['user-fogbow'] : "");
         $pass = (isset($_POST['pass-fogbow']) ? $_POST['pass-fogbow'] : "");
-        $domain = (isset($_POST['domain-fogbow']) ? $_POST['domain-fogbow'] : "");
-        $projectID = (isset($_POST['project-fogbow']) ? $_POST['project-fogbow'] : "");
+        $domain = (isset($_POST['domain-fogbow']) ? $_POST['domain-fogbow'] : "d");
+        $projectID = (isset($_POST['project-fogbow']) ? $_POST['project-fogbow'] : "p");
 
         //obtener el token llamando al script "Fogbow_API"
         $token = obtain_token($user, $pass, $domain, $projectID);
@@ -251,9 +251,9 @@ if($_POST){
                 $lrms = generate_kubernetes_recipe($gitrepo, $gitbranch, $gitfolder, $name); 
             }
             
-        } else if (strpos($lrms, 'mesos') !== false) {
+        } else if (strpos($lrms, 'lemonade') !== false) {
             //TODO: consider to add HDFS
-            $sw = "docker-compose spark lemonade ";
+            $sw = "lemonadek8s ";
         }
 
         $nodes = (isset($_POST['nodes-fogbow']) ? $_POST['nodes-fogbow'] : "1");
