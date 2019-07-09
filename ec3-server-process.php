@@ -253,7 +253,8 @@ if($_POST){
             
         } else if (strpos($lrms, 'lemonade') !== false) {
             //TODO: consider to add HDFS
-            $sw = "kubernetes lemonadek8s ";
+            $sw = "lemonadek8s ";
+            $lrms = "kubernetes";
         }
 
         $nodes = (isset($_POST['nodes-fogbow']) ? $_POST['nodes-fogbow'] : "1");
