@@ -1069,7 +1069,7 @@
                 $.fn.wizard.logging = true;
                 var wizard = $('#delete-wizard').wizard({
                     keyboard : false,
-                    contentHeight : 650,
+                    contentHeight : 500,
                     contentWidth : 720,
                     backdrop: 'static',
                     submitUrl: "ec3-destroy-cluster.php"
