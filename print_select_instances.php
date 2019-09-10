@@ -18,8 +18,9 @@
 		exec('python EGI_AppDB.py ' . $selectOption . ' instances', $instances);
 		usort($instances, "cmp");
 		foreach ($instances as $instance) {
+				/*ahora inst_desc es la CPU y inst_name es la RAM */
 				list($inst_desc, $inst_name) = explode(";", $instance);
-				$return_string .= "<option value=\"" . $inst_name . "\">" . $inst_desc . "</option>";
+				$return_string .= "<option value=\"" . $instance . "\">" . $inst_desc . " CPUs - " . $inst_name . " RAM" . "</option>";
 		}
 	}
     $return_string .= "</select>";
