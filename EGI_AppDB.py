@@ -67,7 +67,8 @@ def get_sites():
     for ID in providersID:
         if check_supported_VOs(ID):
             data = appdb_call('/rest/1.0/va_providers/%s' % ID)
-            if (data['appdb:appdb']['virtualization:provider'].has_key('provider:endpoint_url')):
+            if (data['appdb:appdb']['virtualization:provider'].has_key('provider:endpoint_url') and 
+                data['appdb:appdb']['virtualization:provider']['@service_type']) == 'eu.egi.cloud.vm-management.occi':
                 provider_name = data['appdb:appdb']['virtualization:provider']['provider:name']
                 provider_endpoint_url = data['appdb:appdb']['virtualization:provider']['provider:endpoint_url']
                 endpoints.append(provider_name + ";" + provider_endpoint_url)
