@@ -20,6 +20,7 @@
 import sys
 import httplib
 import xmltodict
+from urlparse import urlparse
 
 __copyright__ = "Copyright (c) 2016 EGI Foundation"
 __license__ = "Apache Licence v2.0"
@@ -67,11 +68,12 @@ def get_sites():
     for ID in providersID:
         if check_supported_VOs(ID):
             data = appdb_call('/rest/1.0/va_providers/%s' % ID)
-            if (data['appdb:appdb']['virtualization:provider'].has_key('provider:endpoint_url') and 
-                data['appdb:appdb']['virtualization:provider']['@service_type'] == 'eu.egi.cloud.vm-management.occi'):
+            if (data['appdb:appdb']['virtualization:provider'].has_key('provider:url') and 
+                data['appdb:appdb']['virtualization:provider']['@service_type'] == 'org.openstack.nova'):
                 provider_name = data['appdb:appdb']['virtualization:provider']['provider:name']
-                provider_endpoint_url = data['appdb:appdb']['virtualization:provider']['provider:endpoint_url']
-                endpoints.append(provider_name + ";" + provider_endpoint_url)
+                provider_endpoint_url = data['appdb:appdb']['virtualization:provider']['provider:url']
+                url = urlparse(provider_endpoint_url)
+                endpoints.append(provider_name + ";" + "%s://%s%s" % url[0:3])
 
     return endpoints
 
@@ -87,7 +89,8 @@ def get_oss(endpoint):
                         for os_tpl in va_data['appdb:appdb']['virtualization:provider']['provider:image']:
                             try:
                                 if vo in os_tpl['@voname']:
-                                    oss.append(os_tpl['@appname'] + ";" + os_tpl['@appcname'])
+                                    image_id = os_tpl['@va_provider_image_id'].split("#")[1]
+                                    oss.append(os_tpl['@appname'] + ";" + image_id)
                             except:
                                 continue
                 except:
@@ -99,7 +102,8 @@ def get_oss(endpoint):
                 for os_tpl in va_data['appdb:appdb']['virtualization:provider']['provider:image']:
                     try:
                         if vo in os_tpl['@voname']:
-                            oss.append(os_tpl['@appname'] + ";" + os_tpl['@appcname'])
+                            image_id = os_tpl['@va_provider_image_id'].split("#")[1]
+                            oss.append(os_tpl['@appname'] + ";" + image_id)
                     except:
                         continue
     return oss
@@ -114,9 +118,7 @@ def get_instances(endpoint):
                     va_data = appdb_call('/rest/1.0/va_providers/%s' % service['@id'])
                     if va_data['appdb:appdb']['virtualization:provider']['provider:name'] == endpoint:
                         for resource_tpl in va_data['appdb:appdb']['virtualization:provider']['provider:template']:
-                            instance_desc = "%s MB - " % resource_tpl['provider_template:main_memory_size']
-                            instance_desc += "%s CPUs" % resource_tpl['provider_template:physical_cpus']
-                            instances.append((instance_desc, resource_tpl['provider_template:resource_name'].split("#")[1].replace(".","-")))
+                            instances.append((resource_tpl['provider_template:physical_cpus'], resource_tpl['provider_template:main_memory_size']))
                 except:
                     continue
         else:
@@ -124,9 +126,7 @@ def get_instances(endpoint):
             provider_name = va_data['appdb:appdb']['virtualization:provider']['provider:name']
             if provider_name == endpoint:
                 for resource_tpl in va_data['appdb:appdb']['virtualization:provider']['provider:template']:
-                    instance_desc = "%s MB - " % resource_tpl['provider_template:main_memory_size']
-                    instance_desc += "%s CPUs" % resource_tpl['provider_template:physical_cpus']
-                    instances.append((instance_desc, resource_tpl['provider_template:resource_name'].split("#")[1].replace(".","-")))
+                    instances.append((resource_tpl['provider_template:physical_cpus'], resource_tpl['provider_template:main_memory_size']))
     return instances
 
 def print_javascript():
