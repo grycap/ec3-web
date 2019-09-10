@@ -73,7 +73,7 @@ def get_sites():
                 provider_name = data['appdb:appdb']['virtualization:provider']['provider:name']
                 provider_endpoint_url = data['appdb:appdb']['virtualization:provider']['provider:url']
                 url = urlparse(provider_endpoint_url)
-                endpoints.append(provider_name + ";" + "%s://%s%s" % url[0:3])
+                endpoints.append(provider_name + ";" + "%s://%s" % url[0:2])
 
     return endpoints
 
