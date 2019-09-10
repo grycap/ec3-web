@@ -51,6 +51,7 @@ else
         if ( !session_id() ) {
             session_start();
         }
+        $_SESSION["egi_access_token"] = $response['result']['access_token'];
         $_SESSION["egi_user_name"] = $response['result']['name'];
         $_SESSION["egi_user_sub"] = $response['result']['sub'];
         $_SESSION["egi_code"] = $_GET['code'];
