@@ -500,6 +500,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                         <option>Mesos</option>
                         <option>Kubernetes</option>
                         <option>OSCAR</option>
+                        <option>OSCAR-latest</option>
                     </select>
                 </div>
             </div>
