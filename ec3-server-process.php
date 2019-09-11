@@ -149,7 +149,7 @@ function generate_system_image_radl($cloud, $ami, $region, $ami_user, $ami_passw
         $user_sub = $_SESSION["egi_user_sub"];
         $user_name = $_SESSION["egi_user_name"];
     }
-
+     
     $new_file = fopen($path_to_new_file, "w");
     //SYSTEM FRONT
     fwrite($new_file, "system front (".PHP_EOL);
@@ -158,7 +158,14 @@ function generate_system_image_radl($cloud, $ami, $region, $ami_user, $ami_passw
     //fwrite($new_file, "    disk.0.image.url = '".$region. "/" .$ami. "' and".PHP_EOL);
     //Depende del cloud el formato de URL cambia:
     if ($cloud == 'fedcloud'){
-        fwrite($new_file, "    disk.0.image.url = 'appdb://".$region. "/" .$ami. "?vo.access.egi.eu' and".PHP_EOL);
+        //DIVIDE CPU-MEM FROM $instancetype_front
+        $front_details = explode(" ", $instancetype_front);
+
+        //DIVIDE CPU-MEM FROM $instancetype_wn
+        $wn_details = explode(" ", $instancetype_wn);
+        
+        #fwrite($new_file, "    disk.0.image.url = 'appdb://".$region. "/" .$ami. "?vo.access.egi.eu' and".PHP_EOL);
+        fwrite($new_file, "    disk.0.image.url = 'ost://".$region. "/" .$ami. "' and".PHP_EOL);
     } else if ($cloud == 'exoscale'){
         fwrite($new_file, "    disk.0.image.url = 'cst://api.exoscale.ch/" .$ami. "' and".PHP_EOL);
     } else { //cloud=t-systems
@@ -171,7 +178,13 @@ function generate_system_image_radl($cloud, $ami, $region, $ami_user, $ami_passw
         fwrite($new_file, "    disk.0.image.url = 'ost://iam.eu-de.otc.t-systems.com/" .$ami. "' and".PHP_EOL);
     }
     
-    fwrite($new_file, "    instance_type='".$instancetype_front."' and".PHP_EOL);
+    if ($cloud == 'fedcloud'){
+        fwrite($new_file, "    cpu.count>='".$front_details[0]."' and".PHP_EOL);
+        fwrite($new_file, "    memory.size>='".$front_details[1]."' and".PHP_EOL);
+    } else { 
+        fwrite($new_file, "    instance_type='".$instancetype_front."' and".PHP_EOL);
+    }
+    
     fwrite($new_file, "    disk.0.os.credentials.username = '".$fcuser."' and".PHP_EOL);
     fwrite($new_file, "    ec3aas.username = '".$user_sub."'".PHP_EOL);
     
@@ -185,7 +198,8 @@ function generate_system_image_radl($cloud, $ami, $region, $ami_user, $ami_passw
 
     //Depende del cloud el formato de URL cambia:
     if ($cloud == 'fedcloud'){
-        fwrite($new_file, "    disk.0.image.url = 'appdb://".$region. "/" .$ami. "?vo.access.egi.eu' and".PHP_EOL);
+        fwrite($new_file, "    disk.0.image.url = 'ost://".$region. "/" .$ami. "' and".PHP_EOL);
+        #fwrite($new_file, "    disk.0.image.url = 'appdb://".$region. "/" .$ami. "?vo.access.egi.eu' and".PHP_EOL);
     } else if ($cloud == 'exoscale'){
         fwrite($new_file, "    disk.0.image.url = 'cst://api.exoscale.ch/" .$ami. "' and".PHP_EOL);
     } else { //cloud=t-systems
@@ -197,7 +211,14 @@ function generate_system_image_radl($cloud, $ami, $region, $ami_user, $ami_passw
         }*/
         fwrite($new_file, "    disk.0.image.url = 'ost://iam.eu-de.otc.t-systems.com/" .$ami. "' and".PHP_EOL);
     }
-    fwrite($new_file, "    instance_type='".$instancetype_wn."' and".PHP_EOL);
+
+    if ($cloud == 'fedcloud'){
+        fwrite($new_file, "    cpu.count>='".$wn_details[0]."' and".PHP_EOL);
+        fwrite($new_file, "    memory.size>='".$wn_details[1]."' and".PHP_EOL);
+    } else { 
+        fwrite($new_file, "    instance_type='".$instancetype_wn."' and".PHP_EOL);
+    }
+    
     fwrite($new_file, "    disk.0.os.credentials.username = '".$fcuser."'".PHP_EOL);
 
     fwrite($new_file, ")".PHP_EOL);
