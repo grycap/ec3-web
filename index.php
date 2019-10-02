@@ -1017,6 +1017,7 @@
                         <option>Mesos</option>
                         <option>Kubernetes</option>
                         <option>OSCAR</option>
+                        <option>OSCAR-latest</option>
                     </select>
                 </div>
             </div>
@@ -1566,6 +1567,7 @@
                         <option>Mesos</option>
                         <option>Kubernetes</option>
                         <option>OSCAR</option>
+                        <option>OSCAR-latest</option>
                     </select>
                 </div>
             </div>
