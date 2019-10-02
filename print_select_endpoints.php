@@ -5,7 +5,7 @@
 	if(isset($_POST['vofedcloud']))
 	{
 		$selectOption = $_POST['vofedcloud']; 
-        exec('python EGI_AppDB.py sites ' . $selectOption, $sites);
+        exec('python EGI_AppDB.py sites ' . escapeshellarg($selectOption), $sites);
         foreach ($sites as $site) {
             $site_p = explode(";", $site);
 			$return_string .= "<option value=\"" . $site_p[1] . "\">" . $site_p[0] . "</option>";

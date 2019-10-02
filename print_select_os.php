@@ -6,7 +6,7 @@
 	{
 		$selectOption = $_POST['endpointfedcloud']; 
         $vo = $_POST['vofedcloud']; 
-		exec('python EGI_AppDB.py os ' . $selectOption . " " . $vo, $oss);
+		exec('python EGI_AppDB.py os ' . escapeshellarg($selectOption) . " " . $vo, $oss);
 		foreach ($oss as $os) {
 			$aux = explode(";", $os);
 			$name = $aux[0];
