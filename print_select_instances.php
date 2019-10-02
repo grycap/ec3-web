@@ -15,7 +15,7 @@
 	if(isset($_POST['endpointfedcloud']))
 	{
 		$selectOption = $_POST['endpointfedcloud']; 
-		exec('python EGI_AppDB.py ' . $selectOption . ' instances', $instances);
+		exec('python EGI_AppDB.py ' . escapeshellarg($selectOption) . ' instances', $instances);
 		usort($instances, "cmp");
 		foreach ($instances as $instance) {
 				list($inst_desc, $inst_name) = explode(";", $instance);

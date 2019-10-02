@@ -14,13 +14,13 @@
         $projectID = (isset($_POST['project']) ? $_POST['project'] : "");
         
         if ($cloud == 'exoscale'){
-            exec('python EGI_HNSci.py ' . $cloud . ' flavors ' . $apikey . ' ' . $secretkey, $instances);
+            exec('python EGI_HNSci.py ' . escapeshellarg($cloud) . ' flavors ' . escapeshellarg($apikey) . ' ' . escapeshellarg($secretkey), $instances);
         } else{
             if ($domain == '' || $projectID == '' ){
                 echo 'Domain or project ID not provided in a OTC deployment. Impossible to launch a cluster without these data. Please, enter the required information and try again.';
                 exit(1);
             }
-            exec('python EGI_HNSci.py ' . $cloud . ' flavors "' . $apikey . '" "' . $secretkey . '" ' . $domain . ' ' . $projectID, $instances);
+            exec('python EGI_HNSci.py ' . escapeshellarg($cloud) . ' flavors "' . escapeshellarg($apikey) . '" "' . escapeshellarg($secretkey) . '" ' . escapeshellarg($domain) . ' ' . escapeshellarg($projectID), $instances);
         }
 
 		foreach ($instances as $instance) {
