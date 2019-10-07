@@ -62,12 +62,19 @@ if($_POST){
     } else {
         $user_sub = $_SESSION["egi_user_sub"];
     }
+    
+    if (!isset($_SESSION["egi_access_token"])) {
+        //echo "Error no unity user ID obtained.";
+        header('Location:session_expired.html');
+        die();
+    } else {
+        $access_token = $_SESSION["egi_access_token"];
+    }
 
-    if ($provider == 'occi'){
-#        $proxy = getSSLPage("https://etokenserver.ct.infn.it:8443/eTokenServer/eToken/08b435574d4f19c734f19514828ad0ab?voms=vo.access.egi.eu:/vo.access.egi.eu&proxy-renewal=true&disable-voms-proxy=false&rfc-proxy=true&cn-label=eToken:" . $user_sub);
-        $proxy = getSSLPage("https://etokenserver.ct.infn.it:8443/eTokenServer/eToken/9001b766b88b2090418aa99b020755b9?voms=vo.access.egi.eu:/vo.access.egi.eu&proxy-renewal=true&disable-voms-proxy=false&rfc-proxy=true&cn-label=eToken:" . $user_sub);
-        $proxy = str_replace("\n", "\\n", $proxy);
-        if($proxy!=""){
+    if ($provider == 'fedcloud'){
+        #$proxy = getSSLPage("https://etokenserver.ct.infn.it:8443/eTokenServer/eToken/9001b766b88b2090418aa99b020755b9?voms=vo.access.egi.eu:/vo.access.egi.eu&proxy-renewal=true&disable-voms-proxy=false&rfc-proxy=true&cn-label=eToken:" . $user_sub);
+        #$proxy = str_replace("\n", "\\n", $proxy);
+        if($access_token!=""){
             //ahora recuperamos la linea de credenciales del IM
             $im_line="";
 
@@ -76,9 +83,9 @@ if($_POST){
                 $file = fopen($auth_file, "r") or exit("Unable to find the old auth file:" . $auth_file . ". Is the cluster name correct?");
                 while(!feof($file)){
                     $line = fgets($file);
-                    if(strstr($line, "proxy")){
-                        $proxy_line = $line;
-                        $endpoint = substr($line, strpos($line, "host = ")+7);
+                    if(strstr($line, "id = egi")){
+                        $fedcloud_line = $line;
+                        $endpoint = substr($fedcloud_line, strpos($fedcloud_line, "host = ")+7);
                     }
                     if(strstr($line, "InfrastructureManager")){
                         $im_line=$line;
@@ -106,7 +113,7 @@ if($_POST){
                                 $im_username = $json_decoded[$i]->{'username'};
                                 $im_pass = $json_decoded[$i]->{'password'};
                             }
-                            if ($json_decoded[$i]->{'type'} == "OCCI") {
+                            if ($json_decoded[$i]->{'type'} == "OpenStack") {
                                 $endpoint = $json_decoded[$i]->{'host'};
                             }
                         }
@@ -119,11 +126,12 @@ if($_POST){
 
             //Y escribimos el nuevo fichero auth
             $gestor = fopen($auth_file, "w");
-            fwrite($gestor, "id = occi; type = OCCI; proxy = " . $proxy . "; host = " . $endpoint . PHP_EOL);
+            #fwrite($gestor, "id = occi; type = OCCI; proxy = " . $proxy . "; host = " . $endpoint . PHP_EOL);
+            fwrite($gestor, "id = egi; type = OpenStack; host = " . $endpoint . "; username = egi.eu; auth_version = 3.x_oidc_access_token; password = " . $access_token . "; tenant = openid" . PHP_EOL);
             fwrite($gestor, $im_line. PHP_EOL);
             fclose($gestor);
         } else {
-            exit("Error contacting eToken server.");
+            exit("Error refreshing the token.");
         }
     }
 
