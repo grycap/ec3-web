@@ -1652,7 +1652,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                                 if (provider == "OCCI"){
                                     provider = "EGI Fedcloud";
                                 } else if (provider =="OpenStack"){
-                                    provider = "T-Systems";
+                                    provider = "EGI Fedcloud";
                                 } else{
                                     provider = "Exoscale";
                                 }
