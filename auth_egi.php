@@ -30,8 +30,13 @@ elseif (!isset($_GET['code']))
 }
 else
 {
+    if ( !session_id() ) {
+        session_start();
+    }
+
     $params = array('code' => $_GET['code'], 'redirect_uri' => REDIRECT_URI);
     $response = $client->getAccessToken(TOKEN_ENDPOINT, 'authorization_code', $params);
+    $_SESSION["egi_access_token"] = $response['result']['access_token'];
     $client->setAccessToken($response['result']['access_token']);
     $client->setAccessTokenType(OAuth2\Client::ACCESS_TOKEN_BEARER);
     $params = array('schema' => 'openid', 'access_token' => $response['result']['access_token']);
@@ -48,10 +53,6 @@ else
 		header("HTTP/1.1 401 Unauthorized");
 		echo "Non Authorized";
 	}
-        if ( !session_id() ) {
-            session_start();
-        }
-        $_SESSION["egi_access_token"] = $response['result']['access_token'];
         $_SESSION["egi_user_name"] = $response['result']['name'];
         $_SESSION["egi_user_sub"] = $response['result']['sub'];
         $_SESSION["egi_code"] = $_GET['code'];
