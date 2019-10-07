@@ -81,7 +81,9 @@ def get_oss(endpoint):
         for service in services:
             try:
                 va_data = appdb_call('/rest/1.0/va_providers/%s' % service['@id'])
-                if va_data['appdb:appdb']['virtualization:provider']['provider:name'] == endpoint:
+                if ('provider:url' in va_data['appdb:appdb']['virtualization:provider'] and
+                    va_data['appdb:appdb']['virtualization:provider']['@service_type'] == 'org.openstack.nova' and
+                    va_data['appdb:appdb']['virtualization:provider']['provider:name'] == endpoint):
                     for os_tpl in va_data['appdb:appdb']['virtualization:provider']['provider:image']:
                         try:
                             if '@voname' in os_tpl and vo in os_tpl['@voname'] and os_tpl['@archived'] == "false":
