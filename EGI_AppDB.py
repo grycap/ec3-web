@@ -88,8 +88,7 @@ def get_oss(endpoint):
                         try:
                             if '@voname' in os_tpl and vo in os_tpl['@voname'] and os_tpl['@archived'] == "false":
                                 image_id = os_tpl['@va_provider_image_id'].split("#")[1]
-                                if os_tpl['@appname'] + ";" + image_id not in oss:
-                                    oss.append(os_tpl['@appname'] + ";" + image_id)
+                                oss.append(os_tpl['@appname'] + ";" + image_id)
                         except:
                             continue
             except:
@@ -109,7 +108,9 @@ def get_instances(endpoint):
         for service in services:
             try:
                 va_data = appdb_call('/rest/1.0/va_providers/%s' % service['@id'])
-                if va_data['appdb:appdb']['virtualization:provider']['provider:name'] == endpoint:
+                if ('provider:url' in va_data['appdb:appdb']['virtualization:provider'] and
+                    va_data['appdb:appdb']['virtualization:provider']['@service_type'] == 'org.openstack.nova' and
+                    va_data['appdb:appdb']['virtualization:provider']['provider:name'] == endpoint):
                     for resource_tpl in va_data['appdb:appdb']['virtualization:provider']['provider:template']:
                         instances.append((resource_tpl['provider_template:physical_cpus'], resource_tpl['provider_template:main_memory_size']))
             except:
