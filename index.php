@@ -1207,8 +1207,16 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                 var vmi = $('#vmi-fedcloud').val();
 
                 //obtener las caracteristicas de las VMs
+                //tipo 2;4096
                 var front_type = $('#front-fedcloud').val();
+                var front_splitted = front_type.split(";");
+                var frontcpu = front_splitted[0];
+                var frontmem = front_splitted[1];
+                
                 var wn_type = $('#wn-fedcloud').val();
+                var wn_splitted = wn_type.split(";");
+                var wncpu = wn_splitted[0];
+                var wnmem = wn_splitted[1];
 
                 //obtener el LRMS seleccionado
                 var lrms = $('#lrms-fedcloud').val();
@@ -1257,8 +1265,8 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                     retValue += "<div> <b>VMI: </b> nothing indicated</div>";
                 }
 
-                retValue +="<div> <b>Frontend instance type: </b>" + front_type + "</div>" +
-                           "<div> <b>Working nodes instance type: </b>" + wn_type + "</div>" +
+                retValue +="<div> <b>Frontend instance type: </b>" + frontcpu  + " CPU, " + frontmem + "mb RAM" + "</div>" +
+                           "<div> <b>Working nodes instance type: </b>" + wncpu + " CPU, " + wnmem + "mb RAM"+ "</div>" +
                            "<div> <b>Local Resource Management System: </b>" + lrms + "</div>" +
                            "<div> <b>Software packages: </b>" + sw + "</div>" +
                            "<div> <b>Maximum number of nodes: </b>" + nodes + "</div>" +
