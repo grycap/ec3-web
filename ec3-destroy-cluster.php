@@ -98,7 +98,7 @@ if($_POST){
                  $im_username = "";
                  $im_pass = "";
                  $endpoint = "";
-                 $file = fopen("/var/www/.ec3/clusters/" . $clustername, "r") or exit("Unable to find the cluster data for cluster:" . $clustername . ". Is the cluster name correct?");
+                 $file = fopen("/var/www/.ec3ltos/clusters/" . $clustername, "r") or exit("Unable to find the cluster data for cluster:" . $clustername . ". Is the cluster name correct?");
                  $logs = fopen("/tmp/amcaar_logs.txt", "w");
                  while(!feof($file)){
                     $line = fgets($file);
@@ -160,8 +160,8 @@ if($_POST){
     if($status){
 	// Esperamos un poco para asegurarnos de borrar el fichero
         sleep(10);
-        if (file_exists('/var/www/.ec3/clusters/'. $clustername)) {
-            unlink('/var/www/.ec3/clusters/'. $clustername);
+        if (file_exists('/var/www/.ec3ltos/clusters/'. $clustername)) {
+            unlink('/var/www/.ec3ltos/clusters/'. $clustername);
         }
         echo "{}";
     } else {
