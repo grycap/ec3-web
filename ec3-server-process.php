@@ -80,7 +80,7 @@ function generate_auth_file_fedcloud($endpoint, $clustername) {
     
     $gestor = fopen($auth, "w");
 #    fwrite($gestor, "id = occi; type = OCCI; proxy = " . $proxy . "; host = " . $endpoint . PHP_EOL);
-    fwrite($gestor, "id = egi; type = OpenStack; host = " . $endpoint . "; username = egi.eu; auth_version = 3.x_oidc_access_token; password = " . $access_token . "; tenant= openid" . PHP_EOL);
+    fwrite($gestor, "id = egi; type = OpenStack; host = " . $endpoint . "; username = egi.eu; auth_version = 3.x_oidc_access_token; password = " . $access_token . "; tenant = openid" . PHP_EOL);
     //Write needed credentials of IM and VMRC
     fwrite($gestor, "type = InfrastructureManager; username = " . random_string(8) . "; password = " . random_string(10). PHP_EOL);
     fclose($gestor);
@@ -159,10 +159,10 @@ function generate_system_image_radl($cloud, $ami, $region, $ami_user, $ami_passw
     //Depende del cloud el formato de URL cambia:
     if ($cloud == 'fedcloud'){
         //DIVIDE CPU-MEM FROM $instancetype_front
-        $front_details = explode(" ", $instancetype_front);
+        $front_details = explode(";", $instancetype_front);
 
         //DIVIDE CPU-MEM FROM $instancetype_wn
-        $wn_details = explode(" ", $instancetype_wn);
+        $wn_details = explode(";", $instancetype_wn);
         
         #fwrite($new_file, "    disk.0.image.url = 'appdb://".$region. "/" .$ami. "?vo.access.egi.eu' and".PHP_EOL);
         fwrite($new_file, "    disk.0.image.url = 'ost://".$region. "/" .$ami. "' and".PHP_EOL);
@@ -179,8 +179,8 @@ function generate_system_image_radl($cloud, $ami, $region, $ami_user, $ami_passw
     }
     
     if ($cloud == 'fedcloud'){
-        fwrite($new_file, "    cpu.count>='".$front_details[0]."' and".PHP_EOL);
-        fwrite($new_file, "    memory.size>='".$front_details[1]."' and".PHP_EOL);
+        fwrite($new_file, "    cpu.count>=".$front_details[0]." and".PHP_EOL);
+        fwrite($new_file, "    memory.size>=".$front_details[1]."m and".PHP_EOL);
     } else { 
         fwrite($new_file, "    instance_type='".$instancetype_front."' and".PHP_EOL);
     }
@@ -213,8 +213,8 @@ function generate_system_image_radl($cloud, $ami, $region, $ami_user, $ami_passw
     }
 
     if ($cloud == 'fedcloud'){
-        fwrite($new_file, "    cpu.count>='".$wn_details[0]."' and".PHP_EOL);
-        fwrite($new_file, "    memory.size>='".$wn_details[1]."' and".PHP_EOL);
+        fwrite($new_file, "    cpu.count>=".$wn_details[0]." and".PHP_EOL);
+        fwrite($new_file, "    memory.size>=".$wn_details[1]."m and".PHP_EOL);
     } else { 
         fwrite($new_file, "    instance_type='".$instancetype_wn."' and".PHP_EOL);
     }
@@ -290,7 +290,8 @@ if($_POST){
 
         $auth_file = generate_auth_file_fedcloud($endpoint, $name);
 
-        $data = generate_system_image_radl($provider, $vmi, $endpointName, '', '', $front_type, $wn_type, '', '', '', '', $nodes);
+	$host = explode("://", $endpoint)[1];
+        $data = generate_system_image_radl($provider, $vmi, $host, '', '', $front_type, $wn_type, '', '', '', '', $nodes);
 
         $os = $data[0];
         $user = $data[1];
