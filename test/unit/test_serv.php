@@ -11,17 +11,18 @@ final class EC3PagesTest extends TestCase
      */
     public function testEC3Destroy()
     {
-        file_put_contents("/tmp/auth_clustername", "proxy = ; host = ");
+        file_put_contents("/tmp/auth_clustername__egiusersub", "token = ; host = ");
         $this->expectOutputString('{}');
-        $_POST = array("clustername"=>"cluster_clustername");
+        $_POST = array("clustername"=>"cluster_clustername", "provider"=>"EGI FedCloud");
         $_SESSION = array("egi_user_sub"=>"egiusersub");
+        $_SESSION = array("egi_access_token"=>"egiaccesstoken");
         $GLOBALS["EC3UnitTest"] = true;
         include('../../ec3-destroy-cluster.php');
-        $data = file_get_contents("/tmp/auth_clustername");
-        $this->assertContains("id = occi; type = OCCI; proxy = line1\\nline2\\nline3; host = \n", $data);
-        unlink("/tmp/auth_clustername");
+        $data = file_get_contents("/tmp/auth_clustername__egiusersub");
+        $this->assertContains("id = egi; type = OpenStack; token = line1\\nline2\\nline3; host = \n", $data);
+        unlink("/tmp/auth_clustername__egiusersub");
         $data = file_get_contents("/tmp/ec3_del_clustername");
-        $this->assertContains("destroy --yes --force -a /tmp/auth_clustername cluster_clustername\n", $data);
+        $this->assertContains("destroy --yes --force -a /tmp/auth_clustername__egiusersub cluster_clustername\n", $data);
         unlink("/tmp/ec3_del_clustername");
     }
 
@@ -35,15 +36,15 @@ final class EC3PagesTest extends TestCase
             mkdir("/var/www/.ec3/clusters", 777, true);
         }
         $data = file_put_contents("/var/www/.ec3/clusters/cluster_clustername", 'auth = \'[{"username": "d3jihha7", "password": "vkc4lbds80", "type": "InfrastructureManager"}, {"proxy": "proxy", "host": "host", "type": "OCCI"}]\'');
-        $_POST = array("clustername"=>"cluster_clustername");
+        $_POST = array("clustername"=>"cluster_clustername", "provider"=>"EGI FedCloud");
         $_SESSION = array("egi_user_sub"=>"egiusersub");
         $GLOBALS["EC3UnitTest"] = true;
         include('../../ec3-destroy-cluster.php');
-        $data = file_get_contents("/tmp/auth_clustername");
+        $data = file_get_contents("/tmp/auth_clustername__egiusersub");
         $this->assertContains("id = occi; type = OCCI; proxy = line1\\nline2\\nline3; host = \n", $data);
-        unlink("/tmp/auth_clustername");
+        unlink("/tmp/auth_clustername__egiusersub");
         $data = file_get_contents("/tmp/ec3_del_clustername");
-        $this->assertContains("destroy --yes --force -a /tmp/auth_clustername cluster_clustername\n", $data);
+        $this->assertContains("destroy --yes --force -a /tmp/auth_clustername__egiusersub cluster_clustername\n", $data);
         unlink("/tmp/ec3_del_clustername");
     }
 
@@ -77,11 +78,12 @@ final class EC3PagesTest extends TestCase
     public function testEC3ServerFC()
     {
         $GLOBALS['templates_path'] = "/tmp";
-        $this->expectOutputRegex('/{"ip":"10\.0\.0\.1\\n","name":"cluster_.{6}","username":"cloudadm","secretkey":"key%0A"}/');
-        $_POST = array("cloud"=>"fedcloud", "endpoint-fedcloud"=>"serverfed", "nodes-fedcloud"=>"2",
-                       "vmi-fedcloud"=>"fed1", "front-fedcloud"=>"fetype", "lrms-fedcloud"=>"torque",
-                       "wn-fedcloud"=>"wntype", "nfs"=>"nfs", "maui"=>"maui", "endpointName"=>"endpointName");
-        $_SESSION = array("egi_user_sub"=>"egiusersub", "egi_user_name"=>"egiusername");
+        $this->expectOutputRegex('/{"ip":"10\.0\.0\.1\\n","name":"clustername","username":"cloudadm","secretkey":"key%0A"}/');
+        $_POST = array("cloud"=>"fedcloud", "endpoint-fedcloud"=>"https://serverfed", "nodes-fedcloud"=>"2",
+                       "vmi-fedcloud"=>"fed1", "front-fedcloud"=>"1;1024", "lrms-fedcloud"=>"torque",
+                       "wn-fedcloud"=>"1;1024", "nfs"=>"nfs", "maui"=>"maui", "endpointName"=>"endpointName",
+                       "cluster-name"=>"clustername");
+        $_SESSION = array("egi_user_sub"=>"egiusersub", "egi_user_name"=>"egiusername", "egi_access_token"=>"token");
         $GLOBALS["EC3UnitTest"] = true;
         include('../../ec3-server-process.php');
         $files = scandir('/tmp');
@@ -91,7 +93,7 @@ final class EC3PagesTest extends TestCase
             if (substr($file, 0, 5) === "auth_") {
                 $found = True;
                 $data = file_get_contents('/tmp/' . $file);
-                $this->assertContains("id = occi; type = OCCI; proxy = line1\\nline2\\nline3; host = serverfed", $data);
+                $this->assertContains("id = egi; type = OpenStack; host = https://serverfed; username = egi.eu; auth_version = 3.x_oidc_access_token; password = token; tenant = openid", $data);
                 unlink('/tmp/' . $file);
             }
         }
@@ -102,7 +104,7 @@ final class EC3PagesTest extends TestCase
             if (substr($file, 0, 7) === "system_") {
                 $found = True;
                 $data = file_get_contents('/tmp/' . $file);
-                $this->assertContains("disk.0.image.url = 'appdb://endpointName/fed1?vo.access.egi.eu'", $data);
+                $this->assertContains("disk.0.image.url = 'ost://serverfed/fed1'", $data);
                 $this->assertContains("ec3_max_instances = 2", $data);
                 unlink('/tmp/' . $file);
             }
@@ -114,8 +116,7 @@ final class EC3PagesTest extends TestCase
             if (substr($file, 0, 8) === "ec3_log_") {
                 $found = True;
                 $data = file_get_contents('/tmp/' . $file);
-                $this->assertContains("launch -y cluster_", $data);
-                $this->assertContains("torque clues2 myproxy_ltos nfs maui system_", $data);
+                $this->assertContains("launch -y clustername__egiusersub torque clues2 refreshtoken nfs system_", $data);
                 $this->assertContains("-a /tmp/auth_", $data);
                 unlink('/tmp/' . $file);
             }
@@ -137,7 +138,7 @@ final class EC3PagesTest extends TestCase
      */
     public function testEC3PrintInstances()
     {
-        $this->expectOutputString('<select name="front-fedcloud" id="front-fedcloud" data-placeholder="--Select one--" style="width:350px;" class="chzn-select form-control" data-validate="drop_down_validation"><option value=""></option><option value="mem_medium">1024 MB - 1 CPUs</option><option value="large">4096 MB - 4 CPUs</option><option value="mem_medium">8192 MB - 2 CPUs</option><option value="mem_medium">10240 MB - 10 CPUs</option></select>');
+        $this->expectOutputString('<select name="front-fedcloud" id="front-fedcloud" data-placeholder="--Select one--" style="width:350px;" class="chzn-select form-control" data-validate="drop_down_validation"><option value=""></option><option value="1;1024">1 CPUs - 1024 RAM</option><option value="2;8192">2 CPUs - 8192 RAM</option><option value="4;4096">4 CPUs - 4096 RAM</option><option value="10;10240">10 CPUs - 10240 RAM</option></select>');
         $_POST = array("endpointfedcloud"=>"CESGA");
         include('../../print_select_instances.php');
     }
