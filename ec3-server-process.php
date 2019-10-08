@@ -264,7 +264,7 @@ if($_POST){
             exit(1);
         }
         
-        $sw = "clues2 myproxy_ltos ";
+        $sw = "clues2 refreshtoken ";
         foreach ($possible_sw as $item_sw) {
             if (isset($_POST[$item_sw])) {
                 $sw .= $item_sw . " ";
@@ -335,7 +335,7 @@ if($_POST){
             exit(1);
         }
         
-        $sw = "clues2 myproxy_ltos ";
+        $sw = "clues2 refreshtoken ";
         foreach ($possible_sw as $item_sw) {
             if (isset($_POST[$item_sw])) {
                 $sw .= $item_sw . " ";
