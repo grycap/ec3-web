@@ -25,7 +25,7 @@ if (isset($_GET['error']))
 }
 elseif (!isset($_GET['code']))
 {
-    $auth_url = $client->getAuthenticationUrl(AUTHORIZATION_ENDPOINT, REDIRECT_URI, array('scope' => 'profile openid email'));
+    $auth_url = $client->getAuthenticationUrl(AUTHORIZATION_ENDPOINT, REDIRECT_URI, array('scope' => 'profile openid email offline_access'));
     header('Location: ' . $auth_url);
 }
 else
