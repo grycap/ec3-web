@@ -58,8 +58,8 @@ function generate_hybrid_radl($front_cpu, $front_mem, $wn1_cpu, $wn1_mem, $nodes
     
     $br_zone = "prod@atm-prod.lsd.ufcg.edu.br";
     $eu_zone = "horsemen@upv-cloud.i3m.upv.es";
-    $zone_wn1 = $br_zone
-    $zone_wn2 = $br_zone
+    $zone_wn1 = $br_zone;
+    $zone_wn2 = $br_zone;
     
     //OS is now predefined:
     //In Brazil:
