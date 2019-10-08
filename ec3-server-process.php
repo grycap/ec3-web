@@ -304,7 +304,7 @@ if($_POST){
         $wn2_cpu = $wn2_details[0];
         $wn2_mem = $wn2_details[1];
         if($wn2_details[2]){
-            if $wn2_details[2] == 's'){
+            if ($wn2_details[2] == 's'){
                 $sgx = true;
             }
         }
