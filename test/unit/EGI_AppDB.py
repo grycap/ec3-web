@@ -8,10 +8,10 @@ if sys.argv[1] == "sites":
     print(res)
 elif sys.argv[1] == "CESGA":
     if sys.argv[2] == "instances":
-        res = "10240 MB - 10 CPUs;mem_medium\n"
-        res += "1024 MB - 1 CPUs;mem_medium\n"
-        res += "8192 MB - 2 CPUs;mem_medium\n"
-        res += "4096 MB - 4 CPUs;large"
+        res = "10;10240\n"
+        res += "1;1024\n"
+        res += "2;8192\n"
+        res += "4;4096"
     elif sys.argv[2] == "os":
         res = "EGI Centos 6;egi.centos.6\n"
         res += "EGI CentOS 7;egi.centos.7"
