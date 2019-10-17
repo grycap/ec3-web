@@ -25,7 +25,7 @@ if (isset($_GET['error']))
 }
 elseif (!isset($_GET['code']))
 {
-    $auth_url = $client->getAuthenticationUrl(AUTHORIZATION_ENDPOINT, REDIRECT_URI, array('scope' => 'profile openid email offline_access'));
+    $auth_url = $client->getAuthenticationUrl(AUTHORIZATION_ENDPOINT, REDIRECT_URI, array('scope' => 'profile openid email offline_access eduperson_entitlement'));
     header('Location: ' . $auth_url);
 }
 else
@@ -44,18 +44,20 @@ else
 
     if ($response['code'] == 200) {
         $is_access_vo_member = false;
-        foreach ($response['result']['edu_person_entitlements'] as $value) {
+        foreach ($response['result']['eduperson_entitlement'] as $value) {
 		    if ($value == "urn:mace:egi.eu:aai.egi.eu:member@vo.access.egi.eu" || $value == "urn:mace:egi.eu:aai.egi.eu:vm_operator@vo.access.egi.eu") {
 			    $is_access_vo_member = true;
 		    }
         }
         if (!$is_access_vo_member) {
 		header("HTTP/1.1 401 Unauthorized");
-		echo "Non Authorized";
-	}
-        $_SESSION["egi_user_name"] = $response['result']['name'];
-        $_SESSION["egi_user_sub"] = $response['result']['sub'];
-        $_SESSION["egi_code"] = $_GET['code'];
+		echo "Not Authorized. You must be part of the EGI Access vo (vo.access.egi.eu)";
+                die();
+	} else {
+            $_SESSION["egi_user_name"] = $response['result']['name'];
+            $_SESSION["egi_user_sub"] = $response['result']['sub'];
+            $_SESSION["egi_code"] = $_GET['code'];
+        }
 
         header('Location: https://servproject.i3m.upv.es/ec3-ltos/index.php');
     } else {
