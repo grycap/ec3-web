@@ -63,6 +63,8 @@ def get_sites():
             if ('provider:url' in data['appdb:appdb']['virtualization:provider'] and 
                 data['appdb:appdb']['virtualization:provider']['@service_type'] == 'org.openstack.nova'):
                 provider_name = data['appdb:appdb']['virtualization:provider']['provider:name']
+                if data['appdb:appdb']['virtualization:provider']['@service_status'] == "CRITICAL":
+                    provider_name += " (CRITICAL state!)"
                 provider_endpoint_url = data['appdb:appdb']['virtualization:provider']['provider:url']
                 url = urlparse(provider_endpoint_url)
                 endpoints.append(provider_name + ";" + "%s://%s" % url[0:2])
