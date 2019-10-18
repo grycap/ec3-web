@@ -417,7 +417,7 @@ if($_POST){
     while(!$cond){
         sleep(5);
         $log_content = file_get_contents($ec3_log_file);
-        if(strpos($log_content, "running") && strpos($log_content, "IP:")){
+        if(strpos($log_content, "running") && preg_match('/IP: [0-9]/', $log_content)){
             $ip = substr($log_content, strrpos($log_content, "IP:") + 4);
             $cond = True;
         } elseif(!$process->status()){
