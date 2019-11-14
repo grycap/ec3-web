@@ -2,13 +2,15 @@
 if ( !session_id() ) {
     session_start();
 }
-if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
-    include('auth_egi.php');
-    $user_name = "";
-} else {
-    $user_sub = $_SESSION["egi_user_sub"];
-    $user_name = $_SESSION["egi_user_name"];
-}
+//if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
+//    include('auth_egi.php');
+//    $user_name = "";
+//} else {
+//    $user_sub = $_SESSION["egi_user_sub"];
+//    $user_name = $_SESSION["egi_user_name"];
+//}
+    $unity_user_sub = "user_sub";
+    $user_name = "Usuario 1";
 ?>
 
 <!DOCTYPE html>
@@ -364,52 +366,67 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
 
             <!-- Step 1 Software packages -->
             <div class="wizard-card wizard-card-overlay" data-cardname="swpkg-fedcloud">
-                <h3>Software Packages</h3>
+                <h3>Cluster configuration</h3>
 
                 <div class="wizard-input-section">
                     <p>
+                        Please choose the LRMS (Local Resource Management System) of your cluster
+                    </p>
+                    <select name="lrms-fedcloud" id="lrms-fedcloud" data-placeholder="--Select one--" style="width:350px;" class="chzn-select form-control" data-validate="drop_down_validation">
+                        <option value=""></option>
+                        <option value="slurm">SLURM</option>
+                        <option value="torque">Torque</option>
+                        <option value="sge">SGE</option>
+                        <option value="mesos">Mesos + Marathon + Chronos</option>
+                        <option value="kubernetes">Kubernetes</option>
+                        <option value="oscar">OSCAR</option>
+                        <option value="oscar-latest">OSCAR-latest</option>
+                        <option value="nomad">Nomad</option>
+                    </select>
+                </div>
+                
+                <div class="wizard-input-section">
+                    <p>
                         Please choose the software packages you'd like EC3 to
-                        install in your cluster. They will be automatically installed and configured.
+                        install in your cluster. It will be automatically installed and configured.
                     </p>
 
                     <div class="fedcloud col-sm-12">
-                        <p style="margin-bottom:0px; margin-top:5px;">Cluster utilities:</p>
-                        <div class="row">
-                            <!--<div class="col-sm-4"><input type="checkbox" value="clues" name="clues" id="clues" title="Cluster Energy Saving System, necessary if you want an elastic cluster" checked=true/> CLUES </div>-->
+                        <!--<p style="margin-bottom:0px; margin-top:5px;">Cluster utilities:</p>-->
+                        <!--<div class="row">
+                            <div class="col-sm-4"><input type="checkbox" value="clues" name="clues" id="clues" title="Cluster Energy Saving System, necessary if you want an elastic cluster" checked=true/> CLUES </div>
                             <div class="col-sm-4"><input type="checkbox" value="nfs" name="nfs" id="nfs" title="Configure a shared file system"/> NFS </div>
                             <div class="col-sm-4"><input type="checkbox" value="docker" name="docker" id="docker" title="An open-source tool to deploy applications inside software containers"/> Docker </div>
                             <div class="col-sm-4"><input type="checkbox" value="openvpn" name="openvpn" id="openvpn" title="Application that implements virtual private network (VPN) techniques"/> OpenVPN </div>
-                        </div>
-                        <div class="row">
+                        </div>-->
+                        <!--<div class="row">
                             <div class="col-sm-4"><input type="checkbox" value="marathon" name="marathon" id="marathon" title="A job scheduler for Mesos tasks (framework for Mesos)"/> Marathon </div>
                             <div class="col-sm-4"><input type="checkbox" value="chronos" name="chronos" id="chronos" title="A batch job scheduler for Mesos tasks (framework for Mesos)"/> Chronos </div>
-                            <div class="col-sm-4"><input type="checkbox" value="hadoop" name="hadoop" id="hadoop" title="A framework that allows for the distributed processing of large data sets across clusters of computers using simple programming models"/> Hadoop </div>
-                        </div>
+                        </div>-->
                         <!--<div class="row">
                             <div class="col-sm-4"><input type="checkbox" value="ckptman" name="ckptman" id="ckptman" title="A tool to automate the checkpointing in spot instances"/> Ckptman </div>
                             <div class="col-sm-4"><input type="checkbox" value="munge" name="munge" id="munge" title="An authentication service for creating and validating credentials"/> Munge </div>
                             <div class="col-sm-4"><input type="checkbox" value="maui" name="maui" id="maui" title="A job scheduler for use with Torque"/> Maui </div>
                         </div>-->
                         <div class="row">
-                            <div class="col-sm-4"><input type="checkbox" value="galaxy" name="galaxy" id="galaxy" title="Web-based platform for data intensive biomedical research. Recommended to install with Torque and NFS."/> Galaxy </div>
-                            <div class="col-sm-4"><input type="checkbox" value="extra_hd" name="extra_hd" id="extra_hd" title="Add a 100GB Extra HD to the cluster"/> 100GB Extra HD </div>
+                            <div class="col-sm-4"><input type="checkbox" value="octave" name="octave" id="octave" title="A high-level programming language, primarily intended for numerical computations"/> Octave </div>
+                            <div class="col-sm-4"><input type="checkbox" value="gnuplot" name="gnuplot" id="gnuplot" title="A program to generate two- and three-dimensional plots"/> Gnuplot </div>
+                            <div class="col-sm-4"><input type="checkbox" value="namd" name="namd" id="namd" title="A parallel, object-oriented molecular dynamics code designed for high-performance simulation of large biomolecular systems"/> Namd </div>
+                            <!--<div class="col-sm-4"><input type="checkbox" value="tomcat" name="tomcat" id="tomcat" title="An open-source web server and servlet container"/> Tomcat </div>-->
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4"><input type="checkbox" value="galaxy" name="galaxy" id="galaxy" title="Web-based platform for data intensive biomedical research. Only available with SLURM clusters." disabled/> Galaxy </div>
+                            <div class="col-sm-3"><input type="checkbox" value="spark" name="spark" id="spark" title="A unified analytics engine for large-scale data processing"/> Spark </div>
+                            <div class="col-sm-5"><input type="checkbox" value="extra_hd" name="extra_hd" id="extra_hd" title="Add a 100GB Extra HD to the cluster"/> 100GB Extra HD</div>
+                            <!--<div class="col-sm-4"><input type="checkbox" value="hadoop" name="hadoop" id="hadoop" title="A framework that allows for the distributed processing of large data sets across clusters of computers using simple programming models"/> Hadoop </div>-->
                             <!--<div class="col-sm-4"><input type="checkbox" value="galaxy-tools" name="galaxy-tools" id="galaxy-tools" title="Web-based platform for data intensive biomedical research"/> Galaxy tools </div>-->
                             <!--<div class="col-sm-4"><input type="checkbox" value="sshtunnels" name="sshtunnels" id="sshtun" title="Used to interconnect working nodes in an hybrid cloud scenario"/> SSH tunnels </div>-->
                         </div>
-                        <p style="margin-bottom:0px; margin-top:10px;">Software utilities:</p>
-                        <div class="row">
-                            <div class="col-sm-4"><input type="checkbox" value="octave" name="octave" id="octave" title="A high-level programming language, primarily intended for numerical computations"/> Octave </div>
-                            <div class="col-sm-4"><input type="checkbox" value="gnuplot" name="gnuplot" id="gnuplot" title="A program to generate two- and three-dimensional plots"/> Gnuplot </div>
-                            <div class="col-sm-4"><input type="checkbox" value="tomcat" name="tomcat" id="tomcat" title="An open-source web server and servlet container"/> Tomcat </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4"><input type="checkbox" value="namd" name="namd" id="namd" title="A parallel, object-oriented molecular dynamics code designed for high-performance simulation of large biomolecular systems"/> Namd </div>
-                            <!--<div class="col-sm-4"><input type="checkbox" value="docker" name="docker" id="docker" title="An open-source tool to deploy applications inside software containers"/> Docker </div>
-                            <div class="col-sm-4"><input type="checkbox" value="latex" name="latex" id="latex" title="Word processor and document markup language"/> Latex </div>-->
-                        </div>
+                        <!--<p style="margin-bottom:0px; margin-top:10px;">Software utilities:</p>-->
                     </div>
                 </div>
-                <p style="padding-top:180px; padding-right:160px;">Is your favourite software not available? <a href="mailto:ec3@upv.es?Subject=[EC3]%20Unsupported%20Software" target="_top">Let us know!</a></p>
+                
+                <p style="padding-top:90px;">Is your favourite software not available? <a href="mailto:ec3@upv.es?Subject=[EC3]%20Unsupported%20Software" target="_top">Let us know!</a></p>
             </div>
 
 
@@ -485,7 +502,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
             </div>
 
             <!-- Step 5 Local Resource Management System -->
-            <div class="wizard-card wizard-card-overlay" data-cardname="lrms-fedcloud">
+            <!--<div class="wizard-card wizard-card-overlay" data-cardname="lrms-fedcloud">
                 <h3>LRMS Selection</h3>
 
                 <div class="wizard-input-section">
@@ -503,7 +520,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                         <option>OSCAR-latest</option>
                     </select>
                 </div>
-            </div>
+            </div>-->
 
             <!-- Step 6 Cluster's size -->
             <div class="wizard-card wizard-card-overlay" data-cardname="size-fedcloud">
@@ -626,6 +643,23 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
             <!-- Step 1 Software packages -->
             <div class="wizard-card wizard-card-overlay" data-cardname="swpkg-helix">
                 <h3>Software Packages</h3>
+                
+                 <div class="wizard-input-section">
+                    <p>
+                        Please choose the LRMS (Local Resource Management System) of your cluster
+                    </p>
+                    <select name="lrms-helix" id="lrms-helix" data-placeholder="--Select one--" style="width:350px;" class="chzn-select form-control" data-validate="drop_down_validation">
+                        <option value=""></option>
+                        <option value="slurm">SLURM</option>
+                        <option value="torque">Torque</option>
+                        <option value="sge">SGE</option>
+                        <option value="mesos">Mesos + Marathon + Chronos</option>
+                        <option value="kubernetes">Kubernetes</option>
+                        <option value="oscar">OSCAR</option>
+                        <option value="oscar-latest">OSCAR-latest</option>
+                        <option value="nomad">Nomad</option>
+                    </select>
+                </div>
 
                 <div class="wizard-input-section">
                     <p>
@@ -634,43 +668,23 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                     </p>
 
                     <div class="helix col-sm-12">
-                        <p style="margin-bottom:0px; margin-top:5px;">Cluster utilities:</p>
-                        <div class="row">
-                            <!--<div class="col-sm-4"><input type="checkbox" value="clues" name="clues" id="clues" title="Cluster Energy Saving System, necessary if you want an elastic cluster" checked=true/> CLUES </div>-->
-                            <div class="col-sm-4"><input type="checkbox" value="nfs" name="nfs" id="nfs" title="Configure a shared file system"/> NFS </div>
-                            <div class="col-sm-4"><input type="checkbox" value="docker" name="docker" id="docker" title="An open-source tool to deploy applications inside software containers"/> Docker </div>
-                            <div class="col-sm-4"><input type="checkbox" value="openvpn" name="openvpn" id="openvpn" title="Application that implements virtual private network (VPN) techniques"/> OpenVPN </div>
-                        </div>
-                        <div class="row">
+                        <!--<div class="row">
                             <div class="col-sm-4"><input type="checkbox" value="marathon" name="marathon" id="marathon" title="A job scheduler for Mesos tasks (framework for Mesos)"/> Marathon </div>
                             <div class="col-sm-4"><input type="checkbox" value="chronos" name="chronos" id="chronos" title="A batch job scheduler for Mesos tasks (framework for Mesos)"/> Chronos </div>
                             <div class="col-sm-4"><input type="checkbox" value="hadoop" name="hadoop" id="hadoop" title="A framework that allows for the distributed processing of large data sets across clusters of computers using simple programming models"/> Hadoop </div>
-                        </div>
-                        <!--<div class="row">
-                            <div class="col-sm-4"><input type="checkbox" value="ckptman" name="ckptman" id="ckptman" title="A tool to automate the checkpointing in spot instances"/> Ckptman </div>
-                            <div class="col-sm-4"><input type="checkbox" value="munge" name="munge" id="munge" title="An authentication service for creating and validating credentials"/> Munge </div>
-                            <div class="col-sm-4"><input type="checkbox" value="maui" name="maui" id="maui" title="A job scheduler for use with Torque"/> Maui </div>
                         </div>-->
-                        <div class="row">
-                            <div class="col-sm-4"><input type="checkbox" value="galaxy" name="galaxy" id="galaxy" title="Web-based platform for data intensive biomedical research. Recommended to install with Torque and NFS."/> Galaxy </div>
-                            <!--<div class="col-sm-4"><input type="checkbox" value="extra_hd" name="extra_hd" id="extra_hd" title="Add a 100GB Extra HD to the cluster"/> 100GB Extra HD </div>-->
-                            <!--<div class="col-sm-4"><input type="checkbox" value="galaxy-tools" name="galaxy-tools" id="galaxy-tools" title="Web-based platform for data intensive biomedical research"/> Galaxy tools </div>-->
-                            <!--<div class="col-sm-4"><input type="checkbox" value="sshtunnels" name="sshtunnels" id="sshtun" title="Used to interconnect working nodes in an hybrid cloud scenario"/> SSH tunnels </div>-->
-                        </div>
-                        <p style="margin-bottom:0px; margin-top:10px;">Software utilities:</p>
                         <div class="row">
                             <div class="col-sm-4"><input type="checkbox" value="octave" name="octave" id="octave" title="A high-level programming language, primarily intended for numerical computations"/> Octave </div>
                             <div class="col-sm-4"><input type="checkbox" value="gnuplot" name="gnuplot" id="gnuplot" title="A program to generate two- and three-dimensional plots"/> Gnuplot </div>
-                            <div class="col-sm-4"><input type="checkbox" value="tomcat" name="tomcat" id="tomcat" title="An open-source web server and servlet container"/> Tomcat </div>
+                            <div class="col-sm-4"><input type="checkbox" value="namd" name="namd" id="namd" title="A parallel, object-oriented molecular dynamics code designed for high-performance simulation of large biomolecular systems"/> Namd </div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-4"><input type="checkbox" value="namd" name="namd" id="namd" title="A parallel, object-oriented molecular dynamics code designed for high-performance simulation of large biomolecular systems"/> Namd </div>
-                            <!--<div class="col-sm-4"><input type="checkbox" value="docker" name="docker" id="docker" title="An open-source tool to deploy applications inside software containers"/> Docker </div>
-                            <div class="col-sm-4"><input type="checkbox" value="latex" name="latex" id="latex" title="Word processor and document markup language"/> Latex </div>-->
+                            <div class="col-sm-4"><input type="checkbox" value="galaxy" name="galaxyhelix" id="galaxyhelix" title="Web-based platform for data intensive biomedical research. Recommended to install with Torque and NFS." disabled/> Galaxy </div>
+                            <div class="col-sm-4"><input type="checkbox" value="spark" name="spark" id="spark" title="A unified analytics engine for large-scale data processing"/> Spark </div>
                         </div>
                     </div>
                 </div>
-                <p style="padding-top:180px; padding-right:160px;">Is your favourite software not available? <a href="mailto:ec3@upv.es?Subject=[EC3]%20Unsupported%20Software" target="_top">Let us know!</a></p>
+                <p style="padding-top:90px;">Is your favourite software not available? <a href="mailto:ec3@upv.es?Subject=[EC3]%20Unsupported%20Software" target="_top">Let us know!</a></p>
             </div>
 
 
@@ -766,7 +780,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
             </div>
 
             <!-- Step 5 Local Resource Management System -->
-            <div class="wizard-card wizard-card-overlay" data-cardname="lrmshelix">
+            <!--<div class="wizard-card wizard-card-overlay" data-cardname="lrmshelix">
                 <h3>LRMS Selection</h3>
 
                 <div class="wizard-input-section">
@@ -782,7 +796,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                         <option>Kubernetes</option>
                     </select>
                 </div>
-            </div>
+            </div>-->
 
             <!-- Step 6 Cluster's size -->
             <div class="wizard-card wizard-card-overlay" data-cardname="size-helix">
@@ -999,7 +1013,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                 $.fn.wizard.logging = true;
                 var wizard = $('#fedcloud-wizard').wizard({
                     keyboard : false,
-                    contentHeight : 430,
+                    contentHeight : 480,
                     contentWidth : 700,
                     backdrop: 'static',
                     submitUrl: "ec3-server-process.php"
@@ -1181,6 +1195,17 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                 });
             });
             
+            
+            document.getElementById('lrms-fedcloud').onchange = function() {
+                var e = document.getElementById("lrms-fedcloud");
+                var lrms = e.options[e.selectedIndex].value;
+                if (lrms == 'slurm'){
+                    document.getElementById('galaxy').disabled= false;
+                } else{
+                    document.getElementById('galaxy').disabled= true;
+                    document.getElementById('galaxy').checked = false;
+                }
+            };
 
             function drop_down_validation(el){
                 var name = el.val();
@@ -1250,7 +1275,11 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                 if (lrms == ''){
                     lrms +="nothing selected";
                 }
-
+                
+                if (lrms == 'mesos'){
+                    lrms = "Mesos + Marathon + Chronos"
+                }
+                    
                 //obtener el numero de nodos
                 var nodes = parseInt($('#nodes-fedcloud').val());
                 
@@ -1290,7 +1319,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                 $.fn.wizard.logging = true;
                 var wizard = $('#helix-wizard').wizard({
                     keyboard : false,
-                    contentHeight : 430,
+                    contentHeight : 480,
                     contentWidth : 700,
                     backdrop: 'static',
                     submitUrl: "ec3-server-process.php"
@@ -1445,6 +1474,17 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                 return retValue;
             };
             
+            document.getElementById('lrms-helix').onchange = function() {
+                var e = document.getElementById("lrms-helix");
+                var lrms = e.options[e.selectedIndex].value;
+                if (lrms == 'slurm'){
+                    document.getElementById('galaxyhelix').disabled= false;
+                } else{
+                    document.getElementById('galaxyhelix').disabled= true;
+                    document.getElementById('galaxyhelix').checked = false;
+                }
+            };
+            
             // We call the HNSci script to obtain the list of images and flavours of each provider
             $.each(["show", "toggle", "toggleClass", "addClass", "removeClass"], function(){
                 var _oldFn = $.fn[this];
@@ -1569,6 +1609,10 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
 
                 if (lrms == ''){
                     lrms +="nothing selected";
+                }
+                
+                if (lrms == 'mesos'){
+                    lrms = "Mesos + Marathon + Chronos"
                 }
 
                 //obtener el numero de nodos

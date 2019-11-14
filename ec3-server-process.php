@@ -241,7 +241,7 @@ function generate_system_image_radl($cloud, $ami, $region, $ami_user, $ami_passw
 if($_POST){
     //echo "recibo algo POST";
     //echo "{}"
-    $possible_sw = array("nfs", "openvpn", "octave", "docker", "gnuplot", "tomcat", "galaxy", "marathon", "chronos", "hadoop", "namd", "extra_hd");    
+    $possible_sw = array("octave", "gnuplot", "galaxy", "namd", "extra_hd", "spark");    
 
     // El string recibido tiene este aspecto: cloud=ec2&accesskey=ffffff&secretkey=hhhhhhhhh&os-ec2=Ubuntu+12.04&lrms-ec2=SLURM&clues=clues&nodes-ec2=5
     // Pero tenemos que devolver un JSON si todo ha ido bien
@@ -276,6 +276,16 @@ if($_POST){
             if (isset($_POST[$item_sw])) {
                 $sw .= $item_sw . " ";
             }
+        }
+        
+        //Add NFS to Slurm, Torque and SGE clusters
+        if ($lrms == 'slurm' or $lrms == 'torque' or $lrms == 'sge'){
+            $sw .= 'nfs' . " ";
+        }
+        
+        //Add Chronos and Marathon to Mesos clusters
+        if ($lrms == 'mesos'){
+            $sw .= 'chronos marathon' . " ";
         }
 
         $nodes = (isset($_POST['nodes-fedcloud']) ? $_POST['nodes-fedcloud'] : "1");
@@ -347,6 +357,16 @@ if($_POST){
             if (isset($_POST[$item_sw])) {
                 $sw .= $item_sw . " ";
             }
+        }
+        
+        //Add NFS to Slurm, Torque and SGE clusters
+        if ($lrms == 'slurm' or $lrms == 'torque' or $lrms == 'sge'){
+            $sw .= 'nfs' . " ";
+        }
+        
+        //Add Chronos and Marathon to Mesos clusters
+        if ($lrms == 'mesos'){
+            $sw .= 'chronos marathon' . " ";
         }
 
         $nodes = (isset($_POST['nodes-helix']) ? $_POST['nodes-helix'] : "1");
