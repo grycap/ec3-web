@@ -2,15 +2,14 @@
 if ( !session_id() ) {
     session_start();
 }
-//if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
-//    include('auth_egi.php');
-//    $user_name = "";
-//} else {
-//    $user_sub = $_SESSION["egi_user_sub"];
-//    $user_name = $_SESSION["egi_user_name"];
-//}
-    $unity_user_sub = "user_sub";
-    $user_name = "Usuario 1";
+if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
+    include('auth_egi.php');
+    $user_name = "";
+} else {
+    $user_sub = $_SESSION["egi_user_sub"];
+    $user_name = $_SESSION["egi_user_name"];
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -642,7 +641,7 @@ if ( !session_id() ) {
 
             <!-- Step 1 Software packages -->
             <div class="wizard-card wizard-card-overlay" data-cardname="swpkg-helix">
-                <h3>Software Packages</h3>
+                <h3>Cluster configuration</h3>
                 
                  <div class="wizard-input-section">
                     <p>
