@@ -380,6 +380,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                         <option value="kubernetes">Kubernetes</option>
                         <option value="oscar">OSCAR</option>
                         <option value="oscar-latest">OSCAR-latest</option>
+                        <option value="ophidia">ECAS</option>
                         <option value="nomad">Nomad</option>
                     </select>
                 </div>
