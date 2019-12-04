@@ -56,7 +56,7 @@ function generate_hybrid_radl($front_cpu, $front_mem, $wn1_cpu, $wn1_mem, $nodes
     $path_to_new_file = $templates_path . '/system_'.$rand_str.'.radl';
     $file_name = 'system_'.$rand_str;
     
-    $br_zone = "prod@atm-prod.lsd.ufcg.edu.br";
+    $br_zone = "cloud5@atm-prod.lsd.ufcg.edu.br";
     $eu_zone = "horsemen@upv-cloud.i3m.upv.es";
     $zone_wn1 = $br_zone;
     $zone_wn2 = $br_zone;
@@ -69,9 +69,9 @@ function generate_hybrid_radl($front_cpu, $front_mem, $wn1_cpu, $wn1_mem, $nodes
     //In UPV:
     //Ubuntu 16.04: "877c4fad-34cf-4422-a565-8bb6e10c3bec"
         
-    $os_front = "33fee431-4d74-45e8-aaef-734c86e21840";
-    $os_wn1 = "33fee431-4d74-45e8-aaef-734c86e21840";
-    $os_wn2 = "33fee431-4d74-45e8-aaef-734c86e21840";       
+    $os_front = "9bad9af7-7aea-45d8-88b0-713c83984534";
+    $os_wn1 = "9bad9af7-7aea-45d8-88b0-713c83984534";
+    $os_wn2 = "9bad9af7-7aea-45d8-88b0-713c83984534";       
 
     if ($gpus){
         $os_wn1 = "877c4fad-34cf-4422-a565-8bb6e10c3bec";
@@ -88,7 +88,7 @@ function generate_hybrid_radl($front_cpu, $front_mem, $wn1_cpu, $wn1_mem, $nodes
     fwrite($new_file, "    cpu.count>=". $front_cpu ." and".PHP_EOL);
     fwrite($new_file, "    memory.size>=". $front_mem ."m and".PHP_EOL);
     fwrite($new_file, "    disk.0.os.name = 'linux' and".PHP_EOL);
-    fwrite($new_file, "    disk.0.image.url = 'fbw://services-atm-prod.lsd.ufcg.edu.br/" .$os_front. "' and".PHP_EOL);
+    fwrite($new_file, "    disk.0.image.url = 'fbw://atm-prod.lsd.ufcg.edu.br/" .$os_front. "' and".PHP_EOL);
     fwrite($new_file, "    availability_zone = '". $br_zone . "'".PHP_EOL);
     //fwrite($new_file, "    ec3aas.username = '".$user_sub."'".PHP_EOL);
     fwrite($new_file, ")".PHP_EOL);
@@ -97,13 +97,14 @@ function generate_hybrid_radl($front_cpu, $front_mem, $wn1_cpu, $wn1_mem, $nodes
 
     fwrite($new_file, "system wn (".PHP_EOL);
     fwrite($new_file, "    ec3_max_instances = ".$nodes_type1." and".PHP_EOL);
+    fwrite($new_file, "    ec3_if_fail = 'wn2' and".PHP_EOL);
     if ($gpus){
         fwrite($new_file, "    gpu.count>=". $wn1_cpu ." and".PHP_EOL);
     } 
     fwrite($new_file, "    cpu.count>=". $wn1_cpu ." and".PHP_EOL);
     fwrite($new_file, "    memory.size>=". $wn1_mem ."m and".PHP_EOL);
     fwrite($new_file, "    disk.0.os.name = 'linux' and".PHP_EOL);
-    fwrite($new_file, "    disk.0.image.url = 'fbw://services-atm-prod.lsd.ufcg.edu.br/" .$os_wn1. "' and".PHP_EOL);
+    fwrite($new_file, "    disk.0.image.url = 'fbw://atm-prod.lsd.ufcg.edu.br/" .$os_wn1. "' and".PHP_EOL);
     fwrite($new_file, "    availability_zone = '". $zone_wn1 . "'".PHP_EOL);
     fwrite($new_file, ")".PHP_EOL);
 
@@ -115,9 +116,10 @@ function generate_hybrid_radl($front_cpu, $front_mem, $wn1_cpu, $wn1_mem, $nodes
         fwrite($new_file, "    cpu.sgx='true' and".PHP_EOL);
     }
     fwrite($new_file, "    cpu.count>=". $wn2_cpu ." and".PHP_EOL);
+    fwrite($new_file, "    net_interface.0.connection='private' and".PHP_EOL);
     fwrite($new_file, "    memory.size>=". $wn2_mem ."m and".PHP_EOL);
     fwrite($new_file, "    disk.0.os.name = 'linux' and".PHP_EOL);
-    fwrite($new_file, "    disk.0.image.url = 'fbw://services-atm-prod.lsd.ufcg.edu.br/" .$os_wn2. "' and".PHP_EOL);
+    fwrite($new_file, "    disk.0.image.url = 'fbw://atm-prod.lsd.ufcg.edu.br/" .$os_wn2. "' and".PHP_EOL);
     fwrite($new_file, "    availability_zone = '". $zone_wn2 . "'".PHP_EOL);
     fwrite($new_file, ")".PHP_EOL);
     
@@ -144,7 +146,7 @@ function generate_system_image_radl($cloud, $ami, $region, $ami_user, $ami_passw
     fwrite($new_file, "    cpu.count>=". $front_cpu ." and".PHP_EOL);
     fwrite($new_file, "    memory.size>=". $front_mem ."m and".PHP_EOL);
     fwrite($new_file, "    disk.0.os.name = 'linux' and".PHP_EOL);
-    fwrite($new_file, "    disk.0.image.url = 'fbw://services-atm-prod.lsd.ufcg.edu.br/" .$ami. "'".PHP_EOL);
+    fwrite($new_file, "    disk.0.image.url = 'fbw://atm-prod.lsd.ufcg.edu.br/" .$ami. "'".PHP_EOL);
     //fwrite($new_file, "    instance_type='".$instancetype_front."' and".PHP_EOL);
     //fwrite($new_file, "    disk.0.os.credentials.username = '".$fbuser."' and".PHP_EOL);
     //fwrite($new_file, "    ec3aas.username = '".$user_sub."'".PHP_EOL);
@@ -157,7 +159,7 @@ function generate_system_image_radl($cloud, $ami, $region, $ami_user, $ami_passw
     fwrite($new_file, "    cpu.count>=". $wn_cpu ." and".PHP_EOL);
     fwrite($new_file, "    memory.size>=". $wn_mem ."m and".PHP_EOL);
     fwrite($new_file, "    disk.0.os.name = 'linux' and".PHP_EOL);
-    fwrite($new_file, "    disk.0.image.url = 'fbw://services-atm-prod.lsd.ufcg.edu.br/" .$ami. "'".PHP_EOL);
+    fwrite($new_file, "    disk.0.image.url = 'fbw://atm-prod.lsd.ufcg.edu.br/" .$ami. "'".PHP_EOL);
     //fwrite($new_file, "    instance_type='".$instancetype_wn."' and".PHP_EOL);
     //fwrite($new_file, "    disk.0.os.credentials.username = '".$fcuser."'".PHP_EOL);
 
@@ -205,7 +207,7 @@ function generate_kubernetes_recipe($gitrepo, $gitbranch, $gitfolder, $clusterna
     $kubefile = $templates_path . '/kubernetes_' . $clustername . '.radl';
     $file_name = 'kubernetes_' . $clustername;
     //TODO: add to the kubernetes.radl recipe of servproject the line of 'kube_apply_repos' en el front
-    $path_to_template = '/etc/ec3/templates/kubernetes.radl';
+    $path_to_template = '/etc/ec3/templates/kubernetes_fed.radl';
     
     $new_file = fopen($kubefile, "w");
     $template_file = fopen($path_to_template, "r");
@@ -267,7 +269,7 @@ if($_POST){
     
     if ($provider == 'fogbow'){
         //Endpoint is well-konown
-        $endpointName = 'https://services-atm-prod.lsd.ufcg.edu.br/fns';
+        $endpointName = 'https://atm-prod.lsd.ufcg.edu.br/fns';
         
         $user = (isset($_POST['user-fogbow']) ? $_POST['user-fogbow'] : "");
         $pass = (isset($_POST['pass-fogbow']) ? $_POST['pass-fogbow'] : "");
@@ -316,7 +318,7 @@ if($_POST){
             exit(1);
         }*/
           
-        $lrms = "kubernetes";
+        $lrms = "kubernetes_fed";
         
         /*$clustertype = (isset($_POST['cluster-fogbow']) ? $_POST['cluster-fogbow'] : "");      
         if($clustertype == '' ){
@@ -380,7 +382,7 @@ if($_POST){
     while(!$cond){
         sleep(5);
         $log_content = file_get_contents($ec3_log_file);
-        if(strpos($log_content, "running") && strpos($log_content, "IP:")){
+        if(strpos($log_content, "running") && preg_match('/IP: [0-9]/', $log_content)){
             $ip = substr($log_content, strrpos($log_content, "IP:") + 4);
             $cond = True;
         } elseif(!$process->status()){
