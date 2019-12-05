@@ -85,7 +85,9 @@ if($_POST){
                     $line = fgets($file);
                     if(strstr($line, "id = egi")){
                         $fedcloud_line = $line;
-                        $endpoint = substr($fedcloud_line, strpos($fedcloud_line, "host = ")+7);
+                        $ini = strpos($fedcloud_line, "host = ") + 7;
+                        $length = strpos($fedcloud_line, ";", $ini) - $ini;
+                        $endpoint = substr($fedcloud_line, $ini, $length);
                     }
                     if(strstr($line, "InfrastructureManager")){
                         $im_line=$line;
