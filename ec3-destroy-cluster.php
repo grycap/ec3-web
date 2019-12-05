@@ -71,7 +71,7 @@ if($_POST){
         $access_token = $_SESSION["egi_access_token"];
     }
 
-    if ($provider == 'fedcloud'){
+    if ($provider == 'openstack'){
         #$proxy = getSSLPage("https://etokenserver.ct.infn.it:8443/eTokenServer/eToken/9001b766b88b2090418aa99b020755b9?voms=vo.access.egi.eu:/vo.access.egi.eu&proxy-renewal=true&disable-voms-proxy=false&rfc-proxy=true&cn-label=eToken:" . $user_sub);
         #$proxy = str_replace("\n", "\\n", $proxy);
         if($access_token!=""){
