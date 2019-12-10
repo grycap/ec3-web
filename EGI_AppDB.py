@@ -89,8 +89,7 @@ def get_oss(endpoint):
                     for os_tpl in va_data['appdb:appdb']['virtualization:provider']['provider:image']:
                         try:
                             if '@voname' in os_tpl and vo in os_tpl['@voname'] and os_tpl['@archived'] == "false":
-                                image_id = os_tpl['@va_provider_image_id'].split("#")[1]
-                                oss.append(os_tpl['@appname'] + ";" + image_id)
+                                oss.append(os_tpl['@appname'] + ";" + os_tpl['@appcname'])
                         except:
                             continue
             except:
