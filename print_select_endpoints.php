@@ -6,7 +6,7 @@
 	exec('python EGI_AppDB.py sites', $sites);
 	foreach ($sites as $site) {
 			$site_p = explode(";", $site);
-			$return_string .= "<option value=\"" . $site_p[0] . "\">" . $site_p[0] . "</option>";
+			$return_string .= "<option value=\"" . $site_p[1] . "\">" . $site_p[0] . "</option>";
 	//	}
 	}
 	

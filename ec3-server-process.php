@@ -309,8 +309,7 @@ if($_POST){
 
         $auth_file = generate_auth_file_fedcloud($endpoint, $name);
 
-	    $host = explode("://", $endpoint)[1];
-        $data = generate_system_image_radl($provider, $vmi, $host, '', '', $front_type, $wn_type, '', '', '', '', $nodes);
+        $data = generate_system_image_radl($provider, $vmi, $endpointName, '', '', $front_type, $wn_type, '', '', '', '', $nodes);
 
         $os = $data[0];
         $user = $data[1];
