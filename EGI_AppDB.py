@@ -31,24 +31,33 @@ __license__ = "Apache Licence v2.0"
 vo = "vo.access.egi.eu"
 
 def check_supported_VOs(data):
-    if 'provider:image' in data['appdb:appdb']['virtualization:provider']:
-        for os_tpl in data['appdb:appdb']['virtualization:provider']['provider:image']:
+    if 'provider:image' in data['virtualization:provider']:
+        for os_tpl in data['virtualization:provider']['provider:image']:
             if '@voname' in os_tpl and vo in os_tpl['@voname']:
                 return True
     return False
 
 def appdb_call(c):
-    conn  =  httplib.HTTPSConnection('appdb.egi.eu')
-    conn.request("GET", c)
-    data = conn.getresponse().read()
-    conn.close()
-    data.replace('\n','')
-    return xmltodict.parse(data)
+    res = None
+    cont = 0
+    while res is None and cont < 3:
+        cont += 1
+        try:
+            conn = httplib.HTTPSConnection('appdb.egi.eu')
+            conn.request("GET", c)
+            data = conn.getresponse().read()
+            conn.close()
+            data.replace('\n','')
+            res = xmltodict.parse(data)['appdb:appdb']
+        except:
+            pass
+
+    return res
 
 def get_sites():
     data = appdb_call('/rest/1.0/sites?flt=%%2B%%3Dvo.name:%s&%%2B%%3Dsite.supports:1' % vo)
     providersID = []
-    for site in data['appdb:appdb']['appdb:site']:
+    for site in data['appdb:site']:
         if  type(site['site:service']) == type([]):
             for service in site['site:service']:
                 providersID.append(service['@id'])
@@ -60,12 +69,12 @@ def get_sites():
     for ID in providersID:
         data = appdb_call('/rest/1.0/va_providers/%s' % ID)
         if check_supported_VOs(data):
-            if ('provider:url' in data['appdb:appdb']['virtualization:provider'] and 
-                data['appdb:appdb']['virtualization:provider']['@service_type'] == 'org.openstack.nova'):
-                provider_name = data['appdb:appdb']['virtualization:provider']['provider:name']
-                if data['appdb:appdb']['virtualization:provider']['@service_status'] == "CRITICAL":
+            if ('provider:url' in data['virtualization:provider'] and 
+                data['virtualization:provider']['@service_type'] == 'org.openstack.nova'):
+                provider_name = data['virtualization:provider']['provider:name']
+                if data['virtualization:provider']['@service_status'] == "CRITICAL":
                     provider_name += " (CRITICAL state!)"
-                provider_endpoint_url = data['appdb:appdb']['virtualization:provider']['provider:url']
+                provider_endpoint_url = data['virtualization:provider']['provider:url']
                 url = urlparse(provider_endpoint_url)
                 endpoints.append(provider_name + ";" + "%s://%s" % url[0:2])
 
@@ -74,7 +83,7 @@ def get_sites():
 def get_oss(endpoint):
     oss = []
     data = appdb_call('/rest/1.0/sites?flt=%%2B%%3Dvo.name:%s&%%2B%%3Dsite.supports:1' % vo)
-    for site in data['appdb:appdb']['appdb:site']:
+    for site in data['appdb:site']:
         if isinstance(site['site:service'], list):
             services = site['site:service']
         else:
@@ -83,10 +92,10 @@ def get_oss(endpoint):
         for service in services:
             try:
                 va_data = appdb_call('/rest/1.0/va_providers/%s' % service['@id'])
-                if ('provider:url' in va_data['appdb:appdb']['virtualization:provider'] and
-                    va_data['appdb:appdb']['virtualization:provider']['@service_type'] == 'org.openstack.nova' and
-                    va_data['appdb:appdb']['virtualization:provider']['provider:name'] == endpoint):
-                    for os_tpl in va_data['appdb:appdb']['virtualization:provider']['provider:image']:
+                if ('provider:url' in va_data['virtualization:provider'] and
+                    va_data['virtualization:provider']['@service_type'] == 'org.openstack.nova' and
+                    va_data['virtualization:provider']['provider:name'] == endpoint):
+                    for os_tpl in va_data['virtualization:provider']['provider:image']:
                         try:
                             if '@voname' in os_tpl and vo in os_tpl['@voname'] and os_tpl['@archived'] == "false":
                                 oss.append(os_tpl['@appname'] + ";" + os_tpl['@appcname'])
@@ -100,7 +109,7 @@ def get_oss(endpoint):
 def get_instances(endpoint):
     instances = []
     data = appdb_call('/rest/1.0/sites?flt=%%2B%%3Dvo.name:%s&%%2B%%3Dsite.supports:1' % vo)
-    for site in data['appdb:appdb']['appdb:site']:
+    for site in data['appdb:site']:
         if isinstance(site['site:service'], list):
             services = site['site:service']
         else:
@@ -109,10 +118,10 @@ def get_instances(endpoint):
         for service in services:
             try:
                 va_data = appdb_call('/rest/1.0/va_providers/%s' % service['@id'])
-                if ('provider:url' in va_data['appdb:appdb']['virtualization:provider'] and
-                    va_data['appdb:appdb']['virtualization:provider']['@service_type'] == 'org.openstack.nova' and
-                    va_data['appdb:appdb']['virtualization:provider']['provider:name'] == endpoint):
-                    for resource_tpl in va_data['appdb:appdb']['virtualization:provider']['provider:template']:
+                if ('provider:url' in va_data['virtualization:provider'] and
+                    va_data['virtualization:provider']['@service_type'] == 'org.openstack.nova' and
+                    va_data['virtualization:provider']['provider:name'] == endpoint):
+                    for resource_tpl in va_data['virtualization:provider']['provider:template']:
                         instances.append((resource_tpl['provider_template:physical_cpus'], resource_tpl['provider_template:main_memory_size']))
             except:
                 continue
@@ -142,3 +151,5 @@ if __name__ == "__main__":
     elif option == "instances":
         for inst_desc, inst_name in get_instances(endpoint):
             print("%s;%s" % (inst_desc, inst_name))
+
+
