@@ -48,7 +48,7 @@ $log_content = file_get_contents($ec3_log_file);
 # delete the log file
 unlink($ec3_log_file);
 
-$ctxt_log = "Error parsing cluster data.";
+$ctxt_log = "No ctxt log available yet.";
 $data = json_decode($log_content, true);
 foreach ($data as $elem) {
     if ($elem["class"] == "system" && $elem["id"] == "front") {
