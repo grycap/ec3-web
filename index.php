@@ -1685,9 +1685,9 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                             var obj = jQuery.parseJSON(JSON.stringify(response));
                             //retValue = "<div> <b> " + obj.responseText + " </b></div> ";
                             var retValue = "<p><i>Notice that if you destroy the cluster, this might take 15-30 seconds, please, wait for the response of the portal. </i></p>"
-                            retValue += "<table> <tr> <th>Cluster name</th> <th>State</th> <th>IP</th> <th>Nodes</th> <th>Provider</th> <th>SSH key</th> <th>Action</th> </tr>";
+                            retValue += "<table> <tr> <th>Cluster name</th> <th>State</th> <th>IP</th> <th>Nodes</th> <th>Provider</th> <th>SSH key</th> <th>Ctxt Log</th> <th>Action</th> </tr>";
                             if (obj.length == 0) {
-                                retValue += "<tr> <td colspan=5>No clusters available for this user.</td> </tr>";
+                                retValue += "<tr> <td colspan=6>No clusters available for this user.</td> </tr>";
                             }
                             for (var i = 0; i < obj.length; i++){
                                 var name = obj[i].name;
@@ -1710,6 +1710,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                                 }
                                 retValue += "<td> " + provider + " </th> ";
                                 retValue += "<td><a class=\"btn btn-ssh\" id=\"ssh_"+ obj[i].name + "\" href=\"ec3-ssh-key.php?clustername=" + obj[i].name + "\">Download</a></td>";
+                                retValue += "<td><a class=\"btn btn-ssh\" href=\"ec3-log-clusters.php?cluster=" + name + "\" target=\"_blank\">See</a></td>";
                                 retValue += "<td><button class=\"btn btn-deleting\" id=\"delete_"+ obj[i].name + "\" onclick=\"deleteCluster('"+ obj[i].name + "', '" + obj[i].provider + "')\">Delete</button></td>";
                                 retValue += "</tr>";
                             }

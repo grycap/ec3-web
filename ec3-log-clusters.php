@@ -55,5 +55,7 @@ foreach ($data as $elem) {
         $ctxt_log = $elem["contextualization_output"];
     }
 }
+
+header('Content-type: text/plain');
 echo $ctxt_log;
 ?>
