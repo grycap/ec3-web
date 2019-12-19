@@ -1711,7 +1711,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                                 retValue += "<td> " + provider + " </th> ";
                                 retValue += "<td><a class=\"btn btn-ssh\" id=\"ssh_"+ obj[i].name + "\" href=\"ec3-ssh-key.php?clustername=" + obj[i].name + "\">Download</a></td>";
                                 retValue += "<td><a class=\"btn btn-ssh\" href=\"ec3-log-clusters.php?cluster=" + name + "\" target=\"_blank\">See</a></td>";
-                                retValue += "<td><button class=\"btn btn-deleting\" id=\"delete_"+ obj[i].name + "\" onclick=\"deleteCluster('"+ obj[i].name + "', '" + obj[i].provider + "')\">Delete</button></td>";
+                                retValue += "<td><button class=\"btn btn-deleting\" id=\"delete_"+ obj[i].name + "\" onclick=\"deleteCluster(this, '"+ obj[i].name + "', '" + obj[i].provider + "')\">Delete</button></td>";
                                 retValue += "</tr>";
                             }
                             retValue += "</table>"
@@ -1728,17 +1728,9 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
             });
         };
             
-        function deleteCluster(name, provider){
-            //$("#delete_"+name).text('Deleting...');
-            //$("#delete_"+name).prop("disabled",true);
-            //console.log($("#delete_"+name).text());
-            // http://www.java2s.com/Tutorials/HTML_CSS/Bootstrap_Example/Button/Click_to_change_button_text_and_state.htm
-            // http://getbootstrap.com/javascript/#buttons
-            // http://getbootstrap.com/javascript/#buttons-methods
-            //$("#delete_"+name).button();
-            /*$("#delete_"+name).on('click', function () {
-                var $btn = $(this).button('complete');
-            });*/
+        function deleteCluster(button, name, provider){
+            button.textContent = "Deleting...";
+            button.disabled = true;
 
             var shortname = name;
             var index = name.indexOf("__");
