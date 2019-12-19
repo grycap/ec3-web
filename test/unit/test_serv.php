@@ -104,7 +104,7 @@ final class EC3PagesTest extends TestCase
             if (substr($file, 0, 7) === "system_") {
                 $found = True;
                 $data = file_get_contents('/tmp/' . $file);
-                $this->assertContains("disk.0.image.url = 'ost://serverfed/fed1'", $data);
+                $this->assertContains("disk.0.image.url = 'appdb://endpointName/fed1?vo.access.egi.eu'", $data);
                 $this->assertContains("ec3_max_instances = 2", $data);
                 unlink('/tmp/' . $file);
             }
@@ -200,7 +200,7 @@ final class EC3PagesTest extends TestCase
             ->willReturn($response);
         $mock_client->method('setAccessToken')
             ->willReturn("");
-        $response = array("code"=>200, "result"=>array("name"=>"eginame", "sub"=>"egisub", "edu_person_entitlements"=>array("urn:mace:egi.eu:aai.egi.eu:member@vo.access.egi.eu")));
+        $response = array("code"=>200, "result"=>array("name"=>"eginame", "sub"=>"egisub", "eduperson_entitlement"=>array("urn:mace:egi.eu:aai.egi.eu:member@vo.access.egi.eu")));
         $mock_client->method('fetch')
             ->willReturn($response);
 
@@ -217,6 +217,18 @@ final class EC3PagesTest extends TestCase
         include('../../auth_egi.php');
         $this->assertEquals("eginame", $_SESSION['egi_user_name']);
         $this->assertEquals("egisub", $_SESSION['egi_user_sub']);
+    }
+
+    /**
+     * @runInSeparateProcess
+     */
+    public function testEC3CtxtLog()
+    {
+        $this->expectOutputString('CTXT_LOG');
+        $_SESSION = array("egi_user_sub"=>"egiusersub", "egi_user_name"=>"egiusername");
+        $_GET['cluster'] = "clustername";
+        $GLOBALS["EC3UnitTest"] = true;
+        include('../../ec3-log-clusters.php');
     }
 }
 ?>

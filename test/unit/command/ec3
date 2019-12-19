@@ -1,15 +1,19 @@
 #!/bin/bash
 
-if [ "$1" == "ssh" ]
-then
-    echo "key" > /tmp/ssh12.key
-    echo "ssh -i /tmp/ssh12.key -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ubuntu@10.0.0.1"
-else
-    if [ "$1" == "list" ]
-    then
-        echo "LIST"
-    else
-        echo $@
-        echo "running. IP: 10.0.0.1"
-    fi
-fi
+
+case $1 in
+ssh)
+  echo "key" > /tmp/ssh12.key
+  echo "ssh -i /tmp/ssh12.key -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ubuntu@10.0.0.1"
+  ;;
+list)
+  echo "LIST"
+  ;;
+show)
+  echo '[{"class": "network", "id": "public"}, {"class": "system", "id": "front", "contextualization_output": "CTXT_LOG"}]'
+  ;;
+*)
+  echo $@
+  echo "running. IP: 10.0.0.1"
+  ;;
+esac
