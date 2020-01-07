@@ -220,7 +220,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                     <span class="fa-stack fa-4x">
                         <!--<a href="doc/index.html">-->
                         <!--<a href="http://ec3.readthedocs.org/en/latest/" target="_blank">-->
-                        <a href="http://ec3.readthedocs.org/en/devel/" target="_blank">
+                        <a href="http://ec3.readthedocs.org/en/ltos/" target="_blank">
                             <i class="fa fa-circle fa-stack-2x text-primary"></i>
                             <i class="fa fa-book fa-stack-1x fa-inverse"></i>
                         </a>
