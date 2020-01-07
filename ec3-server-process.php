@@ -251,6 +251,7 @@ if($_POST){
     
     if ($provider == 'fedcloud'){
         $endpointName = (isset($_POST['endpointName']) ? $_POST['endpointName'] : "");
+        $endpointName = str_replace(' (CRITICAL state!)', '',$endpointName);
         $endpoint = (isset($_POST['endpoint-fedcloud']) ? $_POST['endpoint-fedcloud'] : "");
         $vmi = (isset($_POST['vmi-fedcloud']) ? $_POST['vmi-fedcloud'] : "");
 
