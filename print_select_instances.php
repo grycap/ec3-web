@@ -15,6 +15,9 @@
 	if(isset($_POST['endpointfedcloud']))
 	{
 		$selectOption = $_POST['endpointfedcloud']; 
+                if (strpos($selectOption, ' (CRITICAL state!)')) {
+                    $selectOption = str_replace(' (CRITICAL state!)', '',$selectOption);
+                }
 		exec('python EGI_AppDB.py ' . $selectOption . ' instances', $instances);
 		usort($instances, "cmp");
 		foreach ($instances as $instance) {
