@@ -139,7 +139,7 @@ function generate_auth_file_exoscale($endpoint, $clustername, $apikey, $secretke
 
 // Generates the system RADL file for the deployments that the user has indicated an AMI or VMI
 //function generate_system_image_radl($cloud, $ami, $region, $ami_user, $ami_password, $instancetype_front, $instancetype_wn, $front_cpu, $front_mem, $wn_cpu, $wn_mem, $nodes, $os) {
-function generate_system_image_radl($cloud, $ami, $region, $ami_user, $ami_password, $instancetype_front, $instancetype_wn, $front_cpu, $front_mem, $wn_cpu, $wn_mem, $nodes){
+function generate_system_image_radl($cloud, $ami, $region, $ami_user, $ami_password, $instancetype_front, $instancetype_wn, $front_cpu, $front_mem, $wn_cpu, $wn_mem, $nodes, $kubeToken){
     $rand_str = random_string(4); 
     $templates_path = (isset($GLOBALS['templates_path']) ? $GLOBALS['templates_path'] : "/var/www/html/ec3-ltos/command/templates");
     $path_to_new_file = $templates_path . '/system_'.$rand_str.'.radl';
@@ -195,6 +195,11 @@ function generate_system_image_radl($cloud, $ami, $region, $ami_user, $ami_passw
     }
     
     fwrite($new_file, "    disk.0.os.credentials.username = '".$fcuser."' and".PHP_EOL);
+    
+    if ($kubeToken != ''){
+        fwrite($new_file, "    kube_token='".$kubeToken."' and".PHP_EOL);
+    }
+    
     fwrite($new_file, "    ec3aas.username = '".$user_sub."'".PHP_EOL);
     
     fwrite($new_file, ")".PHP_EOL);
@@ -267,9 +272,11 @@ if($_POST){
 
         $lrms = (isset($_POST['lrms-fedcloud']) ? $_POST['lrms-fedcloud'] : "");
         
-        if($lrms == '' ){
+        if ($lrms == '' ){
             echo 'LRMS not provided. Impossible to launch a cluster without this data. Please, enter the required information and try again.';
             exit(1);
+        } else if ($lrms == 'kubernetes' ){
+            $kubeToken = (isset($_POST['kube_token']) ? $_POST['kube_token'] : "");
         }
         
         $sw = "clues2 refreshtoken ";
@@ -310,7 +317,7 @@ if($_POST){
 
         $auth_file = generate_auth_file_fedcloud($endpoint, $name);
 
-        $data = generate_system_image_radl($provider, $vmi, $endpointName, '', '', $front_type, $wn_type, '', '', '', '', $nodes);
+        $data = generate_system_image_radl($provider, $vmi, $endpointName, '', '', $front_type, $wn_type, '', '', '', '', $nodes, $kubeToken);
 
         $os = $data[0];
         $user = $data[1];
@@ -350,6 +357,8 @@ if($_POST){
         if($lrms == '' ){
             echo 'LRMS not provided. Impossible to launch a cluster without this data. Please, enter the required information and try again.';
             exit(1);
+        } else if ($lrms == 'kubernetes' ){
+            $kubeToken = (isset($_POST['kube_token_helix']) ? $_POST['kube_token_helix'] : "");
         }
         
         $sw = "clues2 refreshtoken ";
@@ -388,7 +397,7 @@ if($_POST){
             $auth_file = generate_auth_file_otc($endpoint, $name, $apikey, $secretkey, 'eu-de', $domain, '3.x_password', 'None', 'eu-de');
         }
         
-        $data = generate_system_image_radl($cloud, $vmi, $endpoint, '', '', $front_type, $wn_type, '', '', '', '', $nodes);
+        $data = generate_system_image_radl($cloud, $vmi, $endpoint, '', '', $front_type, $wn_type, '', '', '', '', $nodes, $kubeToken);
 
         $os = $data[0];
         $user = $data[1];

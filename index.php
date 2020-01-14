@@ -385,6 +385,11 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                     </select>
                 </div>
                 
+                <div class="wizard-input-section" style="padding-left:0px; margin-right:80px;">
+                        <p> Kubernetes access token: </p>
+                        <input type="text" class="form-control" id="kube_token" name="kube_token" placeholder="Kubernetes token" disabled>
+                </div>
+                
                 <div class="wizard-input-section">
                     <p>
                         Please choose the software packages you'd like EC3 to
@@ -426,7 +431,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                     </div>
                 </div>
                 
-                <p style="padding-top:90px;">Is your favourite software not available? <a href="mailto:ec3@upv.es?Subject=[EC3]%20Unsupported%20Software" target="_top">Let us know!</a></p>
+                <p style="padding-top:55px;">Is your favourite software not available? <a href="mailto:ec3@upv.es?Subject=[EC3]%20Unsupported%20Software" target="_top">Let us know!</a></p>
             </div>
 
 
@@ -660,6 +665,11 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                         <option value="nomad">Nomad</option>
                     </select>
                 </div>
+                
+                <div class="wizard-input-section" style="padding-left:0px; margin-right:80px;">
+                    <p> Kubernetes access token: </p>
+                    <input type="text" class="form-control" id="kube_token_helix" name="kube_token_helix" placeholder="Kubernetes token" disabled>
+                </div>
 
                 <div class="wizard-input-section">
                     <p>
@@ -684,7 +694,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                         </div>
                     </div>
                 </div>
-                <p style="padding-top:90px;">Is your favourite software not available? <a href="mailto:ec3@upv.es?Subject=[EC3]%20Unsupported%20Software" target="_top">Let us know!</a></p>
+                <p style="padding-top:55px;">Is your favourite software not available? <a href="mailto:ec3@upv.es?Subject=[EC3]%20Unsupported%20Software" target="_top">Let us know!</a></p>
             </div>
 
 
@@ -1013,7 +1023,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                 $.fn.wizard.logging = true;
                 var wizard = $('#fedcloud-wizard').wizard({
                     keyboard : false,
-                    contentHeight : 480,
+                    contentHeight : 500,
                     contentWidth : 700,
                     backdrop: 'static',
                     submitUrl: "ec3-server-process.php"
@@ -1202,8 +1212,14 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                 if (lrms == 'slurm'){
                     document.getElementById('galaxy').disabled= false;
                 } else{
-                    document.getElementById('galaxy').disabled= true;
+                    document.getElementById('galaxy').disabled = true;
                     document.getElementById('galaxy').checked = false;
+                }
+                
+                if (lrms == 'kubernetes'){
+                    document.getElementById('kube_token').disabled = false;
+                } else{
+                    document.getElementById('kube_token').disabled = true;
                 }
             };
 
@@ -1245,6 +1261,9 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
 
                 //obtener el LRMS seleccionado
                 var lrms = $('#lrms-fedcloud').val();
+                
+                //obtener (si es el caso) el token de kubernetes
+                var kubeToken = $('#kube_token').val();
 
                 //obtener el SW
                 var sw = '';
@@ -1293,6 +1312,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                 } else {
                     retValue += "<div> <b>VMI: </b> nothing indicated</div>";
                 }
+                
 
                 retValue +="<div> <b>Frontend instance type: </b>" + frontcpu  + " CPU, " + frontmem + "mb RAM" + "</div>" +
                            "<div> <b>Working nodes instance type: </b>" + wncpu + " CPU, " + wnmem + "mb RAM"+ "</div>" +
@@ -1300,7 +1320,10 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                            "<div> <b>Software packages: </b>" + sw + "</div>" +
                            "<div> <b>Maximum number of nodes: </b>" + nodes + "</div>" +
                            "<div> <b>Cluster name: </b>" + clustername + "</div>";
-
+                
+                if(kubeToken != ''){
+                    retValue += "<div> <b> Kubernetes token: </b>" + kubeToken + "</div>";
+                } 
 
                 //Mostramos los datos recogidos al usuario
                 //$('.wizard-resume').append(retValue);
@@ -1319,7 +1342,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                 $.fn.wizard.logging = true;
                 var wizard = $('#helix-wizard').wizard({
                     keyboard : false,
-                    contentHeight : 480,
+                    contentHeight : 500,
                     contentWidth : 700,
                     backdrop: 'static',
                     submitUrl: "ec3-server-process.php"
@@ -1483,6 +1506,12 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                     document.getElementById('galaxyhelix').disabled= true;
                     document.getElementById('galaxyhelix').checked = false;
                 }
+                
+                if (lrms == 'kubernetes'){
+                    document.getElementById('kube_token').disabled = false;
+                } else{
+                    document.getElementById('kube_token').disabled = true;
+                }
             };
             
             // We call the HNSci script to obtain the list of images and flavours of each provider
@@ -1580,6 +1609,9 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
 
                 //obtener el LRMS seleccionado
                 var lrms = $('#lrms-helix').val();
+                
+                //obtener (si es el caso) el token de kubernetes
+                var kubeToken = $('#kube_token_helix').val();
 
                 //obtener el SW
                 var sw = '';
@@ -1633,6 +1665,9 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                            "<div> <b>Maximum number of nodes: </b>" + nodes + "</div>" +
                            "<div> <b>Cluster name: </b>" + clustername + "</div>";
 
+                if(kubeToken != ''){
+                    retValue += "<div> <b> Kubernetes token: </b>" + kubeToken + "</div>";
+                } 
 
                 //Mostramos los datos recogidos al usuario
                 //$('.wizard-resume').append(retValue);
