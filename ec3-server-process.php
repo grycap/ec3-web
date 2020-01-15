@@ -271,6 +271,7 @@ if($_POST){
         $wn_type = (isset($_POST['wn-fedcloud']) ? $_POST['wn-fedcloud'] : "");
 
         $lrms = (isset($_POST['lrms-fedcloud']) ? $_POST['lrms-fedcloud'] : "");
+        $kubeToken = "";
         
         if ($lrms == '' ){
             echo 'LRMS not provided. Impossible to launch a cluster without this data. Please, enter the required information and try again.';
@@ -353,6 +354,7 @@ if($_POST){
         $wn_type = (isset($_POST['wnhelix']) ? $_POST['wnhelix'] : "");
 
         $lrms = (isset($_POST['lrms-helix']) ? $_POST['lrms-helix'] : "");
+        $kubeToken = "";
         
         if($lrms == '' ){
             echo 'LRMS not provided. Impossible to launch a cluster without this data. Please, enter the required information and try again.';
