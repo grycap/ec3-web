@@ -1508,9 +1508,9 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                 }
                 
                 if (lrms == 'kubernetes'){
-                    document.getElementById('kube_token').disabled = false;
+                    document.getElementById('kube_token_helix').disabled = false;
                 } else{
-                    document.getElementById('kube_token').disabled = true;
+                    document.getElementById('kube_token_helix').disabled = true;
                 }
             };
             
