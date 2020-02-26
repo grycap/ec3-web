@@ -45,7 +45,7 @@ else
     if ($response['code'] == 200) {
         $is_access_vo_member = false;
         foreach ($response['result']['eduperson_entitlement'] as $value) {
-		    if ($value == "urn:mace:egi.eu:aai.egi.eu:member@vo.access.egi.eu" || $value == "urn:mace:egi.eu:aai.egi.eu:vm_operator@vo.access.egi.eu") {
+		    if ($value == "urn:mace:egi.eu:group:vo.access.egi.eu:role=member#aai.egi.eu" || $value == "urn:mace:egi.eu:group:vo.access.egi.eu:role=vm_operator#aai.egi.eu") {
 			    $is_access_vo_member = true;
 		    }
         }
