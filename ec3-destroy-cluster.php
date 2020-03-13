@@ -126,10 +126,18 @@ if($_POST){
                  fclose($logs);
              }
 
+            $tenant = "openid";
+            $domain = "EGI_access";
+            if (strpos($endpoint, "cesga.es")) $domain = "vo.access.egi.eu";
+            if (strpos($endpoint, "recas.ba.infn.it")) {
+               $tenant = "oidc";
+               $domain = "EGI_fedcloud";
+            }
+
             //Y escribimos el nuevo fichero auth
             $gestor = fopen($auth_file, "w");
             #fwrite($gestor, "id = occi; type = OCCI; proxy = " . $proxy . "; host = " . $endpoint . PHP_EOL);
-            fwrite($gestor, "id = egi; type = OpenStack; host = " . $endpoint . "; username = egi.eu; auth_version = 3.x_oidc_access_token; password = " . $access_token . "; tenant = openid" . PHP_EOL);
+            fwrite($gestor, "id = egi; type = OpenStack; host = " . $endpoint . "; username = egi.eu; auth_version = 3.x_oidc_access_token; password = " . $access_token . "; tenant = " . $tenant . "; domain = " . $domain . PHP_EOL);
             fwrite($gestor, $im_line. PHP_EOL);
             fclose($gestor);
         } else {
