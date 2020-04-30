@@ -3,10 +3,10 @@ require_once('OAuth2/Client.php');
 require_once('OAuth2/GrantType/IGrantType.php');
 require_once('OAuth2/GrantType/AuthorizationCode.php');
 
-const CLIENT_ID     = 'ec3ltos';
-const CLIENT_SECRET = 'ALcZo53x26AarJRTvcJh8n2z5-vOA9I87OxbDFQDWgs7Y27aMztpgKbJi-kzBH3xCi30BigE_e_HJ_pVBEwl9rI';
+const CLIENT_ID     = 'ec3synergy';
+const CLIENT_SECRET = 'Generar';
 
-const REDIRECT_URI           = 'https://servproject.i3m.upv.es/ec3-ltos/auth_egi.php';
+const REDIRECT_URI           = 'https://servproject.i3m.upv.es/ec3-synergy/auth_egi.php';
 const AUTHORIZATION_ENDPOINT = 'https://aai.egi.eu/oidc/authorize';
 const TOKEN_ENDPOINT         = 'https://aai.egi.eu/oidc/token';
 const USER_INFO_ENDPOINT     = 'https://aai.egi.eu/oidc/userinfo';
@@ -45,13 +45,13 @@ else
     if ($response['code'] == 200) {
         $is_access_vo_member = false;
         foreach ($response['result']['eduperson_entitlement'] as $value) {
-		    if ($value == "urn:mace:egi.eu:group:vo.access.egi.eu:role=member#aai.egi.eu" || $value == "urn:mace:egi.eu:group:vo.access.egi.eu:role=vm_operator#aai.egi.eu") {
+		    if ($value == "urn:mace:egi.eu:group:eosc-synergy.eu:role=member#aai.egi.eu" || $value == "urn:mace:egi.eu:group:eosc-synergy.eu:role=vm_operator#aai.egi.eu") {
 			    $is_access_vo_member = true;
 		    }
         }
         if (!$is_access_vo_member) {
 		header("HTTP/1.1 401 Unauthorized");
-		echo "Not Authorized. You must be part of the EGI Access vo (vo.access.egi.eu)";
+		echo "Not Authorized. You must be part of the EOSC-Synergy VO (eosc-synergy.eu)";
                 die();
 	} else {
             $_SESSION["egi_user_name"] = $response['result']['name'];
@@ -59,7 +59,7 @@ else
             $_SESSION["egi_code"] = $_GET['code'];
         }
 
-        header('Location: https://servproject.i3m.upv.es/ec3-ltos/index.php');
+        header('Location: https://servproject.i3m.upv.es/ec3-synergy/index.php');
     } else {
         header("HTTP/1.1 401 Unauthorized");
         echo "Non Authorized";
