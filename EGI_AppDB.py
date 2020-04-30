@@ -28,7 +28,7 @@ __license__ = "Apache Licence v2.0"
 #apikey = "51db5c98-96fb-4566-866b-98b3d470170e"  # <== Change here!
 #vo = "training.egi.eu"  # <== Change here!
 #vo = "fedcloud.egi.eu"
-vo = "vo.access.egi.eu"
+vo = "eosc-synergy.eu"
 
 def check_supported_VOs(data):
     if 'provider:image' in data['virtualization:provider']:
