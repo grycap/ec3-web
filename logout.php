@@ -12,6 +12,6 @@
     unset ($_SESSION['egi_user_name']);
     session_destroy();
     //session_unset();
-    header('Location: https://marketplace.egi.eu/42-applications-on-demand'); 
+    header('Location: https://www.eosc-synergy.eu/'); 
     /* Or whatever document you want to show afterwards */
 ?>

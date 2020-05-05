@@ -1217,7 +1217,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
     }
     
     function redirection(){  
-        window.location ="https://marketplace.egi.eu/42-applications-on-demand";
+        window.location ="https://www.eosc-synergy.eu/";
     }
     </script>
 
