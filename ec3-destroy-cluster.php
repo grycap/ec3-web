@@ -72,8 +72,6 @@ if($_POST){
     }
 
     if ($provider == 'openstack'){
-        #$proxy = getSSLPage("https://etokenserver.ct.infn.it:8443/eTokenServer/eToken/9001b766b88b2090418aa99b020755b9?voms=vo.access.egi.eu:/vo.access.egi.eu&proxy-renewal=true&disable-voms-proxy=false&rfc-proxy=true&cn-label=eToken:" . $user_sub);
-        #$proxy = str_replace("\n", "\\n", $proxy);
         if($access_token!=""){
             //ahora recuperamos la linea de credenciales del IM
             $im_line="";
@@ -100,7 +98,7 @@ if($_POST){
                  $im_username = "";
                  $im_pass = "";
                  $endpoint = "";
-                 $file = fopen("/var/www/.ec3ltos/clusters/" . $clustername, "r") or exit("Unable to find the cluster data for cluster:" . $clustername . ". Is the cluster name correct?");
+                 $file = fopen("/var/www/.ec3synergy/clusters/" . $clustername, "r") or exit("Unable to find the cluster data for cluster:" . $clustername . ". Is the cluster name correct?");
                  $logs = fopen("/tmp/amcaar_logs.txt", "w");
                  while(!feof($file)){
                     $line = fgets($file);
@@ -127,13 +125,8 @@ if($_POST){
              }
 
             $tenant = "openid";
-            $domain = "EGI_access";
-            if (strpos($endpoint, "cesga.es")) $domain = "vo.access.egi.eu";
-            if (strpos($endpoint, "recas.ba.infn.it")) {
-               $tenant = "oidc";
-               $domain = "EGI_fedcloud";
-            }
-
+            $domain = "eosc-synergy.eu";                                                                                                                                   if (strpos($endpoint, "ifca.es")) {                                                                                                                                $domain = "VO:eosc-synergy.eu";                                                                                                                            }
+            
             //Y escribimos el nuevo fichero auth
             $gestor = fopen($auth_file, "w");
             #fwrite($gestor, "id = occi; type = OCCI; proxy = " . $proxy . "; host = " . $endpoint . PHP_EOL);
@@ -170,8 +163,8 @@ if($_POST){
     if($status){
 	// Esperamos un poco para asegurarnos de borrar el fichero
         sleep(10);
-        if (file_exists('/var/www/.ec3ltos/clusters/'. $clustername)) {
-            unlink('/var/www/.ec3ltos/clusters/'. $clustername);
+        if (file_exists('/var/www/.ec3synergy/clusters/'. $clustername)) {
+            unlink('/var/www/.ec3synergy/clusters/'. $clustername);
         }
         echo "{}";
     } else {

@@ -74,19 +74,14 @@ function generate_auth_file_fedcloud($endpoint, $clustername) {
         $access_token = $_SESSION["egi_access_token"];
     }
 
-#    $proxy = getSSLPage("https://etokenserver.ct.infn.it:8443/eTokenServer/eToken/08b435574d4f19c734f19514828ad0ab?voms=vo.access.egi.eu:/vo.access.egi.eu&proxy-renewal=true&disable-voms-proxy=false&rfc-proxy=true&cn-label=eToken:" . $user_sub);
-#    $proxy = getSSLPage("https://etokenserver.ct.infn.it:8443/eTokenServer/eToken/9001b766b88b2090418aa99b020755b9?voms=vo.access.egi.eu:/vo.access.egi.eu&proxy-renewal=true&disable-voms-proxy=false&rfc-proxy=true&cn-label=eToken:" . $user_sub);
-#    $proxy = str_replace("\n", "\\n", $proxy);
  
     $gestor = fopen($auth, "w");
 #    fwrite($gestor, "id = occi; type = OCCI; proxy = " . $proxy . "; host = " . $endpoint . PHP_EOL);
 
     $tenant = "openid";
-    $domain = "EGI_access";
-    if (strpos($endpoint, "cesga.es")) $domain = "vo.access.egi.eu";
-    if (strpos($endpoint, "recas.ba.infn.it")) {
-        $tenant = "oidc";
-        $domain = "EGI_fedcloud";
+    $domain = "eosc-synergy.eu";
+    if (strpos($endpoint, "ifca.es")) {
+        $domain = "VO:eosc-synergy.eu";
     }
 
     fwrite($gestor, "id = egi; type = OpenStack; host = " . $endpoint . "; username = egi.eu; auth_version = 3.x_oidc_access_token; password = " . $access_token . "; tenant = " . $tenant . "; domain = " . $domain . PHP_EOL);
@@ -104,7 +99,7 @@ function generate_auth_file_fedcloud($endpoint, $clustername) {
 //function generate_system_image_radl($cloud, $ami, $region, $ami_user, $ami_password, $instancetype_front, $instancetype_wn, $front_cpu, $front_mem, $wn_cpu, $wn_mem, $nodes, $os) {
 function generate_system_image_radl($cloud, $ami, $region, $ami_user, $ami_password, $instancetype_front, $instancetype_wn, $front_cpu, $front_mem, $wn_cpu, $wn_mem, $nodes, $kubeToken){
     $rand_str = random_string(4); 
-    $templates_path = (isset($GLOBALS['templates_path']) ? $GLOBALS['templates_path'] : "/var/www/html/ec3-ltos/command/templates");
+    $templates_path = (isset($GLOBALS['templates_path']) ? $GLOBALS['templates_path'] : "/var/www/html/ec3-synergy/command/templates");
     $path_to_new_file = $templates_path . '/system_'.$rand_str.'.radl';
     $file_name = 'system_'.$rand_str;
     
@@ -133,7 +128,7 @@ function generate_system_image_radl($cloud, $ami, $region, $ami_user, $ami_passw
     //DIVIDE CPU-MEM FROM $instancetype_wn
     $wn_details = explode(";", $instancetype_wn);
     
-    fwrite($new_file, "    disk.0.image.url = 'appdb://".$region. "/" .$ami. "?vo.access.egi.eu' and".PHP_EOL);
+    fwrite($new_file, "    disk.0.image.url = 'appdb://".$region. "/" .$ami. "?eosc-synergy.eu' and".PHP_EOL);
     #fwrite($new_file, "    disk.0.image.url = 'ost://".$region. "/" .$ami. "' and".PHP_EOL);
     fwrite($new_file, "    cpu.count>=".$front_details[0]." and".PHP_EOL);
     fwrite($new_file, "    memory.size>=".$front_details[1]."m and".PHP_EOL);
@@ -155,7 +150,7 @@ function generate_system_image_radl($cloud, $ami, $region, $ami_user, $ami_passw
 
     //Depende del cloud el formato de URL cambia:
     #fwrite($new_file, "    disk.0.image.url = 'ost://".$region. "/" .$ami. "' and".PHP_EOL);
-    fwrite($new_file, "    disk.0.image.url = 'appdb://".$region. "/" .$ami. "?vo.access.egi.eu' and".PHP_EOL);
+    fwrite($new_file, "    disk.0.image.url = 'appdb://".$region. "/" .$ami. "?eosc-synergy.eu' and".PHP_EOL);
     fwrite($new_file, "    cpu.count>=".$wn_details[0]." and".PHP_EOL);
     fwrite($new_file, "    memory.size>=".$wn_details[1]."m and".PHP_EOL);
     fwrite($new_file, "    disk.0.os.credentials.username = '".$fcuser."'".PHP_EOL);
