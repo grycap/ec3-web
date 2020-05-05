@@ -212,8 +212,8 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <h2 class="section-heading">Deploy a virtual elastic cluster in minutes</h2>
-                    <h3 class="section-subheading text-muted">No registration is required. You only need valid user credentials for the Cloud. Pay only for the resources consumed.<br> This service is offered at no additional cost.</h3>
-                </div>
+                    <h3 class="section-subheading text-muted">No registration is required. You only need valid user credentials to access the EGI resources.<br> This service is offered at no additional cost.</h3>
+               </div>
             </div>
             <div class="row text-center">
                 <div class="col-md-4">
@@ -258,7 +258,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <h2 class="section-heading">Manage your clusters deployed with EC3</h2>
-                    <h3 class="section-subheading text-muted-contact">You will need to provide valid credentials for the Cloud provider. Not sure if this is safe? <a <a href="http://ec3.readthedocs.org/en/devel/ec3.html#authorization-file">Check the docs.</a>
+                    <!--<h3 class="section-subheading text-muted-contact">You will need to provide valid credentials for the Cloud provider. Not sure if this is safe? <a <a href="http://ec3.readthedocs.org/en/devel/ec3.html#authorization-file">Check the docs.</a>-->
                       <br>
                       Wanted to deploy a hybrid cluster? You can do it with the <a href="https://github.com/grycap/ec3">CLI</a>.
                     </h3>
@@ -314,8 +314,8 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <h2 class="section-heading">Contact Us</h2>
-                    <h3 class="section-subheading-contact text-muted-contact">In case of problems, please send a request for support at: <a href="mailto:applications-platform-info@mailman.egi.eu">applications-platform-info@mailman.egi.eu</a> </h3>
-					<h3 class="section-subheading-contact text-muted-contact">The request will generate a GGUS ticket to track your problem.</h3>
+                    <h3 class="section-subheading-contact text-muted-contact">In case of problems, please send a request for support at: <a href="mailto:services@eosc-synergy.eu">services@eosc-synergy.eu</a> </h3>
+					<!--<h3 class="section-subheading-contact text-muted-contact">The request will generate a GGUS ticket to track your problem.</h3>-->
 					<h3 class="section-subheading-contact text-muted-contact">Anytime the user will be notified by e-mail about the status of his/her request.</h3>
                 </div>
             </div>
