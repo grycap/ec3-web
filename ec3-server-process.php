@@ -128,8 +128,11 @@ function generate_system_image_radl($cloud, $ami, $region, $ami_user, $ami_passw
     //DIVIDE CPU-MEM FROM $instancetype_wn
     $wn_details = explode(";", $instancetype_wn);
     
-    fwrite($new_file, "    disk.0.image.url = 'appdb://".$region. "/" .$ami. "?eosc-synergy.eu' and".PHP_EOL);
-    #fwrite($new_file, "    disk.0.image.url = 'ost://".$region. "/" .$ami. "' and".PHP_EOL);
+    if ($region == "IFCA-LCG2") {
+        fwrite($new_file, "    disk.0.image.url = 'ost://api.cloud.ifca.es/" .$ami. "' and".PHP_EOL);
+    } else {
+        fwrite($new_file, "    disk.0.image.url = 'appdb://".$region. "/" .$ami. "?eosc-synergy.eu' and".PHP_EOL);
+    }
     fwrite($new_file, "    cpu.count>=".$front_details[0]." and".PHP_EOL);
     fwrite($new_file, "    memory.size>=".$front_details[1]."m and".PHP_EOL);
     fwrite($new_file, "    disk.0.os.credentials.username = '".$fcuser."' and".PHP_EOL);
@@ -149,8 +152,11 @@ function generate_system_image_radl($cloud, $ami, $region, $ami_user, $ami_passw
     fwrite($new_file, "    disk.0.os.name='linux' and".PHP_EOL);
 
     //Depende del cloud el formato de URL cambia:
-    #fwrite($new_file, "    disk.0.image.url = 'ost://".$region. "/" .$ami. "' and".PHP_EOL);
-    fwrite($new_file, "    disk.0.image.url = 'appdb://".$region. "/" .$ami. "?eosc-synergy.eu' and".PHP_EOL);
+    if ($region == "IFCA-LCG2") {
+        fwrite($new_file, "    disk.0.image.url = 'ost://api.cloud.ifca.es/" .$ami. "' and".PHP_EOL);
+    } else {
+        fwrite($new_file, "    disk.0.image.url = 'appdb://".$region. "/" .$ami. "?eosc-synergy.eu' and".PHP_EOL);
+    }
     fwrite($new_file, "    cpu.count>=".$wn_details[0]." and".PHP_EOL);
     fwrite($new_file, "    memory.size>=".$wn_details[1]."m and".PHP_EOL);
     fwrite($new_file, "    disk.0.os.credentials.username = '".$fcuser."'".PHP_EOL);
