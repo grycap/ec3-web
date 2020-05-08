@@ -78,13 +78,17 @@ function generate_auth_file_fedcloud($endpoint, $clustername) {
     $gestor = fopen($auth, "w");
 #    fwrite($gestor, "id = occi; type = OCCI; proxy = " . $proxy . "; host = " . $endpoint . PHP_EOL);
 
+    $api_version = "2.0";
     $tenant = "openid";
     $domain = "eosc-synergy.eu";
     if (strpos($endpoint, "ifca.es")) {
         $domain = "VO:eosc-synergy.eu";
     }
+    if (strpos($endpoint, "keystone3.ui.savba.sk")) {
+        $api_version = "1.1";
+    }
 
-    fwrite($gestor, "id = egi; type = OpenStack; host = " . $endpoint . "; username = egi.eu; auth_version = 3.x_oidc_access_token; password = " . $access_token . "; tenant = " . $tenant . "; domain = " . $domain . PHP_EOL);
+    fwrite($gestor, "id = egi; type = OpenStack; host = " . $endpoint . "; username = egi.eu; auth_version = 3.x_oidc_access_token; password = " . $access_token . "; tenant = " . $tenant . "; domain = " . $domain . "; api_version = " . $api_version . PHP_EOL);
     //Write needed credentials of IM and VMRC
     fwrite($gestor, "type = InfrastructureManager; username = " . random_string(8) . "; password = " . random_string(10). PHP_EOL);
     fclose($gestor);

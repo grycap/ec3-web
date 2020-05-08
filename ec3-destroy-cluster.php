@@ -124,13 +124,20 @@ if($_POST){
                  fclose($logs);
              }
 
+            $api_version = "2.0";
             $tenant = "openid";
-            $domain = "eosc-synergy.eu";                                                                                                                                   if (strpos($endpoint, "ifca.es")) {                                                                                                                                $domain = "VO:eosc-synergy.eu";                                                                                                                            }
+            $domain = "eosc-synergy.eu";
+            if (strpos($endpoint, "ifca.es")) {
+                $domain = "VO:eosc-synergy.eu";
+            }
+            if (strpos($endpoint, "keystone3.ui.savba.sk")) {
+                $api_version = "1.1";
+            }
             
             //Y escribimos el nuevo fichero auth
             $gestor = fopen($auth_file, "w");
             #fwrite($gestor, "id = occi; type = OCCI; proxy = " . $proxy . "; host = " . $endpoint . PHP_EOL);
-            fwrite($gestor, "id = egi; type = OpenStack; host = " . $endpoint . "; username = egi.eu; auth_version = 3.x_oidc_access_token; password = " . $access_token . "; tenant = " . $tenant . "; domain = " . $domain . PHP_EOL);
+            fwrite($gestor, "id = egi; type = OpenStack; host = " . $endpoint . "; username = egi.eu; auth_version = 3.x_oidc_access_token; password = " . $access_token . "; tenant = " . $tenant . "; domain = " . $domain . "; api_version = " . $api_version . PHP_EOL);
             fwrite($gestor, $im_line. PHP_EOL);
             fclose($gestor);
         } else {
