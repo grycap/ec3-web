@@ -1,8 +1,4 @@
 <?php
-//Tuto basico de PHP: http://www.w3schools.com/php/php_variables.asp
-
-//la clase Process habra que sacarla a un fichero ya que es comun
-
 include_once('process.php');
 
 // Generates a random string for the name of the cluster
@@ -50,7 +46,6 @@ if($_POST){
         exit("ERROR: No provider parameter specified.");
     }
     
-    //$auth_file = "/tmp/auth_" .substr($clustername, 8);
     $auth_file = "/tmp/auth_" .$clustername;
 
     if(!isset($_SESSION)) session_start();
@@ -73,11 +68,11 @@ if($_POST){
 
     if ($provider == 'openstack'){
         if($access_token!=""){
-            //ahora recuperamos la linea de credenciales del IM
+            //recover credentials for IM
             $im_line="";
 
             if (file_exists($auth_file)){
-                //leemos el antiguo fichero de credenciales
+                //read old credentials file
                 $file = fopen($auth_file, "r") or exit("Unable to find the old auth file:" . $auth_file . ". Is the cluster name correct?");
                 while(!feof($file)){
                     $line = fgets($file);
@@ -93,7 +88,7 @@ if($_POST){
                 }
                 fclose($file);
             } else {
-                //si no existe el $auth_file, la info del IM se puede sacar de "/var/www/html/.ec3/clusters/" . $clustername
+                //if the $auth_file does not exist, we can get the IM info from "/var/www/html/.ec3/clusters/" . $clustername
                 //en el system front/auth buscar la linea de "type": "InfrastructureManager" y esa es la que tenemos que guardar en $im_line
                  $im_username = "";
                  $im_pass = "";
@@ -103,11 +98,11 @@ if($_POST){
                  while(!feof($file)){
                     $line = fgets($file);
                     if(strstr($line, "auth")){
-                        //coger los datos necesarios del IM, la linea de auth tiene formato JSON
+                        //take auth values for IM, the info is in JSON format
                         $auth_data_json = substr($line, strpos($line, "auth = ")+8, strpos($line, "' and") - (strpos($line, "auth = ")+8));
                         $json_decoded = json_decode($auth_data_json);
                         fwrite($logs, $auth_data_json);
-                        //acceder a username y password de im y guardarlo en dos variables
+                        //access  username and password of IM and save it
                         for ($i = 0; $i < count($json_decoded); $i++) {
                             if ($json_decoded[$i]->{'type'} == "InfrastructureManager") {
                                 $im_username = $json_decoded[$i]->{'username'};
@@ -134,9 +129,8 @@ if($_POST){
                 $api_version = "1.1";
             }
             
-            //Y escribimos el nuevo fichero auth
+            //Write new auth file
             $gestor = fopen($auth_file, "w");
-            #fwrite($gestor, "id = occi; type = OCCI; proxy = " . $proxy . "; host = " . $endpoint . PHP_EOL);
             fwrite($gestor, "id = egi; type = OpenStack; host = " . $endpoint . "; username = egi.eu; auth_version = 3.x_oidc_access_token; password = " . $access_token . "; tenant = " . $tenant . "; domain = " . $domain . "; api_version = " . $api_version . PHP_EOL);
             fwrite($gestor, $im_line. PHP_EOL);
             fclose($gestor);
@@ -145,8 +139,7 @@ if($_POST){
         }
     }
 
-    // llamamos a EC3 para eliminar el cluster
-    //$ec3_log_file = "/tmp/ec3_del_".random_string(5);
+    // Call EC3 to delete the cluster
     $ec3_log_file = "/tmp/ec3_del_". $clustername;
     if($auth_file != ""){
         $process_2 = new Process("./command/ec3 destroy --yes --force -a " . $auth_file. " " . $clustername, $ec3_log_file);
@@ -154,21 +147,20 @@ if($_POST){
         $process_2 = new Process("./command/ec3 destroy --yes --force " . $clustername, $ec3_log_file);
     }
     $pid = $process_2->start();
-    // Comprobamos si se ha eliminado correctamente
+    // check if the cluster has been properly deleted
     $status = False;
     while($process_2->status()) {
         sleep(1);
     }
 
     $log_content = file_get_contents($ec3_log_file);
-    //if(strpos($log_content, "Success") === True){
-    //if(strpos($log_content, "Error") === False && strpos($log_content, "not found") === False){
+
     if(strpos($log_content, "Error") === False){
         $status = True;
     }
     
     if($status){
-	// Esperamos un poco para asegurarnos de borrar el fichero
+	// wait a bit to delete cluster files
         sleep(10);
         if (file_exists('/var/www/.ec3synergy/clusters/'. $clustername)) {
             unlink('/var/www/.ec3synergy/clusters/'. $clustername);
@@ -177,7 +169,12 @@ if($_POST){
     } else {
         echo "Problems deleting the cluster. Try again or contact us if the error persists.";
     }
-    // TODO: borrar el fichero auth* con las credenciales del usuario del servidor, por cuestiones de seguridad
+
+    // delete log files
+    unlink($ec3_log_file);
+    if($auth_file != ""){
+        unlink($auth_file);
+    }
 
 }else {
     echo "Found errors receiving POST data";

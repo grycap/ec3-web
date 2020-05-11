@@ -1,8 +1,7 @@
 <?php
 include_once('process.php');
 
-//TODO: use clustername not a random string
-// Generates a random string for the name of the cluster
+// Generates a random string for the name of the log file
 function random_string($length) {
     $key = '';
     $keys = array_merge(range(0, 9), range('a', 'z'));
@@ -13,7 +12,6 @@ function random_string($length) {
 
     return $key;
 }
-
     
 //obtain UNITY user
 if(!isset($_SESSION)) session_start();
@@ -45,6 +43,7 @@ if(strpos($log_content, "Error") === False){
 
 if($status){
     echo $log_content;
+    unlink($ec3_log_file);
 } else{
     echo "Problems listing clusters.";
     exit(1);

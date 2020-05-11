@@ -1,16 +1,4 @@
 <?php
-//Tuto basico de PHP: http://www.w3schools.com/php/php_variables.asp
-
-//PHP is NOT case-sensitive BUT variable names are case-sensitive
-//LOS ECHO VAN DIRECTOS AL CLIENTE, PARECE QUE LOS PRINT NO
-
-//AJAX y PHP: http://www.w3schools.com/php/php_ajax_php.asp
-//Funcion PHP para ejecutar un comando linux: http://php.net/manual/en/function.exec.php
-//Funcion PHP para ejecutar un comando shell: http://php.net/manual/en/function.shell-exec.php
-
-//funcion AJAX de Jquery para enviar los datos al servidor: http://api.jquery.com/jquery.ajax/ (estan explicados todos los formatos disponibles)
-//AJAX envia los datos en UTF-8, si no se ven bien probar: http://www.desarrolloweb.com/articulos/convertir-caracteres-utf-8-con-php.html
-
 include_once('process.php');
 
 // Generates a random string for the name of the cluster
@@ -42,12 +30,9 @@ function getSSLPage($url) {
     return $result;
 }
 
-//NOTA: no es posible la sobrecarga de metodos en PHP porque solo tiene en cuenta el nombre, no los parametros
-
 // Generates the auth file for FedCloud deployments
 //function generate_auth_file_fedcloud($proxy, $endpoint, $myproxyserver, $myproxyuser, $myproxypass) {
 function generate_auth_file_fedcloud($endpoint, $clustername) {
-    //$auth = '';
     //$auth = tempnam("/tmp", "auth_");
     $auth = "/tmp/auth_" . $clustername;
     chmod($auth, 0644);
@@ -89,12 +74,10 @@ function generate_auth_file_fedcloud($endpoint, $clustername) {
     }
 
     fwrite($gestor, "id = egi; type = OpenStack; host = " . $endpoint . "; username = egi.eu; auth_version = 3.x_oidc_access_token; password = " . $access_token . "; tenant = " . $tenant . "; domain = " . $domain . "; api_version = " . $api_version . PHP_EOL);
-    //Write needed credentials of IM and VMRC
+    //Write needed credentials for IM 
     fwrite($gestor, "type = InfrastructureManager; username = " . random_string(8) . "; password = " . random_string(10). PHP_EOL);
     fclose($gestor);
 
-    //to delete an empty file that tempnam creates
-    //unlink($auth);
     return $auth;
 }
 
@@ -173,8 +156,6 @@ function generate_system_image_radl($cloud, $ami, $region, $ami_user, $ami_passw
 
 
 if($_POST){
-    //echo "recibo algo POST";
-    //echo "{}"
     $possible_sw = array("octave", "gnuplot", "galaxy", "namd", "extra_hd", "spark");    
 
     // El string recibido tiene este aspecto: cloud=ec2&accesskey=ffffff&secretkey=hhhhhhhhh&os-ec2=Ubuntu+12.04&lrms-ec2=SLURM&clues=clues&nodes-ec2=5
@@ -290,6 +271,7 @@ if($_POST){
             $ec3_del_file = "/tmp/ec3_del_".$name;
             $process_2 = new Process("./command/ec3 destroy --yes --force " . $name, $ec3_del_file);
             $process_2->start(); 
+            unlink($ec3_del_file);
             exit(1);
         }
     }    
@@ -311,8 +293,13 @@ if($_POST){
         exit(1);
     }
 
-    //Devolvemos los datos del front-end desplegado
+    // Return data of the new cluster
     echo "{\"ip\":\"$ip\",\"name\":\"$cluster_name\",\"username\":\"$user\",\"secretkey\":\"$secret_key\"}";
+    
+    // Delete log files from server
+    unlink($ec3_ssh_file);
+    unlink($ec3_log_file);
+
 }else {
     echo "Found errors receiving POST data";
 }

@@ -5,7 +5,7 @@ if (isset($_GET['clustername'])) {
  
     $clustername = $_GET['clustername'];
 	
-    //Actualizamos el proxy
+    //update the proxy
     if(!isset($_SESSION)) session_start();
 
     if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
@@ -22,19 +22,18 @@ if (isset($_GET['clustername'])) {
         sleep(1);
     }
 
-	//Ahora procesamos la salida y leemos el fichero temporal donde se guarda la clave privada
+	//process output and read the temp file where private key is
 	$ssh_response = file_get_contents($ec3_ssh_file);
 	$path_to_key = substr($ssh_response, 7, 14);
 	if($path_to_key != ""){
 		header('Content-type: text/plain');
 		header('Content-Disposition: attachment; filename="key.pem"');
-		echo file_get_contents($path_to_key);
+        echo file_get_contents($path_to_key);
+        unlink($ec3_ssh_file);
 	} else {
 		echo "Error getting secret key info. File not exists.";
 		exit(1);
 	}
-	
-    //Devolvemos los datos del front-end desplegado
 } else {
     echo "No clustername specified";
     exit(1);
