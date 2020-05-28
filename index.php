@@ -258,9 +258,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <h2 class="section-heading">Manage your clusters deployed with EC3</h2>
-                    <!--<h3 class="section-subheading text-muted-contact">You will need to provide valid credentials for the Cloud provider. Not sure if this is safe? <a <a href="http://ec3.readthedocs.org/en/devel/ec3.html#authorization-file">Check the docs.</a>-->
-                      <br>
-                      Wanted to deploy a hybrid cluster? You can do it with the <a href="https://github.com/grycap/ec3">CLI</a>.
+                    <h3 class="section-subheading text-muted-contact">Wanted to deploy a hybrid cluster? You can do it with the <a href="https://github.com/grycap/ec3">CLI</a>.
                     </h3>
                 </div>
             </div>
