@@ -375,7 +375,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                         <option value=""></option>
                         <option value="slurm">SLURM</option>
                         <option value="torque">Torque</option>
-                        <option value="sge">SGE</option>
+                        <!--<option value="sge">SGE</option>-->
                         <option value="mesos">Mesos + Marathon + Chronos</option>
                         <option value="kubernetes">Kubernetes</option>
                         <option value="oscar">OSCAR</option>
@@ -557,7 +557,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                         
                        <div class="col-sm-8">
                             </br>
-                            <p> Cluster name (must be unique): </p>
+                            <p> Cluster name (must be unique and without spaces): </p>
                             <input type="text" class="form-control" id="cluster-name" name="cluster-name" placeholder="Cluster name" data-validate="validateValue">
                         </div>
                     </div>
@@ -1319,7 +1319,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                            "<div> <b>Local Resource Management System: </b>" + lrms + "</div>" +
                            "<div> <b>Software packages: </b>" + sw + "</div>" +
                            "<div> <b>Maximum number of nodes: </b>" + nodes + "</div>" +
-                           "<div> <b>Cluster name: </b>" + clustername + "</div>";
+                           "<div> <b>Cluster name: </b>" + clustername.replace(/\s/g, '') + "</div>";
                 
                 if(kubeToken != ''){
                     retValue += "<div> <b> Kubernetes token: </b>" + kubeToken + "</div>";
