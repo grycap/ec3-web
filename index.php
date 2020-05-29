@@ -1029,7 +1029,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                            "<div> <b>Local Resource Management System: </b>" + lrms + "</div>" +
                            "<div> <b>Software packages: </b>" + sw + "</div>" +
                            "<div> <b>Maximum number of nodes: </b>" + nodes + "</div>" +
-                           "<div> <b>Cluster name: </b>" + clustername.replace(/\s/g, '') + "</div>";
+                           "<div> <b>Cluster name: </b>" + clustername.replace(/\s/g, '_') + "</div>";
                 
                 if(kubeToken != ''){
                     retValue += "<div> <b> Kubernetes token: </b>" + kubeToken + "</div>";
