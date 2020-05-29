@@ -210,6 +210,9 @@ if($_POST){
         $nodes = (isset($_POST['nodes-fedcloud']) ? $_POST['nodes-fedcloud'] : "1");
         
         $cluster_name = (isset($_POST['cluster-name']) ? $_POST['cluster-name'] : "");
+        if (strpos($cluster_name, ' ')){
+            $cluster_name = str_replace(' ', '_', $cluster_name);
+        }
         
         $user_sub = $_SESSION["egi_user_sub"];
         
