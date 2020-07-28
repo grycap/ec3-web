@@ -156,7 +156,7 @@ function generate_system_image_radl($cloud, $ami, $region, $ami_user, $ami_passw
 
 
 if($_POST){
-    $possible_sw = array("octave", "gnuplot", "galaxy", "namd", "extra_hd", "spark");    
+    $possible_sw = array("octave", "gnuplot", "galaxy", "namd", "extra_hd", "spark", "saps");    
 
     // El string recibido tiene este aspecto: cloud=ec2&accesskey=ffffff&secretkey=hhhhhhhhh&os-ec2=Ubuntu+12.04&lrms-ec2=SLURM&clues=clues&nodes-ec2=5
     // Pero tenemos que devolver un JSON si todo ha ido bien
@@ -193,7 +193,12 @@ if($_POST){
         $sw = "clues2 refreshtoken ";
         foreach ($possible_sw as $item_sw) {
             if (isset($_POST[$item_sw])) {
-                $sw .= $item_sw . " ";
+				//Add NFS to SAPS cluster BEFORE the SAPS recipe
+				if ($item_sw == 'saps'){
+					$sw .= 'nfs saps' . " ";	
+				} else{
+	                $sw .= $item_sw . " ";
+				}
             }
         }
         

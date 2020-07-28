@@ -404,24 +404,30 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                             <div class="col-sm-4"><input type="checkbox" value="maui" name="maui" id="maui" title="A job scheduler for use with Torque"/> Maui </div>
                         </div>-->
                         <div class="row">
-                            <div class="col-sm-4"><input type="checkbox" value="octave" name="octave" id="octave" title="A high-level programming language, primarily intended for numerical computations"/> Octave </div>
-                            <div class="col-sm-4"><input type="checkbox" value="gnuplot" name="gnuplot" id="gnuplot" title="A program to generate two- and three-dimensional plots"/> Gnuplot </div>
+                            <div class="col-sm-4"><input type="checkbox" value="galaxy" name="galaxy" id="galaxy" title="Web-based platform for data intensive biomedical research. Only available with SLURM clusters." disabled/> Galaxy </div>
+                            <div class="col-sm-4"><input type="checkbox" value="spark" name="spark" id="spark" title="A unified analytics engine for large-scale data processing"/> Spark </div>
                             <div class="col-sm-4"><input type="checkbox" value="namd" name="namd" id="namd" title="A parallel, object-oriented molecular dynamics code designed for high-performance simulation of large biomolecular systems"/> Namd </div>
                             <!--<div class="col-sm-4"><input type="checkbox" value="tomcat" name="tomcat" id="tomcat" title="An open-source web server and servlet container"/> Tomcat </div>-->
                         </div>
                         <div class="row">
-                            <div class="col-sm-4"><input type="checkbox" value="galaxy" name="galaxy" id="galaxy" title="Web-based platform for data intensive biomedical research. Only available with SLURM clusters." disabled/> Galaxy </div>
-                            <div class="col-sm-3"><input type="checkbox" value="spark" name="spark" id="spark" title="A unified analytics engine for large-scale data processing"/> Spark </div>
+                            <div class="col-sm-4"><input type="checkbox" value="saps" name="saps" id="saps" title="Serviço Automático de Processamento do SEBAL"/> SAPS </div>
+							<div class="col-sm-3"><input type="checkbox" value="gnuplot" name="gnuplot" id="gnuplot" title="A program to generate two- and three-dimensional plots"/> Gnuplot </div>
                             <div class="col-sm-5"><input type="checkbox" value="extra_hd" name="extra_hd" id="extra_hd" title="Add a 100GB Extra HD to the cluster"/> 100GB Extra HD</div>
                             <!--<div class="col-sm-4"><input type="checkbox" value="hadoop" name="hadoop" id="hadoop" title="A framework that allows for the distributed processing of large data sets across clusters of computers using simple programming models"/> Hadoop </div>-->
                             <!--<div class="col-sm-4"><input type="checkbox" value="galaxy-tools" name="galaxy-tools" id="galaxy-tools" title="Web-based platform for data intensive biomedical research"/> Galaxy tools </div>-->
                             <!--<div class="col-sm-4"><input type="checkbox" value="sshtunnels" name="sshtunnels" id="sshtun" title="Used to interconnect working nodes in an hybrid cloud scenario"/> SSH tunnels </div>-->
                         </div>
+						 <div class="row">
+                            <div class="col-sm-4"><input type="checkbox" value="octave" name="octave" id="octave" title="A high-level programming language, primarily intended for numerical computations"/> Octave </div>
+                            <!--<div class="col-sm-4"><input type="checkbox" value="gnuplot" name="gnuplot" id="gnuplot" title="A program to generate two- and three-dimensional plots"/> Gnuplot </div> -->
+                            <!--<div class="col-sm-4"><input type="checkbox" value="namd" name="namd" id="namd" title="A parallel, object-oriented molecular dynamics code designed for high-performance simulation of large biomolecular systems"/> Namd </div> -->
+                            <!--<div class="col-sm-4"><input type="checkbox" value="tomcat" name="tomcat" id="tomcat" title="An open-source web server and servlet container"/> Tomcat </div>-->
+                        </div>
                         <!--<p style="margin-bottom:0px; margin-top:10px;">Software utilities:</p>-->
                     </div>
                 </div>
                 
-                <p style="padding-top:55px;">Is your favourite software not available? <a href="mailto:ec3@upv.es?Subject=[EC3]%20Unsupported%20Software" target="_top">Let us know!</a></p>
+                <p style="padding-top:85px;">Is your favourite software not available? <a href="mailto:ec3@upv.es?Subject=[EC3]%20Unsupported%20Software" target="_top">Let us know!</a></p>
             </div>
 
 
@@ -733,7 +739,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                 $.fn.wizard.logging = true;
                 var wizard = $('#fedcloud-wizard').wizard({
                     keyboard : false,
-                    contentHeight : 500,
+                    contentHeight : 530,
                     contentWidth : 700,
                     backdrop: 'static',
                     submitUrl: "ec3-server-process.php"
@@ -996,6 +1002,7 @@ if (!isset($_SESSION["egi_user_sub"]) or $_SESSION["egi_user_sub"] == "") {
                 if( $('.fedcloud.col-sm-12 #chronos').prop('checked') ) sw += "Chronos ";
                 if( $('.fedcloud.col-sm-12 #hadoop').prop('checked') ) sw += "Hadoop ";
                 if( $('.fedcloud.col-sm-12 #namd').prop('checked') ) sw += "Namd";
+				if( $('.fedcloud.col-sm-12 #saps').prop('checked') ) sw += "SAPS";
 
                 if (sw == ''){
                     sw +="Nothing selected";
