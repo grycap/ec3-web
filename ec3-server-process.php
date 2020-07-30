@@ -193,12 +193,12 @@ if($_POST){
         $sw = "clues2 refreshtoken ";
         foreach ($possible_sw as $item_sw) {
             if (isset($_POST[$item_sw])) {
-				//Add NFS to SAPS cluster BEFORE the SAPS recipe
-				if ($item_sw == 'saps'){
-					$sw .= 'nfs saps' . " ";	
-				} else{
-	                $sw .= $item_sw . " ";
-				}
+                //Add NFS to SAPS cluster BEFORE the SAPS recipe
+                if ($item_sw == 'saps'){
+                    $sw .= 'nfs saps' . " ";
+                } else{
+	            $sw .= $item_sw . " ";
+                }
             }
         }
         
