@@ -76,7 +76,8 @@ def get_sites():
             providersID.append(site['site:service']['@id'])
 
     # Get provider metadata
-    endpoints = []
+    endpoints = {}
+    cont = 1
     for ID in providersID:
         data = appdb_call('/rest/1.0/va_providers/%s' % ID)
         if check_supported_VOs(data):
@@ -87,7 +88,10 @@ def get_sites():
                     provider_name += " (CRITICAL state!)"
                 provider_endpoint_url = data['virtualization:provider']['provider:url']
                 url = urlparse(provider_endpoint_url)
-                endpoints.append(provider_name + ";" + "%s://%s" % url[0:2])
+                if provider_name in endpoints:
+                    provider_name += str(cont)
+                    cont += 1
+                endpoints[provider_name] = provider_name + ";" + "%s://%s" % url[0:2]
 
     return endpoints
 
@@ -176,7 +180,7 @@ if __name__ == "__main__":
     elif len(sys.argv) > 1:
         option = sys.argv[1]
     if option == "sites":
-        for site in get_sites():
+        for site in get_sites().values():
             if site.endswith("/"):
                 print(site[:-1])
             else:
