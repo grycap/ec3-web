@@ -18,9 +18,22 @@
 # /
 
 import sys
-import httplib
+import requests
+try:
+    # to avoid Warnings 
+    import urllib3
+    urllib3.disable_warnings()
+    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
+    from requests.packages.urllib3.exceptions import InsecureRequestWarning
+    requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
+except:
+    pass
 import xmltodict
-from urlparse import urlparse
+try:
+    from urllib.parse import urlparse
+except:
+    from urlparse import urlparse
 
 __copyright__ = "Copyright (c) 2016 EGI Foundation"
 __license__ = "Apache Licence v2.0"
@@ -37,22 +50,20 @@ def check_supported_VOs(data):
                 return True
     return False
 
-def appdb_call(c):
-    res = None
-    cont = 0
-    while res is None and cont < 3:
-        cont += 1
-        try:
-            conn = httplib.HTTPSConnection('appdb.egi.eu')
-            conn.request("GET", c)
-            data = conn.getresponse().read()
-            conn.close()
-            data.replace('\n','')
-            res = xmltodict.parse(data)['appdb:appdb']
-        except:
-            pass
+def appdb_call(path, retries=3, url='http://appdb.egi.eu'):
+    """Basic AppDB REST API call."""
+    data = None
+    try:
+        cont = 0
+        while data is None and cont < retries:
+            cont += 1
+            resp = requests.request("GET", url + path, verify=False)
+            if resp.status_code == 200:
+                data = xmltodict.parse(resp.text.replace('\n', ''))['appdb:appdb']
+    except Exception as ex:
+        data = {}
 
-    return res
+    return data
 
 def get_sites():
     data = appdb_call('/rest/1.0/sites?flt=%%2B%%3Dvo.name:%s&%%2B%%3Dsite.supports:1' % vo)
@@ -129,6 +140,34 @@ def get_instances(endpoint):
     return instances
 
 
+def get_project_id(endpoint):
+    data = appdb_call('/rest/1.0/sites?flt=%%2B%%3Dvo.name:%s&%%2B%%3Dsite.supports:1' % vo)
+    for site in data['appdb:site']:
+        if isinstance(site['site:service'], list):
+            services = site['site:service']
+        else:
+            services = [site['site:service']]
+
+        for service in services:
+            try:
+                va_data = appdb_call('/rest/1.0/va_providers/%s' % service['@id'])
+                if (va_data['virtualization:provider']['@service_type'] == 'org.openstack.nova' and
+                    va_data['virtualization:provider']['provider:name'] == endpoint):
+                
+                    if isinstance(va_data['virtualization:provider']['provider:shares']['vo:vo'], list):
+                        shares = va_data['virtualization:provider']['provider:shares']['vo:vo']
+                    else:
+                        shares = [va_data['virtualization:provider']['provider:shares']['vo:vo']]
+
+                    for share in shares:
+                        if share["#text"] == vo:
+                            return share['@projectid']
+            except:
+                continue
+
+    return None
+
+
 if __name__ == "__main__":
     option = "all"
     if len(sys.argv) > 2:
@@ -151,5 +190,6 @@ if __name__ == "__main__":
     elif option == "instances":
         for inst_desc, inst_name in get_instances(endpoint):
             print("%s;%s" % (inst_desc, inst_name))
-
+    elif option == "projectid":
+        print("%s" % get_project_id(endpoint))
 
