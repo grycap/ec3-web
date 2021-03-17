@@ -82,8 +82,13 @@ function generate_auth_file_fedcloud($endpoint, $clustername) {
 #    fwrite($gestor, "id = occi; type = OCCI; proxy = " . $proxy . "; host = " . $endpoint . PHP_EOL);
 
     $tenant = "openid";
-    $domain = "EGI_access";
-    if (strpos($endpoint, "cesga.es")) $domain = "vo.access.egi.eu";
+    $domain = "vo.access.egi.eu";
+    # Get domain (project id)
+    exec('python EGI_AppDB.py ' . $endpoint . ' projectid', $project_id_res);
+    if (! is_null($project_id_res[0])) {
+        $domain = $project_id_res[0];
+    }
+
     if (strpos($endpoint, "recas.ba.infn.it")) {
         $tenant = "oidc";
         $domain = "EGI_fedcloud";
