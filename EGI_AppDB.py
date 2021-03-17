@@ -156,7 +156,8 @@ def get_project_id(endpoint):
             try:
                 va_data = appdb_call('/rest/1.0/va_providers/%s' % service['@id'])
                 if (va_data['virtualization:provider']['@service_type'] == 'org.openstack.nova' and
-                    va_data['virtualization:provider']['provider:name'] == endpoint):
+                    (va_data['virtualization:provider']['provider:name'] == endpoint or
+                    endpoint in va_data['virtualization:provider']['provider:endpoint_url'])):
                 
                     if isinstance(va_data['virtualization:provider']['provider:shares']['vo:vo'], list):
                         shares = va_data['virtualization:provider']['provider:shares']['vo:vo']
