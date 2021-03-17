@@ -168,6 +168,7 @@ function generate_system_image_radl($cloud, $ami, $region, $ami_user, $ami_passw
     //SYSTEM FRONT
     fwrite($new_file, "system front (".PHP_EOL);
     fwrite($new_file, "    disk.0.os.name='linux' and".PHP_EOL);
+    fwrite($new_file, "    instance_tags='app=ec3' and".PHP_EOL);
 
     //fwrite($new_file, "    disk.0.image.url = '".$region. "/" .$ami. "' and".PHP_EOL);
     //Depende del cloud el formato de URL cambia:
@@ -214,6 +215,7 @@ function generate_system_image_radl($cloud, $ami, $region, $ami_user, $ami_passw
     fwrite($new_file, "system wn (".PHP_EOL);
     fwrite($new_file, "    ec3_max_instances = ".$nodes." and".PHP_EOL);
     fwrite($new_file, "    disk.0.os.name='linux' and".PHP_EOL);
+    fwrite($new_file, "    instance_tags='app=ec3' and".PHP_EOL);
 
     //Depende del cloud el formato de URL cambia:
     if ($cloud == 'fedcloud'){
