@@ -46,7 +46,7 @@ function getSSLPage($url) {
 
 // Generates the auth file for FedCloud deployments
 //function generate_auth_file_fedcloud($proxy, $endpoint, $myproxyserver, $myproxyuser, $myproxypass) {
-function generate_auth_file_fedcloud($endpoint, $clustername) {
+function generate_auth_file_fedcloud($endpoint, $endpointName, $clustername) {
     //$auth = '';
     //$auth = tempnam("/tmp", "auth_");
     $auth = "/tmp/auth_" . $clustername;
@@ -84,7 +84,7 @@ function generate_auth_file_fedcloud($endpoint, $clustername) {
     $tenant = "openid";
     $domain = "vo.access.egi.eu";
     # Get domain (project id)
-    exec('python EGI_AppDB.py ' . $endpoint . ' projectid', $project_id_res);
+    exec('python EGI_AppDB.py ' . $endpointName . ' projectid', $project_id_res);
     if (! is_null($project_id_res[0])) {
         $domain = $project_id_res[0];
     }
@@ -326,7 +326,7 @@ if($_POST){
         $lrms = strtolower($lrms);
         $sw = strtolower($sw);
 
-        $auth_file = generate_auth_file_fedcloud($endpoint, $name);
+        $auth_file = generate_auth_file_fedcloud($endpoint, $endpointName, $name);
 
         $data = generate_system_image_radl($provider, $vmi, $endpointName, '', '', $front_type, $wn_type, '', '', '', '', $nodes, $kubeToken);
 
