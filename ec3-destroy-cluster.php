@@ -97,6 +97,8 @@ if($_POST){
             } else {
                 //si no existe el $auth_file, la info del IM se puede sacar de "/var/www/html/.ec3/clusters/" . $clustername
                 //en el system front/auth buscar la linea de "type": "InfrastructureManager" y esa es la que tenemos que guardar en $im_line
+                 $im_username = "";
+                 $im_pass = "";
                  $endpoint = "";
                  $file = fopen("/var/www/.ec3ltos/clusters/" . $clustername, "r") or exit("Unable to find the cluster data for cluster:" . $clustername . ". Is the cluster name correct?");
                  $logs = fopen("/tmp/amcaar_logs.txt", "w");
@@ -110,16 +112,14 @@ if($_POST){
                         //acceder a username y password de im y guardarlo en dos variables
                         for ($i = 0; $i < count($json_decoded); $i++) {
                             if ($json_decoded[$i]->{'type'} == "InfrastructureManager") {
-                                if (isset($json_decoded[$i]->{'token'})) {
-                                    $im_line = "type = InfrastructureManager; token = " . $access_token;
-                                } else {
-                                    $im_line="type = InfrastructureManager; username = " . $json_decoded[$i]->{'username'} . "; password = " . $json_decoded[$i]->{'password'};
-                                }
+                                $im_username = $json_decoded[$i]->{'username'};
+                                $im_pass = $json_decoded[$i]->{'password'};
                             }
                             if ($json_decoded[$i]->{'type'} == "OpenStack") {
                                 $endpoint = $json_decoded[$i]->{'host'};
                             }
                         }
+                        $im_line="type = InfrastructureManager; username = " . $im_username . "; password = " . $im_pass;
                     }
              }
                  fclose($file);
