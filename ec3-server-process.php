@@ -96,7 +96,7 @@ function generate_auth_file_fedcloud($endpoint, $endpointName, $clustername) {
 
     fwrite($gestor, "id = egi; type = OpenStack; host = " . $endpoint . "; username = egi.eu; auth_version = 3.x_oidc_access_token; password = " . $access_token . "; tenant = " . $tenant . "; domain = " . $domain . PHP_EOL);
     //Write needed credentials of IM and VMRC
-    fwrite($gestor, "type = InfrastructureManager; username = " . random_string(8) . "; password = " . random_string(10). PHP_EOL);
+    fwrite($gestor, "type = InfrastructureManager; token = " . $access_token . PHP_EOL);
     fclose($gestor);
 
     //to delete an empty file that tempnam creates
