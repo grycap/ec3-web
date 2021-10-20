@@ -45,7 +45,10 @@ vo = "vo.access.egi.eu"
 
 def check_supported_VOs(data):
     if 'provider:image' in data['virtualization:provider']:
-        for os_tpl in data['virtualization:provider']['provider:image']:
+        images = data['virtualization:provider']['provider:image']
+        if not isinstance(images, list):
+            images = [images]
+        for os_tpl in images:
             if '@voname' in os_tpl and vo in os_tpl['@voname']:
                 return True
     return False
