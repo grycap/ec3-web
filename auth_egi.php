@@ -7,9 +7,10 @@ const CLIENT_ID     = 'ec3ltos';
 const CLIENT_SECRET = 'ALcZo53x26AarJRTvcJh8n2z5-vOA9I87OxbDFQDWgs7Y27aMztpgKbJi-kzBH3xCi30BigE_e_HJ_pVBEwl9rI';
 
 const REDIRECT_URI           = 'https://servproject.i3m.upv.es/ec3-ltos/auth_egi.php';
-const AUTHORIZATION_ENDPOINT = 'https://aai.egi.eu/oidc/authorize';
-const TOKEN_ENDPOINT         = 'https://aai.egi.eu/oidc/token';
-const USER_INFO_ENDPOINT     = 'https://aai.egi.eu/oidc/userinfo';
+const AUTHORIZATION_ENDPOINT = 'https://aai.egi.eu/auth/realms/egi/protocol/openid-connect/auth';
+const TOKEN_ENDPOINT         = 'https://aai.egi.eu/auth/realms/egi/protocol/openid-connect/token';
+const USER_INFO_ENDPOINT     = 'https://aai.egi.eu/auth/realms/egi/protocol/openid-connect/userinfo';
+
 
 if (isset($GLOBALS["EC3UnitTestOAuth2Client"])) {
     // for mock in unit tests
